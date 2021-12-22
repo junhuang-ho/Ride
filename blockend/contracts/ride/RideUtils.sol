@@ -34,36 +34,70 @@ library RideUtils {
      * _calculateScore calculates score from driver's reputation details (see params of function)
      *
      * @param _metresTravelled | unit in metre
-     * @param _totalRating     | unitless integer
      * @param _countStart      | unitless integer
      * @param _countEnd        | unitless integer
+     * @param _totalRating     | unitless integer
+     * @param _countRating     | unitless integer
+     * @param _maxRating       | unitless integer
      *
      * @return Driver's score to determine badge rank | unitless integer
      *
-     * Derive Driver's Score Formula
-     * metresTravelled == m
-     * countStart == s
-     * countEnd == e
-     * totalRating == rt (sum(r1, r2, ... rN)
-     * countRating == rc
+     * Derive Driver's Score Formula:-
      *
-     * baseScore = m * e (accounts for [short distance | high count] && [long distance | low count])
-     * apply weighting ratio to baseScore: baseScore * e/s
-     * averageRating = rt/rc
-     * apply weighting ratio to averageRating: averageRating * rc/e
-     * combined score: m*e*(e/s) * (rt/rc)*(rc/e)
-     * simplify: (m*e*rt)/s
+     * Score is fundamentally determined based on distance travelled, where the more trips a driver makes,
+     * the higher the score. Thus, the base score is directly proportional to:
+     *
+     * _metresTravelled
+     *
+     * where _metresTravelled is the total cumulative distance covered by the driver over all trips made.
+     *
+     * To encourage the completion of trips, the base score would be penalized by the amount of incomplete
+     * trips, using:
+     *
+     *  _countEnd / _countStart
+     *
+     * which is the ratio of number of trips complete to the number of trips started. This gives:
+     *
+     * _metresTravelled * (_countEnd / _countStart)
+     *
+     * Driver score should also be influenced by passenger's rating of the overall trip, thus, the base
+     * score is further penalized by the average driver rating over all trips, given by:
+     *
+     * _totalRating / _countRating
+     *
+     * where _totalRating is the cumulative rating value by passengers over all trips and _countRating is
+     * the total number of rates by those passengers. The rating penalization is also divided by the max
+     * possible rating score to make the penalization a ratio:
+     *
+     * (_totalRating / _countRating) / _maxRating
+     *
+     * The score formula is given by:
+     *
+     * _metresTravelled * (_countEnd / _countStart) * ((_totalRating / _countRating) / _maxRating)
+     *
+     * which simplifies to:
+     *
+     * (_metresTravelled * _countEnd * _totalRating) / (_countStart * _countRating * _maxRating)
+     *
+     * note: Solidity rounds down return value to the nearest whole number.
+     *
+     * note: Score is used to determine badge rank. To determine which score corresponds to which rank,
+     *       can just determine from _metresTravelled, as other variables are just penalization factors.
      */
     function _calculateScore(
         uint256 _metresTravelled,
-        uint256 _totalRating,
         uint256 _countStart,
-        uint256 _countEnd
+        uint256 _countEnd,
+        uint256 _totalRating,
+        uint256 _countRating,
+        uint256 _maxRating
     ) internal pure returns (uint256) {
         if (_countStart == 0) {
             return 0;
         } else {
-            return (_metresTravelled * _totalRating * _countEnd) / _countStart;
+            return
+                (_metresTravelled * _countEnd * _totalRating) /
+                (_countStart * _countRating * _maxRating);
         }
     }
 

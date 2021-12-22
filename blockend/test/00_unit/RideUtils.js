@@ -6,9 +6,12 @@ const { ethers } = require("hardhat")
 const hre = require("hardhat");
 const chainId = hre.network.config.chainId
 
-if (parseInt(chainId) === 31337) {
-    describe("RideUtils", function () {
-        beforeEach(async function () {
+if (parseInt(chainId) === 31337)
+{
+    describe("RideUtils", function ()
+    {
+        beforeEach(async function ()
+        {
             baseFare = 10
             metresTravelled = 200
             minutesTaken = 5
@@ -17,27 +20,34 @@ if (parseInt(chainId) === 31337) {
             countStart = 5
             countEnd = 4
             totalRating = 13
+            countRating = countStart
+            maxRating = 5
 
             fare = baseFare + (metresTravelled * costPerMetre) + (minutesTaken * costPerMinute)
-            score = (metresTravelled * totalRating * countEnd) / countStart
+            score = Math.floor((metresTravelled * countEnd * totalRating) / (countStart * countRating * maxRating))
 
             const RideUtils = await ethers.getContractFactory("TestRideUtils")
             const rideUtils = await RideUtils.deploy()
             rideUtilsContract = await rideUtils.deployed()
         })
 
-        describe("getFare", function () {
-            it("Should return correct fare value", async function () {
+        describe("getFare", function ()
+        {
+            it("Should return correct fare value", async function ()
+            {
                 expect(await rideUtilsContract._getFare_(baseFare, metresTravelled, minutesTaken, costPerMetre, costPerMinute)).to.equal(fare)
             })
         })
 
-        describe("calculateScore", function () {
-            it("Should return correct score value", async function () {
-                expect(await rideUtilsContract._calculateScore_(metresTravelled, totalRating, countStart, countEnd)).to.equal(score)
+        describe("calculateScore", function ()
+        {
+            it("Should return correct score value", async function ()
+            {
+                expect(await rideUtilsContract._calculateScore_(metresTravelled, countStart, countEnd, totalRating, countRating, maxRating)).to.equal(score)
             })
-            it("Should return 0 value", async function () {
-                expect(await rideUtilsContract._calculateScore_(metresTravelled, totalRating, 0, countEnd)).to.equal(0)
+            it("Should return 0 value", async function ()
+            {
+                expect(await rideUtilsContract._calculateScore_(metresTravelled, 0, countEnd, totalRating, countRating, maxRating)).to.equal(0)
             })
         })
 

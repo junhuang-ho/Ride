@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 contract Ride is ERC20Votes {
     constructor(uint256 _maxSupply) ERC20("Ride", "RIDE") ERC20Permit("Ride") {
-        _mint(msg.sender, _maxSupply * 10**18);
+        _mint(msg.sender, _maxSupply);
     }
 
     // The functions below are overrides required by Solidity.

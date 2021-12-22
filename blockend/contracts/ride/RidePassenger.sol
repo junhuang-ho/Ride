@@ -170,6 +170,7 @@ contract RidePassenger is RideBase {
         address driver = tixIdToTicket[_tixId].driver;
 
         _temporaryBan(driver);
+        _giveRating(driver, 1);
         _cleanUp(_tixId, msg.sender, driver);
 
         emit ForceEndPassenger(_tixId, msg.sender);
@@ -185,11 +186,12 @@ contract RidePassenger is RideBase {
      * _giveRating
      *
      * @param _driver driver's address
-     * @param _rating unitless integer between 0 and 100
+     * @param _rating unitless integer between RATING_MIN and RATING_MAX
      *
      * @custom:event TripStarted
      */
     function _giveRating(address _driver, uint256 _rating) internal {
+        require(_rating >= RATING_MIN && _rating <= RATING_MAX); // TODO: contract exceeds size limit when add error msg
         addressToDriverReputation[_driver].totalRating += _rating;
         addressToDriverReputation[_driver].countRating += 1;
     }

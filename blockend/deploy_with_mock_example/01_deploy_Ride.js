@@ -1,7 +1,6 @@
 let { networkConfig } = require('../scripts/utils')
 const fs = require('fs')
-const { expect } = require("chai")
-const { ethers } = require("hardhat")
+const { expect } = require("chai");
 
 const contractName = "Ride" // SET contract to deploy
 
@@ -21,7 +20,7 @@ module.exports = async ({
     log("///// -------------------------------- /////")
     log("////////////////////////////////////////////")
 
-    const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
+    const maxSupply = 100000000 * (10 ** 18) // 100 mil - demo purposes
 
     const args = [maxSupply]
 
@@ -109,11 +108,11 @@ module.exports = async ({
     log("////////////////////////////////////////////")
 
     const contractRideToken = await hre.ethers.getContract(contractName)
-    const deployerBalance = (await contractRideToken.balanceOf(deployer)).toString()
-    expect(deployerBalance).to.equal((maxSupply).toLocaleString('fullwide', { useGrouping: false }))
+
+    expect((await contractRideToken.balanceOf(deployer)).toString()).to.equal((maxSupply * (10 ** 18)).toLocaleString('fullwide', { useGrouping: false }))
 
     log("#####")
-    log(`##### Max supply matches deployer: ${deployerBalance}`)
+    log(`##### Max supply matches deployer`)
     log("#####")
 
 }

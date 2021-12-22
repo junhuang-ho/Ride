@@ -23,16 +23,20 @@ contract TestRideUtils {
 
     function _calculateScore_(
         uint256 _metresTravelled,
-        uint256 _totalRating,
         uint256 _countStart,
-        uint256 _countEnd
+        uint256 _countEnd,
+        uint256 _totalRating,
+        uint256 _countRating,
+        uint256 _maxRating
     ) public pure returns (uint256) {
         return
             RideUtils._calculateScore(
                 _metresTravelled,
-                _totalRating,
                 _countStart,
-                _countEnd
+                _countEnd,
+                _totalRating,
+                _countRating,
+                _maxRating
             );
     }
 }

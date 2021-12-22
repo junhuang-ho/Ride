@@ -97,9 +97,11 @@ contract RideDriver is RideBase {
     {
         uint256 driverScore = RideUtils._calculateScore(
             addressToDriverReputation[msg.sender].metresTravelled,
-            addressToDriverReputation[msg.sender].totalRating,
             addressToDriverReputation[msg.sender].countStart,
-            addressToDriverReputation[msg.sender].countEnd
+            addressToDriverReputation[msg.sender].countEnd,
+            addressToDriverReputation[msg.sender].totalRating,
+            addressToDriverReputation[msg.sender].countRating,
+            RATING_MAX
         );
         uint256 driverBadge = _getBadge(driverScore);
         require(_useBadge <= driverBadge, "badge rank not achieved");

@@ -13,6 +13,8 @@ import "./RideCost.sol";
 contract RideBase is RideCost, ReentrancyGuard, Initializable {
     ERC20 public token;
 
+    uint256 internal constant RATING_MIN = 1;
+    uint256 internal constant RATING_MAX = 5;
     bool public initialized;
 
     mapping(address => uint256) public addressToDeposit;
