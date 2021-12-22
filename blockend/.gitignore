@@ -7,6 +7,4 @@ typechain
 #Hardhat files
 cache
 artifacts
-
-# custom
-deploy_with_mock_example
+deploy_w_mock_example
