@@ -10,7 +10,8 @@ module.exports = async ({
     getNamedAccounts,
     getChainId,
 
-}) => {
+}) =>
+{
     const { deploy, log, get } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = await getChainId()
@@ -41,8 +42,10 @@ module.exports = async ({
     log("///// -------------------------------- /////")
     log("////////////////////////////////////////////")
 
-    try {
-        if (parseInt(chainId) !== 31337) {
+    try
+    {
+        if (parseInt(chainId) !== 31337)
+        {
             await sleep(100000) // 1 min zZZ
             // WARNING: might need wait awahile for block confirmations !!!
             await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
@@ -53,53 +56,55 @@ module.exports = async ({
             log("#####")
             log(`##### Verified ${contract.address}`)
             log("#####")
-        } else {
+        } else
+        {
             log("#####")
             log("##### No verification needed for local deployment")
             log("#####")
         }
-    } catch (error) {
+    } catch (error)
+    {
         console.log(error)
     }
 
-    log("////////////////////////////////////////////")
-    log("///// -------------------------------- /////")
-    log("///// --------- Custom Saving -------- /////")
-    log("///// -------------------------------- /////")
-    log("////////////////////////////////////////////")
+    // log("////////////////////////////////////////////")
+    // log("///// -------------------------------- /////")
+    // log("///// --------- Custom Saving -------- /////")
+    // log("///// -------------------------------- /////")
+    // log("////////////////////////////////////////////")
 
-    const dir = `./deployed_contract_details/${contractName}/`
+    // const dir = `./deployed_contract_details/${contractName}/`
 
-    try {
-        if (parseInt(chainId) !== 31337) {
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-            }
+    // try {
+    //     if (parseInt(chainId) !== 31337) {
+    //         if (!fs.existsSync(dir)) {
+    //             fs.mkdirSync(dir, { recursive: true });
+    //         }
 
-            const abi = JSON.stringify({ abi: contract.abi })
-            const address = JSON.stringify({ address: contract.address })
+    //         const abi = JSON.stringify({ abi: contract.abi })
+    //         const address = JSON.stringify({ address: contract.address })
 
-            fs.writeFileSync(`${dir}abi.json`, abi, function (err) {
-                if (err) {
-                    console.log(err)
-                }
-            })
-            fs.writeFileSync(`${dir}address.json`, address, function (err) {
-                if (err) {
-                    console.log(err)
-                }
-            })
-            log("#####")
-            log(`##### Saved to ${dir}`)
-            log("#####")
-        } else {
-            log("#####")
-            log("##### No saving needed for local deployment")
-            log("#####")
-        }
-    } catch (error) {
-        console.log(error)
-    }
+    //         fs.writeFileSync(`${dir}abi.json`, abi, function (err) {
+    //             if (err) {
+    //                 console.log(err)
+    //             }
+    //         })
+    //         fs.writeFileSync(`${dir}address.json`, address, function (err) {
+    //             if (err) {
+    //                 console.log(err)
+    //             }
+    //         })
+    //         log("#####")
+    //         log(`##### Saved to ${dir}`)
+    //         log("#####")
+    //     } else {
+    //         log("#####")
+    //         log("##### No saving needed for local deployment")
+    //         log("#####")
+    //     }
+    // } catch (error) {
+    //     console.log(error)
+    // }
 
     log("////////////////////////////////////////////")
     log("///// -------------------------------- /////")
@@ -118,6 +123,7 @@ module.exports = async ({
 
 }
 
-function sleep(ms) {
+function sleep(ms)
+{
     return new Promise(resolve => setTimeout(resolve, ms))
 }

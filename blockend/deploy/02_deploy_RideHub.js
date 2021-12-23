@@ -66,53 +66,53 @@ module.exports = async ({
         console.log(error)
     }
 
-    log("////////////////////////////////////////////")
-    log("///// -------------------------------- /////")
-    log("///// --------- Custom Saving -------- /////")
-    log("///// -------------------------------- /////")
-    log("////////////////////////////////////////////")
+    // log("////////////////////////////////////////////")
+    // log("///// -------------------------------- /////")
+    // log("///// --------- Custom Saving -------- /////")
+    // log("///// -------------------------------- /////")
+    // log("////////////////////////////////////////////")
 
-    const dir = `./deployed_contract_details/${contractName}/`
+    // const dir = `./deployed_contract_details/${contractName}/`
 
-    try
-    {
-        if (parseInt(chainId) !== 31337)
-        {
-            if (!fs.existsSync(dir))
-            {
-                fs.mkdirSync(dir, { recursive: true });
-            }
+    // try
+    // {
+    //     if (parseInt(chainId) !== 31337)
+    //     {
+    //         if (!fs.existsSync(dir))
+    //         {
+    //             fs.mkdirSync(dir, { recursive: true });
+    //         }
 
-            const abi = JSON.stringify({ abi: contract.abi })
-            const address = JSON.stringify({ address: contract.address })
+    //         const abi = JSON.stringify({ abi: contract.abi })
+    //         const address = JSON.stringify({ address: contract.address })
 
-            fs.writeFileSync(`${dir}abi.json`, abi, function (err)
-            {
-                if (err)
-                {
-                    console.log(err)
-                }
-            })
-            fs.writeFileSync(`${dir}address.json`, address, function (err)
-            {
-                if (err)
-                {
-                    console.log(err)
-                }
-            })
-            log("#####")
-            log(`##### Saved to ${dir}`)
-            log("#####")
-        } else
-        {
-            log("#####")
-            log("##### No saving needed for local deployment")
-            log("#####")
-        }
-    } catch (error)
-    {
-        console.log(error)
-    }
+    //         fs.writeFileSync(`${dir}abi.json`, abi, function (err)
+    //         {
+    //             if (err)
+    //             {
+    //                 console.log(err)
+    //             }
+    //         })
+    //         fs.writeFileSync(`${dir}address.json`, address, function (err)
+    //         {
+    //             if (err)
+    //             {
+    //                 console.log(err)
+    //             }
+    //         })
+    //         log("#####")
+    //         log(`##### Saved to ${dir}`)
+    //         log("#####")
+    //     } else
+    //     {
+    //         log("#####")
+    //         log("##### No saving needed for local deployment")
+    //         log("#####")
+    //     }
+    // } catch (error)
+    // {
+    //     console.log(error)
+    // }
 
     log("////////////////////////////////////////////")
     log("///// -------------------------------- /////")
