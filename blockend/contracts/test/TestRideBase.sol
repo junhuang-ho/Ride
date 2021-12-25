@@ -12,12 +12,12 @@ contract TestRideBase is RideBase {
         return tixIdToTicket[_tixId];
     }
 
-    function tixToEndDetails_(bytes32 _tixId)
+    function tixToDriverEnd_(bytes32 _tixId)
         public
         view
-        returns (EndDetails memory)
+        returns (DriverEnd memory)
     {
-        return tixToEndDetails[_tixId];
+        return tixToDriverEnd[_tixId];
     }
 
     function notDriver_() public view notDriver returns (bool) {
@@ -28,39 +28,24 @@ contract TestRideBase is RideBase {
         return true;
     }
 
-    function driverMatchTixDriver_(bytes32 _tixId, address _driver)
+    function driverMatchTixDriver_(address _driver)
         public
         view
-        driverMatchTixDriver(_tixId, _driver)
+        driverMatchTixDriver(_driver)
         returns (bool)
     {
         return true;
     }
 
-    function tripNotStart_(bytes32 _tixId)
-        public
-        view
-        tripNotStart(_tixId)
-        returns (bool)
-    {
+    function tripNotStart_() public view tripNotStart returns (bool) {
         return true;
     }
 
-    function tripInProgress_(bytes32 _tixId)
-        public
-        view
-        tripInProgress(_tixId)
-        returns (bool)
-    {
+    function tripInProgress_() public view tripInProgress returns (bool) {
         return true;
     }
 
-    function forceEndAllowed_(bytes32 _tixId)
-        public
-        view
-        forceEndAllowed(_tixId)
-        returns (bool)
-    {
+    function forceEndAllowed_() public view forceEndAllowed returns (bool) {
         return true;
     }
 
@@ -106,8 +91,8 @@ contract TestRideBase is RideBase {
         addressToDeposit[_addr] = _uint256;
     }
 
-    function setter_addressToActive(address _addr, bool _bool) public {
-        addressToActive[_addr] = _bool;
+    function setter_addressToTixId(address _addr, bytes32 _tixId) public {
+        addressToTixId[_addr] = _tixId;
     }
 
     function setter_addressToBanEndTimestamp(address _addr, uint256 _uint256)
@@ -162,12 +147,12 @@ contract TestRideBase is RideBase {
         });
     }
 
-    function setter_tixToEndDetails(
+    function setter_tixToDriverEnd(
         bytes32 _tixId,
         address _driver,
         bool _reached
     ) public {
-        tixToEndDetails[_tixId] = EndDetails({
+        tixToDriverEnd[_tixId] = DriverEnd({
             driver: _driver,
             reached: _reached
         });

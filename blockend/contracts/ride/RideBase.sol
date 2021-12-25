@@ -18,23 +18,7 @@ contract RideBase is RideCost, ReentrancyGuard, Initializable {
     bool public initialized;
 
     mapping(address => uint256) public addressToDeposit;
-    mapping(address => bool) public addressToActive;
     mapping(address => uint256) public addressToBanEndTimestamp;
-
-    /**
-     * lifetime cumulative values of drivers
-     */
-    struct DriverReputation {
-        uint256 id;
-        string uri;
-        uint256 maxMetresPerTrip;
-        uint256 metresTravelled;
-        uint256 countStart;
-        uint256 countEnd;
-        uint256 totalRating;
-        uint256 countRating;
-    }
-    mapping(address => DriverReputation) public addressToDriverReputation;
 
     /**
      * @dev if a ticket exists (details not 0) in tixIdToTicket, then it is considered active
@@ -52,12 +36,31 @@ contract RideBase is RideCost, ReentrancyGuard, Initializable {
         uint256 forceEndTimestamp;
     }
     mapping(bytes32 => Ticket) internal tixIdToTicket;
+    mapping(address => bytes32) internal addressToTixId;
 
-    struct EndDetails {
+    /**
+     * *Required to confirm if driver did initiate destination reached or not
+     */
+    struct DriverEnd {
         address driver;
         bool reached;
     }
-    mapping(bytes32 => EndDetails) internal tixToEndDetails;
+    mapping(bytes32 => DriverEnd) internal tixToDriverEnd;
+
+    /**
+     * lifetime cumulative values of drivers
+     */
+    struct DriverReputation {
+        uint256 id;
+        string uri;
+        uint256 maxMetresPerTrip;
+        uint256 metresTravelled;
+        uint256 countStart;
+        uint256 countEnd;
+        uint256 totalRating;
+        uint256 countRating;
+    }
+    mapping(address => DriverReputation) public addressToDriverReputation;
 
     event InitializedRideBase(address token, address deployer);
     event TokensDeposited(address sender, uint256 amount);
@@ -85,31 +88,39 @@ contract RideBase is RideCost, ReentrancyGuard, Initializable {
     }
 
     modifier notActive() {
-        require(!addressToActive[msg.sender], "caller is active");
+        require(addressToTixId[msg.sender] == 0, "caller is active");
         _;
     }
 
-    modifier driverMatchTixDriver(bytes32 _tixId, address _driver) {
+    /**
+     * @param _driver driver's address
+     *
+     * Why we pass driver's address as an argument and not just use msg.sender?
+     * Because driverMatchTixDriver is used by both passenger and driver and so
+     * passenger's msg.sender won't be driver's address
+     */
+    modifier driverMatchTixDriver(address _driver) {
+        require(_driver == tixIdToTicket[addressToTixId[msg.sender]].driver); // TODO: full_error_msg - "tix not match driver"
+        _;
+    }
+
+    modifier tripNotStart() {
         require(
-            _driver == tixIdToTicket[_tixId].driver,
-            "driver not match tix driver"
+            !tixIdToTicket[addressToTixId[msg.sender]].tripStart,
+            "trip already started"
         );
         _;
     }
 
-    modifier tripNotStart(bytes32 _tixId) {
-        require(!tixIdToTicket[_tixId].tripStart, "trip already started");
+    modifier tripInProgress() {
+        require(tixIdToTicket[addressToTixId[msg.sender]].tripStart); // TODO: full_error_msg - "trip not started"
         _;
     }
 
-    modifier tripInProgress(bytes32 _tixId) {
-        require(tixIdToTicket[_tixId].tripStart, "trip not started");
-        _;
-    }
-
-    modifier forceEndAllowed(bytes32 _tixId) {
+    modifier forceEndAllowed() {
         require(
-            block.timestamp > tixIdToTicket[_tixId].forceEndTimestamp,
+            block.timestamp >
+                tixIdToTicket[addressToTixId[msg.sender]].forceEndTimestamp,
             "too early"
         );
         _;
@@ -251,9 +262,9 @@ contract RideBase is RideCost, ReentrancyGuard, Initializable {
         address _driver
     ) internal {
         delete tixIdToTicket[_tixId];
-        delete tixToEndDetails[_tixId];
-        addressToActive[_passenger] = false;
-        addressToActive[_driver] = false;
+        delete tixToDriverEnd[_tixId];
+        delete addressToTixId[_passenger];
+        delete addressToTixId[_driver];
 
         emit TicketCleared(_tixId);
     }

@@ -4,12 +4,7 @@ pragma solidity ^0.8.0;
 import "../ride/RidePassenger.sol";
 
 contract TestRidePassenger is RidePassenger {
-    function paxMatchTixPax_(bytes32 _tixId, address _passenger)
-        public
-        view
-        paxMatchTixPax(_tixId, _passenger)
-        returns (bool)
-    {
+    function paxMatchTixPax_() public view paxMatchTixPax returns (bool) {
         return true;
     }
 

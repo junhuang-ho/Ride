@@ -14,10 +14,10 @@ contract RidePassenger is RideBase {
     event TripEnded(bytes32 indexed tixId, address sender);
     event ForceEndPassenger(bytes32 indexed tixId, address sender);
 
-    modifier paxMatchTixPax(bytes32 _tixId, address _passenger) {
+    modifier paxMatchTixPax() {
         require(
-            _passenger == tixIdToTicket[_tixId].passenger,
-            "pax not match tix pax"
+            msg.sender == tixIdToTicket[addressToTixId[msg.sender]].passenger,
+            "tix not match pax"
         );
         _;
     }
@@ -58,7 +58,7 @@ contract RidePassenger is RideBase {
         tixIdToTicket[tixId].metres = _metres;
         tixIdToTicket[tixId].fare = fare;
 
-        addressToActive[msg.sender] = true;
+        addressToTixId[msg.sender] = tixId;
 
         emit RequestTicket(tixId, msg.sender);
     }
@@ -66,52 +66,46 @@ contract RidePassenger is RideBase {
     /**
      * cancelRequest cancels ticket, can only be called before startTrip
      *
-     * @param _tixId Ticket ID
-     *
      * @custom:event RequestCancelled
      */
-    function cancelRequest(bytes32 _tixId)
-        external
-        paxMatchTixPax(_tixId, msg.sender)
-        tripNotStart(_tixId)
-    {
-        address driver = tixIdToTicket[_tixId].driver;
+    function cancelRequest() external paxMatchTixPax tripNotStart {
+        bytes32 tixId = addressToTixId[msg.sender];
+        address driver = tixIdToTicket[tixId].driver;
         if (driver != address(0)) {
             // case when cancel inbetween driver accepted, but haven't reach passenger
             // give warning at frontend to passenger
-            _transfer(_tixId, requestFee, msg.sender, driver);
+            _transfer(tixId, requestFee, msg.sender, driver);
         }
 
-        _cleanUp(_tixId, msg.sender, driver);
+        _cleanUp(tixId, msg.sender, driver);
 
-        emit RequestCancelled(_tixId, msg.sender); // --> update frontend request pool
+        emit RequestCancelled(tixId, msg.sender); // --> update frontend request pool
     }
 
     /**
      * startTrip starts the trip, can only be called once driver reached passenger
      *
-     * @param _tixId Ticket ID
      * @param _driver driver's address - get via QR scan?
      *
      * @custom:event TripStarted
      */
-    function startTrip(bytes32 _tixId, address _driver)
+    function startTrip(address _driver)
         external
-        paxMatchTixPax(_tixId, msg.sender)
-        driverMatchTixDriver(_tixId, _driver)
-        tripNotStart(_tixId)
+        paxMatchTixPax
+        driverMatchTixDriver(_driver)
+        tripNotStart
     {
+        bytes32 tixId = addressToTixId[msg.sender];
         addressToDriverReputation[_driver].countStart += 1;
-        tixIdToTicket[_tixId].tripStart = true;
-        tixIdToTicket[_tixId].forceEndTimestamp = block.timestamp + 1 days;
+        tixIdToTicket[tixId].tripStart = true;
+        tixIdToTicket[tixId].forceEndTimestamp = block.timestamp + 1 days;
 
-        emit TripStarted(_tixId, msg.sender, _driver); // update frontend
+        emit TripStarted(tixId, msg.sender, _driver); // update frontend
     }
 
     /**
      * endTrip ends the trip, can only be called once driver has called either destinationReached or destinationNotReached
      *
-     * @param _tixId Ticket ID
      * @param _confirmation confirmation from passenger that either destination has been reached or not
      * @param _rating refer _giveRating
      *
@@ -120,60 +114,60 @@ contract RidePassenger is RideBase {
      * driver would select destination reached or not, and event will emit to passenger's UI
      * then passenger would confirm if this is true or false (via frontend UI), followed by a rating
      */
-    function endTrip(
-        bytes32 _tixId,
-        bool _confirmation,
-        uint256 _rating
-    ) external paxMatchTixPax(_tixId, msg.sender) tripInProgress(_tixId) {
-        address driver = tixToEndDetails[_tixId].driver;
+    function endTrip(bool _confirmation, uint256 _rating)
+        external
+        paxMatchTixPax
+        tripInProgress
+    {
+        bytes32 tixId = addressToTixId[msg.sender];
+        address driver = tixToDriverEnd[tixId].driver;
         require(driver != address(0), "driver must end trip");
         require(
             _confirmation,
             "pax must confirm destination reached or not - indicated by driver"
         );
 
-        if (tixToEndDetails[_tixId].reached) {
-            _transfer(_tixId, tixIdToTicket[_tixId].fare, msg.sender, driver);
+        if (tixToDriverEnd[tixId].reached) {
+            _transfer(tixId, tixIdToTicket[tixId].fare, msg.sender, driver);
             addressToDriverReputation[driver].metresTravelled += tixIdToTicket[
-                _tixId
+                tixId
             ].metres;
             addressToDriverReputation[driver].countEnd += 1;
         }
 
         _giveRating(driver, _rating);
 
-        _cleanUp(_tixId, msg.sender, driver);
+        _cleanUp(tixId, msg.sender, driver);
 
-        emit TripEnded(_tixId, msg.sender);
+        emit TripEnded(tixId, msg.sender);
     }
 
     /**
-     * forceEndPassenger can be called after tixIdToTicket[_tixId].forceEndTimestamp duration
+     * forceEndPassenger can be called after tixIdToTicket[tixId].forceEndTimestamp duration
      * and if driver has not called destinationReached or destinationNotReached
-     *
-     * @param _tixId Ticket ID
      *
      * @custom:event ForceEndPassenger
      *
      * no fare is paid, but driver is temporarily banned for banDuration
      */
-    function forceEndPassenger(bytes32 _tixId)
+    function forceEndPassenger()
         external
-        paxMatchTixPax(_tixId, msg.sender)
-        tripInProgress(_tixId) /** means both parties still active */
-        forceEndAllowed(_tixId)
+        paxMatchTixPax
+        tripInProgress /** means both parties still active */
+        forceEndAllowed
     {
+        bytes32 tixId = addressToTixId[msg.sender];
         require(
-            tixToEndDetails[_tixId].driver == address(0),
+            tixToDriverEnd[tixId].driver == address(0),
             "driver ended trip"
         ); // TODO: test
-        address driver = tixIdToTicket[_tixId].driver;
+        address driver = tixIdToTicket[tixId].driver;
 
         _temporaryBan(driver);
         _giveRating(driver, 1);
-        _cleanUp(_tixId, msg.sender, driver);
+        _cleanUp(tixId, msg.sender, driver);
 
-        emit ForceEndPassenger(_tixId, msg.sender);
+        emit ForceEndPassenger(tixId, msg.sender);
     }
 
     //////////////////////////////////////////////////////////////////////////////////
