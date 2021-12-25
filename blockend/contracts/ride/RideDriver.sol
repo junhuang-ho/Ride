@@ -14,11 +14,7 @@ contract RideDriver is RideBase {
     event RegisteredAsDriver(address sender);
     event AcceptedTicket(bytes32 indexed tixId, address sender);
     event DriverCancelled(bytes32 indexed tixId, address sender);
-    event DestinationReached(
-        bytes32 indexed tixId,
-        bool reached,
-        address sender
-    );
+    event IsSatisfied(bytes32 indexed tixId, bool reached, address sender);
     event ForceEndDriver(bytes32 indexed tixId, address sender);
 
     modifier isDriver() {
@@ -157,13 +153,13 @@ contract RideDriver is RideBase {
     }
 
     /**
-     * isDestinationReached allows driver to indicate to passenger to end trip and destination is either reached or not
+     * isSatisfied allows driver to indicate to passenger to end trip and destination is either reached or not
      *
      * @param _reached boolean indicating whether destination has been reach or not
      *
-     * @custom:event DestinationReached
+     * @custom:event IsSatisfied
      */
-    function isDestinationReached(bool _reached)
+    function isSatisfied(bool _reached)
         external
         driverMatchTixDriver(msg.sender)
         tripInProgress
@@ -173,7 +169,7 @@ contract RideDriver is RideBase {
         tixToDriverEnd[tixId].driver = msg.sender;
         tixToDriverEnd[tixId].reached = _reached;
 
-        emit DestinationReached(tixId, _reached, msg.sender);
+        emit IsSatisfied(tixId, _reached, msg.sender);
     }
 
     /**
