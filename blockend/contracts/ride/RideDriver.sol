@@ -11,7 +11,7 @@ contract RideDriver is RideBase {
     using Counters for Counters.Counter;
     Counters.Counter private _driverIdCounter;
 
-    event DriverRegistered(address sender);
+    event RegisteredAsDriver(address sender);
     event AcceptedTicket(bytes32 indexed tixId, address sender);
     event DriverCancelled(bytes32 indexed tixId, address sender);
     event DestinationReached(
@@ -38,9 +38,9 @@ contract RideDriver is RideBase {
      *
      * @param _maxMetresPerTrip | unit in metre
      *
-     * @custom:event DriverRegistered
+     * @custom:event RegisteredAsDriver
      */
-    function registerDriver(uint256 _maxMetresPerTrip)
+    function registerAsDriver(uint256 _maxMetresPerTrip)
         external
         initializedRideBase
         notDriver
@@ -61,7 +61,7 @@ contract RideDriver is RideBase {
         addressToDriverReputation[msg.sender].totalRating = 0;
         addressToDriverReputation[msg.sender].countRating = 0;
 
-        emit DriverRegistered(msg.sender);
+        emit RegisteredAsDriver(msg.sender);
     }
 
     /**
