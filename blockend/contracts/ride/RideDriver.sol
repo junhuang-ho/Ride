@@ -14,8 +14,8 @@ contract RideDriver is RideBase {
     event RegisteredAsDriver(address sender);
     event AcceptedTicket(bytes32 indexed tixId, address sender);
     event DriverCancelled(bytes32 indexed tixId, address sender);
-    event IsSatisfied(bytes32 indexed tixId, bool reached, address sender);
-    event ForceEndDriver(bytes32 indexed tixId, address sender);
+    event TripEndedDrv(bytes32 indexed tixId, bool reached, address sender);
+    event ForceEndDrv(bytes32 indexed tixId, address sender);
 
     modifier isDriver() {
         require(
@@ -153,13 +153,13 @@ contract RideDriver is RideBase {
     }
 
     /**
-     * isSatisfied allows driver to indicate to passenger to end trip and destination is either reached or not
+     * endTripDrv allows driver to indicate to passenger to end trip and destination is either reached or not
      *
      * @param _reached boolean indicating whether destination has been reach or not
      *
-     * @custom:event IsSatisfied
+     * @custom:event TripEndedDrv
      */
-    function isSatisfied(bool _reached)
+    function endTripDrv(bool _reached)
         external
         driverMatchTixDriver(msg.sender)
         tripInProgress
@@ -169,18 +169,18 @@ contract RideDriver is RideBase {
         tixToDriverEnd[tixId].driver = msg.sender;
         tixToDriverEnd[tixId].reached = _reached;
 
-        emit IsSatisfied(tixId, _reached, msg.sender);
+        emit TripEndedDrv(tixId, _reached, msg.sender);
     }
 
     /**
-     * forceEndDriver can be called after tixIdToTicket[tixId].forceEndTimestamp duration
-     * and if passenger has not called endTrip
+     * forceEndDrv can be called after tixIdToTicket[tixId].forceEndTimestamp duration
+     * and if passenger has not called endTripPax
      *
-     * @custom:event ForceEndDriver
+     * @custom:event ForceEndDrv
      *
      * no fare is paid, but passenger is temporarily banned for banDuration
      */
-    function forceEndDriver()
+    function forceEndDrv()
         external
         driverMatchTixDriver(msg.sender)
         tripInProgress /** means both parties still active */
@@ -196,7 +196,7 @@ contract RideDriver is RideBase {
         _temporaryBan(passenger);
         _cleanUp(tixId, passenger, msg.sender);
 
-        emit ForceEndDriver(tixId, msg.sender);
+        emit ForceEndDrv(tixId, msg.sender);
     }
 
     //////////////////////////////////////////////////////////////////////////////////

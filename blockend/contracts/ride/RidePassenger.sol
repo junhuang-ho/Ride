@@ -11,8 +11,8 @@ contract RidePassenger is RideBase {
     event RequestTicket(bytes32 indexed tixId, address sender);
     event RequestCancelled(bytes32 indexed tixId, address sender);
     event TripStarted(bytes32 indexed tixId, address passenger, address driver);
-    event TripEnded(bytes32 indexed tixId, address sender);
-    event ForceEndPassenger(bytes32 indexed tixId, address sender);
+    event TripEndedPax(bytes32 indexed tixId, address sender);
+    event ForceEndPax(bytes32 indexed tixId, address sender);
 
     modifier paxMatchTixPax() {
         require(
@@ -104,17 +104,19 @@ contract RidePassenger is RideBase {
     }
 
     /**
-     * endTrip ends the trip, can only be called once driver has called either destinationReached or destinationNotReached
+     * endTripPax ends the trip, can only be called once driver has called either endTripDrv
      *
-     * @param _confirmation confirmation from passenger that either destination has been reached or not
+     * @param _agree agreement from passenger that either destination has been reached or not
      * @param _rating refer _giveRating
      *
-     * @custom:event TripEnded
+     * @custom:event TripEndedPax
      *
-     * driver would select destination reached or not, and event will emit to passenger's UI
-     * then passenger would confirm if this is true or false (via frontend UI), followed by a rating
+     * Driver would select destination reached or not, and event will emit to passenger's UI
+     * then passenger would agree if this is true or false (via frontend UI), followed by a rating.
+     * No matter what, passenger needs to pay fare, so incentive to passenger to be kind so driver
+     * get passenger to destination. This prevents passenger abuse.
      */
-    function endTrip(bool _confirmation, uint256 _rating)
+    function endTripPax(bool _agree, uint256 _rating)
         external
         paxMatchTixPax
         tripInProgress
@@ -123,12 +125,12 @@ contract RidePassenger is RideBase {
         address driver = tixToDriverEnd[tixId].driver;
         require(driver != address(0), "driver must end trip");
         require(
-            _confirmation,
-            "pax must confirm destination reached or not - indicated by driver"
+            _agree,
+            "pax must agree destination reached or not - indicated by driver"
         );
 
+        _transfer(tixId, tixIdToTicket[tixId].fare, msg.sender, driver);
         if (tixToDriverEnd[tixId].reached) {
-            _transfer(tixId, tixIdToTicket[tixId].fare, msg.sender, driver);
             addressToDriverReputation[driver].metresTravelled += tixIdToTicket[
                 tixId
             ].metres;
@@ -139,18 +141,18 @@ contract RidePassenger is RideBase {
 
         _cleanUp(tixId, msg.sender, driver);
 
-        emit TripEnded(tixId, msg.sender);
+        emit TripEndedPax(tixId, msg.sender);
     }
 
     /**
-     * forceEndPassenger can be called after tixIdToTicket[tixId].forceEndTimestamp duration
-     * and if driver has not called destinationReached or destinationNotReached
+     * forceEndPax can be called after tixIdToTicket[tixId].forceEndTimestamp duration
+     * and if driver has NOT called endTripDrv
      *
-     * @custom:event ForceEndPassenger
+     * @custom:event ForceEndPax
      *
      * no fare is paid, but driver is temporarily banned for banDuration
      */
-    function forceEndPassenger()
+    function forceEndPax()
         external
         paxMatchTixPax
         tripInProgress /** means both parties still active */
@@ -167,7 +169,7 @@ contract RidePassenger is RideBase {
         _giveRating(driver, 1);
         _cleanUp(tixId, msg.sender, driver);
 
-        emit ForceEndPassenger(tixId, msg.sender);
+        emit ForceEndPax(tixId, msg.sender);
     }
 
     //////////////////////////////////////////////////////////////////////////////////
