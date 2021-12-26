@@ -159,6 +159,7 @@ contract RideDriver is RideBase {
      *
      * @custom:event TripEndedDrv
      */
+    // TODO: test that this fn can be recalled immediately after first call so that driver can change _reached status if needed. Test in remix first.
     function endTripDrv(bool _reached)
         external
         driverMatchTixDriver(msg.sender)
