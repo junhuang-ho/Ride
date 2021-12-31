@@ -98,7 +98,7 @@ contract RidePassenger is RideBase {
         bytes32 tixId = addressToTixId[msg.sender];
         addressToDriverReputation[_driver].countStart += 1;
         tixIdToTicket[tixId].tripStart = true;
-        tixIdToTicket[tixId].forceEndTimestamp = block.timestamp + 1 days;
+        tixIdToTicket[tixId].forceEndTimestamp = block.timestamp + 1 days; // TODO: change 1 day to setter fn
 
         emit TripStarted(tixId, msg.sender, _driver); // update frontend
     }
