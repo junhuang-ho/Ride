@@ -7,6 +7,7 @@ typechain
 #Hardhat files
 cache
 artifacts
+deploy
 deploy_w_mock_example
 contracts_old1
 contracts_old2
