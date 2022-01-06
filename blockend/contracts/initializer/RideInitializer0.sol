@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
+import {Initializable} from "./utils/Initializable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import {IERC165} from "../interfaces/utils/IERC165.sol";
@@ -29,7 +30,14 @@ import {RideLibUser} from "../libraries/core/RideLibUser.sol";
 // with data from a deployment script. Use the init function to initialize state variables
 // of your diamond. Add parameters to the init funciton if you need to.
 
+// ways to call fns from another facet (without knowing address)
+// 1. use delegatecall: https://eip2535diamonds.substack.com/p/how-to-share-functions-between-facets
+// 2. make those external fns internal and move them to library,
+//    then make external fns in respective facets that call those internal fns
+//    (can import library and just use the fns needed instead of inheriting)
+
 contract RideInitializer0 is
+    Initializable,
     RideBadge,
     RideFee,
     RidePenalty,
@@ -46,7 +54,7 @@ contract RideInitializer0 is
         uint256 _banDuration,
         uint256 _ratingMin,
         uint256 _ratingMax
-    ) external {
+    ) external initializer {
         // ass inits within this function as needed
 
         // adding ERC165 data

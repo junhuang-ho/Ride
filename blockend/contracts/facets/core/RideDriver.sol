@@ -14,7 +14,9 @@ import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
 
 import {IRideDriver} from "../../interfaces/core/IRideDriver.sol";
 
-contract RideDriver is IRideDriver {
+import {Initializable} from "../../initializer/utils/Initializable.sol";
+
+contract RideDriver is IRideDriver, Initializable {
     using Counters for Counters.Counter;
     Counters.Counter private _driverIdCounter;
 
@@ -267,7 +269,7 @@ contract RideDriver is IRideDriver {
      *
      * TODO: call at init ONLY
      */
-    function _burnFirstDriverId() internal {
+    function _burnFirstDriverId() internal onlyInitializing {
         assert(_driverIdCounter.current() == 0);
         _driverIdCounter.increment();
     }
