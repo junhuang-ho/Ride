@@ -15,7 +15,7 @@ https://www.epochconverter.com/
 
 ## Testing
 ```
-~$ cd backend
+~$ cd blockend
 ~$ npx hardhat test
 ```
 or for a summary of contract test coverage
