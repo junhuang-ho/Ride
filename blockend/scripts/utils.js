@@ -1,3 +1,6 @@
+const { ethers } = require("hardhat")
+const fs = require('fs')
+
 const networkConfig = {
     default: {
         name: 'hardhat',
@@ -65,16 +68,20 @@ const networkConfig = {
 
 const developmentChains = ["hardhat", "localhost"]
 
-const getNetworkIdFromName = async (networkIdName) => {
-    for (const id in networkConfig) {
-        if (networkConfig[id]['name'] == networkIdName) {
+const getNetworkIdFromName = async (networkIdName) =>
+{
+    for (const id in networkConfig)
+    {
+        if (networkConfig[id]['name'] == networkIdName)
+        {
             return id
         }
     }
     return null
 }
 
-const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additionalMessage) => {
+const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additionalMessage) =>
+{
     const chainId = await getChainId()
     console.log("Checking to see if contract can be auto-funded with LINK:")
     const amount = networkConfig[chainId]['fundAmount']
@@ -87,11 +94,13 @@ const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additi
     const balance = await web3.utils.toBN(balanceHex._hex).toString()
     const contractBalanceHex = await linkTokenContract.balanceOf(contractAddr)
     const contractBalance = await web3.utils.toBN(contractBalanceHex._hex).toString()
-    if (balance > amount && amount > 0 && contractBalance < amount) {
+    if (balance > amount && amount > 0 && contractBalance < amount)
+    {
         //user has enough LINK to auto-fund
         //and the contract isn't already funded
         return true
-    } else { //user doesn't have enough LINK, print a warning
+    } else
+    { //user doesn't have enough LINK, print a warning
         console.log("Account doesn't have enough LINK to fund contracts, or you're deploying to a network where auto funding isnt' done by default")
         console.log("Please obtain LINK via the faucet at https://" + networkName + ".chain.link/, then run the following command to fund contract with LINK:")
         console.log("npx hardhat fund-link --contract " + contractAddr + " --network " + networkName + additionalMessage)
@@ -99,9 +108,124 @@ const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additi
     }
 }
 
+const deploy = async (chainId, contractName, args = [], verify = false) =>
+{
+    const dir = `./deployments/${networkConfig[chainId]["name"]}`
+    const saveDir = `${dir}/${contractName}.json`
+
+    if (fs.existsSync(saveDir))
+    {
+        // Skipping
+        const deployedContract = fs.readFileSync(saveDir)
+        const deployedContractJSON = JSON.parse(deployedContract)
+        console.log(`Skipping\t| ${contractName} already deployed on ${networkConfig[chainId]["name"]}: ${deployedContractJSON.address}`)
+
+        const deployedContractMain = await ethers.getContractAt(contractName, deployedContractJSON.address)
+        return deployedContractMain
+    } else
+    {
+        // Deploying
+        const contract = await ethers.getContractFactory(contractName)
+        const contractDeployed = await contract.deploy(...args)
+        await contractDeployed.deployed()
+        console.log(`Deploying\t| Deployed ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+
+        // Saving
+        if (parseInt(chainId) !== 31337)
+        {
+            if (!fs.existsSync(dir))
+            {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+
+            // get abi
+            const contractArtifactList = getFiles((__dirname.substring(0, __dirname.lastIndexOf("/"))).concat("/artifacts/contracts"))
+            const fileName = `${contractName}.json`
+            let contractArtifactsDir
+            for (let i = 0; i < contractArtifactList.length; i++)
+            {
+                if (contractArtifactList[i].endsWith(fileName))
+                {
+                    contractArtifactsDir = contractArtifactList[i]
+                }
+            }
+            const contractArtifacts = fs.readFileSync(contractArtifactsDir)
+            const contractArtifactsJSON = JSON.parse(contractArtifacts)
+
+            const json = JSON.stringify({
+                address: contractDeployed.address,
+                abi: contractArtifactsJSON.abi,
+            })
+
+            // save
+            fs.writeFileSync(saveDir, json, function (err)
+            {
+                if (err)
+                {
+                    console.log(err)
+                }
+            })
+            console.log(`Saving\t\t| Saved to ${saveDir}`)
+        } else
+        {
+            console.log(`Saving\t\t| No saving needed for ${networkConfig[chainId]["name"]} local deployment`)
+        }
+
+        // Verify
+        if (verify)
+        {
+            if (parseInt(chainId) !== 31337)
+            {
+                try
+                {
+                    await sleep(100000) // 1 min zZZ
+                    // WARNING: might need wait awahile for block confirmations !!!
+                    await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
+                        address: contractDeployed.address,
+                        constructorArguments: args,
+                    })
+                    console.log(`Verifying\t| Verified ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+                } catch (err)
+                {
+                    console.log(err)
+                }
+            } else
+            {
+                console.log(`Verifying\t| No verification needed for ${networkConfig[chainId].name} local deployment`)
+            }
+        }
+
+        return contractDeployed
+    }
+}
+
+function getFiles(dir, files_)
+{
+    files_ = files_ || [];
+    var files = fs.readdirSync(dir);
+    for (var i in files)
+    {
+        var name = dir + '/' + files[i];
+        if (fs.statSync(name).isDirectory())
+        {
+            getFiles(name, files_);
+        } else
+        {
+            files_.push(name);
+        }
+    }
+    return files_;
+}
+
+function sleep(ms)
+{
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 module.exports = {
     networkConfig,
     getNetworkIdFromName,
     autoFundCheck,
-    developmentChains
+    developmentChains,
+    deploy
 }

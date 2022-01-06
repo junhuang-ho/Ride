@@ -8,5 +8,7 @@ typechain
 cache
 artifacts
 deploy_w_mock_example
-contracts_old
+contracts_old1
+contracts_old2
+contracts_old3
 test_old

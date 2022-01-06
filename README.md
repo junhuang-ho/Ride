@@ -12,3 +12,5 @@ https://rinkeby.etherscan.io/
 https://eth-converter.com/
 
 https://www.epochconverter.com/
+
+## using Diamond-2 Pattern
