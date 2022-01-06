@@ -12,3 +12,21 @@ https://rinkeby.etherscan.io/
 https://eth-converter.com/
 
 https://www.epochconverter.com/
+
+## Testing
+```
+~$ cd backend
+~$ npx hardhat test
+```
+or for a summary of contract test coverage
+```
+~$ cd backend
+~$ npx hardhat coverage
+```
+
+## Helpful Tasks
+
+1. check contract size
+```
+~$ yarn run hardhat size-contracts
+```
