@@ -8,8 +8,6 @@ import {RideLibUser} from "../../libraries/core/RideLibUser.sol";
 import {IRideUser} from "../../interfaces/core/IRideUser.sol";
 
 contract RideUser is IRideUser, ReentrancyGuard {
-    event TokensDeposited(address indexed sender, uint256 amount);
-
     /**
      * placeDeposit allows users to deposit token into RideHub contract
      *
@@ -34,8 +32,6 @@ contract RideUser is IRideUser, ReentrancyGuard {
 
         emit TokensDeposited(msg.sender, _amount);
     }
-
-    event TokensRemoved(address indexed sender, uint256 amount);
 
     /**
      * removeDeposit allows users to remove token from RideHub contract

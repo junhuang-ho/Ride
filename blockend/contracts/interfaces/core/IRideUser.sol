@@ -2,7 +2,11 @@
 pragma solidity ^0.8.2;
 
 interface IRideUser {
+    event TokensDeposited(address indexed sender, uint256 amount);
+
     function placeDeposit(uint256 _amount) external;
+
+    event TokensRemoved(address indexed sender, uint256 amount);
 
     function removeDeposit() external;
 
@@ -12,4 +16,11 @@ interface IRideUser {
         external
         view
         returns (uint256);
+
+    event TokensTransferred(
+        address indexed decrease,
+        bytes32 indexed tixId,
+        address increase,
+        uint256 amount
+    );
 }

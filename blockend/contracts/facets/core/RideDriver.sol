@@ -13,8 +13,6 @@ import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
 import {IRideDriver} from "../../interfaces/core/IRideDriver.sol";
 
 contract RideDriver is IRideDriver {
-    event RegisteredAsDriver(address indexed sender);
-
     /**
      * registerDriver registers approved applicants (has passed background check)
      *
@@ -45,8 +43,6 @@ contract RideDriver is IRideDriver {
         emit RegisteredAsDriver(msg.sender);
     }
 
-    event MaxMetresUpdated(address indexed sender, uint256 metres);
-
     /**
      * updateMaxMetresPerTrip updates maximum metre per trip of driver
      *
@@ -65,8 +61,6 @@ contract RideDriver is IRideDriver {
 
         emit MaxMetresUpdated(msg.sender, _maxMetresPerTrip);
     }
-
-    event AcceptedTicket(address indexed sender, bytes32 indexed tixId);
 
     /**
      * acceptTicket allows driver to accept passenger's ticket request
@@ -136,8 +130,6 @@ contract RideDriver is IRideDriver {
         emit AcceptedTicket(msg.sender, _tixId); // --> update frontend (also, add warning that if passenger cancel, will incure fee)
     }
 
-    event DriverCancelled(address indexed sender, bytes32 indexed tixId);
-
     /**
      * cancelPickUp cancels pick up, can only be called before startTrip
      *
@@ -160,12 +152,6 @@ contract RideDriver is IRideDriver {
         emit DriverCancelled(msg.sender, tixId); // --> update frontend
     }
 
-    event TripEndedDrv(
-        address indexed sender,
-        bytes32 indexed tixId,
-        bool reached
-    );
-
     /**
      * endTripDrv allows driver to indicate to passenger to end trip and destination is either reached or not
      *
@@ -187,8 +173,6 @@ contract RideDriver is IRideDriver {
 
         emit TripEndedDrv(msg.sender, tixId, _reached);
     }
-
-    event ForceEndDrv(address indexed sender, bytes32 indexed tixId);
 
     /**
      * forceEndDrv can be called after tixIdToTicket[tixId].forceEndTimestamp duration
@@ -217,8 +201,6 @@ contract RideDriver is IRideDriver {
 
         emit ForceEndDrv(msg.sender, tixId);
     }
-
-    event ApplicantApproved(address indexed applicant);
 
     /**
      * passBackgroundCheck of driver applicants

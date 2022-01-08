@@ -12,16 +12,6 @@ import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
 import {IRidePassenger} from "../../interfaces/core/IRidePassenger.sol";
 
 contract RidePassenger is IRidePassenger {
-    event RequestTicket(
-        address indexed sender,
-        bytes32 indexed tixId,
-        uint256 baseFee,
-        uint256 costPerMinute,
-        uint256 costPerMetre,
-        uint256 minutesTaken,
-        uint256 metresTravelled
-    );
-
     /**
      * requestTicket allows passenger to request for ride
      *
@@ -79,8 +69,6 @@ contract RidePassenger is IRidePassenger {
         );
     }
 
-    event RequestCancelled(address indexed sender, bytes32 indexed tixId);
-
     /**
      * cancelRequest cancels ticket, can only be called before startTrip
      *
@@ -106,12 +94,6 @@ contract RidePassenger is IRidePassenger {
         emit RequestCancelled(msg.sender, tixId); // --> update frontend request pool
     }
 
-    event TripStarted(
-        address indexed passenger,
-        bytes32 indexed tixId,
-        address driver
-    );
-
     /**
      * startTrip starts the trip, can only be called once driver reached passenger
      *
@@ -134,8 +116,6 @@ contract RidePassenger is IRidePassenger {
 
         emit TripStarted(msg.sender, tixId, _driver); // update frontend
     }
-
-    event TripEndedPax(address indexed sender, bytes32 indexed tixId);
 
     /**
      * endTripPax ends the trip, can only be called once driver has called either endTripDrv
@@ -184,8 +164,6 @@ contract RidePassenger is IRidePassenger {
 
         emit TripEndedPax(msg.sender, tixId);
     }
-
-    event ForceEndPax(address indexed sender, bytes32 indexed tixId);
 
     /**
      * forceEndPax can be called after tixIdToTicket[tixId].forceEndTimestamp duration

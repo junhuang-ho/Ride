@@ -18,4 +18,6 @@ interface IRideTicket {
         external
         view
         returns (RideLibTicket.DriverEnd memory);
+
+    event TicketCleared(address indexed sender, bytes32 indexed tixId);
 }

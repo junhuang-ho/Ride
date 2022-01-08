@@ -60,6 +60,8 @@ library RideLibPassenger {
         );
     }
 
+    event SetRatingBounds(address indexed sender, uint256 min, uint256 max);
+
     /**
      * setRatingBounds sets bounds for rating
      *
@@ -71,6 +73,8 @@ library RideLibPassenger {
         StoragePassenger storage s1 = _storagePassenger();
         s1.ratingMin = _min;
         s1.ratingMax = _max;
+
+        emit SetRatingBounds(msg.sender, _min, _max);
     }
 
     /**
