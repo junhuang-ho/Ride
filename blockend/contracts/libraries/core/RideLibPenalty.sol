@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
+import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
+
 library RideLibPenalty {
     bytes32 constant STORAGE_POSITION_PENALTY = keccak256("ds.penalty");
 
@@ -26,6 +28,21 @@ library RideLibPenalty {
             block.timestamp >= s1.addressToBanEndTimestamp[msg.sender],
             "still banned"
         );
+    }
+
+    event SetBanDuration(address indexed sender, uint256 _banDuration);
+
+    /**
+     * setBanDuration sets user ban duration
+     *
+     * @param _banDuration | unit in unix timestamp | https://docs.soliditylang.org/en/v0.8.10/units-and-global-variables.html#time-units
+     */
+    function _setBanDuration(uint256 _banDuration) internal {
+        RideLibOwnership.requireIsContractOwner();
+        StoragePenalty storage s1 = _storagePenalty();
+        s1.banDuration = _banDuration;
+
+        emit SetBanDuration(msg.sender, _banDuration);
     }
 
     event UserBanned(address indexed banned, uint256 from, uint256 to);

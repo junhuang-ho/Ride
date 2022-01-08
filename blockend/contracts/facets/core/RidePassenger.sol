@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
 import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
 import {RideLibPenalty} from "../../libraries/core/RideLibPenalty.sol";
@@ -223,12 +222,8 @@ contract RidePassenger is IRidePassenger {
      * @param _min | unitless integer
      * @param _max | unitless integer
      */
-    function setRatingBounds(uint256 _min, uint256 _max) public override {
-        RideLibOwnership.requireIsContractOwner();
-        RideLibPassenger.StoragePassenger storage s1 = RideLibPassenger
-            ._storagePassenger();
-        s1.ratingMin = _min;
-        s1.ratingMax = _max;
+    function setRatingBounds(uint256 _min, uint256 _max) external override {
+        RideLibPassenger._setRatingBounds(_min, _max);
     }
 
     //////////////////////////////////////////////////////////////////////////////////

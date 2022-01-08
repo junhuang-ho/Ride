@@ -2,6 +2,7 @@
 pragma solidity ^0.8.2;
 
 import {RideBadge} from "../../facets/core/RideBadge.sol";
+import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
 
 library RideLibBadge {
     bytes32 constant STORAGE_POSITION_BADGE = keccak256("ds.badge");
@@ -32,6 +33,38 @@ library RideLibBadge {
         assembly {
             s.slot := position
         }
+    }
+
+    event SetBadgesMaxScores(address indexed sender, uint256[] scores);
+
+    /**
+     * TODO:
+     * Check if setBadgesMaxScores is used in other contracts after
+     * diamond pattern finalized. if no use then change visibility
+     * to external
+     */
+    /**
+     * setBadgesMaxScores maps score to badge
+     *
+     * @param _badgesMaxScores Score that defines a specific badge rank
+     */
+    function _setBadgesMaxScores(uint256[] memory _badgesMaxScores) internal {
+        RideLibOwnership.requireIsContractOwner();
+        require(
+            _badgesMaxScores.length == _getBadgesCount() - 1,
+            "_badgesMaxScores.length must be 1 less than Badges"
+        );
+        StorageBadge storage s1 = _storageBadge();
+        for (uint256 i = 0; i < _badgesMaxScores.length; i++) {
+            s1.badgeToBadgeMaxScore[i] = _badgesMaxScores[i];
+
+            if (!s1._insertedMaxScore[i]) {
+                s1._insertedMaxScore[i] = true;
+                s1._badges.push(i);
+            }
+        }
+
+        emit SetBadgesMaxScores(msg.sender, _badgesMaxScores);
     }
 
     /**

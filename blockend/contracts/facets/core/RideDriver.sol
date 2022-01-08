@@ -1,8 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
-
 import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
 import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
@@ -14,12 +12,7 @@ import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
 
 import {IRideDriver} from "../../interfaces/core/IRideDriver.sol";
 
-import {Initializable} from "../../initializer/utils/Initializable.sol";
-
-contract RideDriver is IRideDriver, Initializable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _driverIdCounter;
-
+contract RideDriver is IRideDriver {
     event RegisteredAsDriver(address indexed sender);
 
     /**
@@ -39,7 +32,7 @@ contract RideDriver is IRideDriver, Initializable {
         );
         require(msg.sender != address(0), "0 address");
 
-        s1.addressToDriverReputation[msg.sender].id = _mint();
+        s1.addressToDriverReputation[msg.sender].id = RideLibDriver._mint();
         s1
             .addressToDriverReputation[msg.sender]
             .maxMetresPerTrip = _maxMetresPerTrip;
@@ -250,27 +243,5 @@ contract RideDriver is IRideDriver, Initializable {
         s1.addressToDriverReputation[_driver].uri = _uri;
 
         emit ApplicantApproved(_driver);
-    }
-
-    /**
-     * _mint a driver ID
-     *
-     * @return driver ID
-     */
-    function _mint() internal returns (uint256) {
-        uint256 id = _driverIdCounter.current();
-        _driverIdCounter.increment();
-        return id;
-    }
-
-    /**
-     * _burnFirstDriverId burns driver ID 0
-     * can only be called at RideHub deployment
-     *
-     * TODO: call at init ONLY
-     */
-    function _burnFirstDriverId() internal onlyInitializing {
-        assert(_driverIdCounter.current() == 0);
-        _driverIdCounter.increment();
     }
 }
