@@ -5,6 +5,8 @@
 
 concepts: https://drive.google.com/file/d/1X_cKidSHa8rusZzfMmBAWRBCW4Max90r/view?usp=sharing
 
+wallet concept: https://drive.google.com/file/d/1Ck_wjPYNB9G-w7sXwUZpCdCkmnnQFH1T/view?usp=sharing
+
 useful links:
 
 https://rinkeby.etherscan.io/
