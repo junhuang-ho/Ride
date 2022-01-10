@@ -30,3 +30,6 @@ or for a summary of contract test coverage
 ```
 ~$ yarn run hardhat size-contracts
 ```
+## using Diamond-2 Pattern
+
+test123dfasdf

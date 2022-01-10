@@ -33,7 +33,16 @@ module.exports = {
         },
         localhost: {},
         rinkeby: {
+            chainId: 4,
             url: process.env.RPC_URL_RINKEBY,
+            accounts: {
+                mnemonic: process.env.MNEMONIC_0,
+            },
+            saveDeployments: true,
+        },
+        kovan: {
+            chainId: 42,
+            url: process.env.RPC_URL_KOVAN,
             accounts: {
                 mnemonic: process.env.MNEMONIC_0,
             },
