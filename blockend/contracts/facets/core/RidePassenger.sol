@@ -5,9 +5,12 @@ import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
 import {RideLibPenalty} from "../../libraries/core/RideLibPenalty.sol";
 import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-import {RideLibUser} from "../../libraries/core/RideLibUser.sol";
+import {RideLibHolding} from "../../libraries/core/RideLibHolding.sol";
 import {RideLibPassenger} from "../../libraries/core/RideLibPassenger.sol";
 import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
+
+import {RideLibExchange} from "../../libraries/core/RideLibExchange.sol";
+import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
 
 import {IRidePassenger} from "../../interfaces/core/IRidePassenger.sol";
 
@@ -17,35 +20,55 @@ contract RidePassenger is IRidePassenger {
      *
      * @param _badge badge rank requested
      * @param _strict whether driver must meet requested badge rank exactly (true) or default - any badge rank equal or greater than (false)
-     * @param _metres estimated distance from origin to destination as determined by Maps API
      * @param _minutes estimated time taken from origin to destination as determined by Maps API
+     * @param _metres estimated distance from origin to destination as determined by Maps API
      *
      * @custom:event RequestTicket
      */
     function requestTicket(
+        bytes32 _keyLocal,
+        bytes32 _keyPay,
         uint256 _badge,
         bool _strict,
-        uint256 _metres,
-        uint256 _minutes
+        uint256 _minutes,
+        uint256 _metres
     ) external override {
-        RideLibDriver.requireNotDriver();
-        RideLibUser.requireNotActive();
-        RideLibPenalty.requireNotBanned();
+        RideLibDriver._requireNotDriver();
+        RideLibTicket._requireNotActive();
+        RideLibPenalty._requireNotBanned();
+        RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay);
 
-        RideLibFee.StorageFee storage s1 = RideLibFee._storageFee();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
-        RideLibUser.StorageUser storage s3 = RideLibUser._storageUser();
 
-        uint256 fare = RideLibFee._getFare(
-            s1.baseFee,
-            _metres,
+        uint256 requestFeeLocal = RideLibFee._getRequestFee(_keyLocal);
+        uint256 fareLocal = RideLibFee._getFare(
+            _keyLocal,
+            _badge,
             _minutes,
-            s1.badgeToCostPerMetre[_badge],
-            s1.costPerMinute
+            _metres
         );
+        uint256 requestFeePay;
+        uint256 farePay;
+        if (_keyLocal == _keyPay) {
+            // when local is in crypto token
+            requestFeePay = requestFeeLocal;
+            farePay = fareLocal;
+        } else {
+            requestFeePay = RideLibExchange._convertCurrency(
+                _keyLocal,
+                _keyPay,
+                requestFeeLocal
+            );
+            farePay = RideLibExchange._convertCurrency(
+                _keyLocal,
+                _keyPay,
+                fareLocal
+            );
+        }
+        uint256 holdingAmount = RideLibHolding._getHolding(_keyPay);
         require(
-            s3.addressToDeposit[msg.sender] > fare,
-            "passenger's deposit < fare"
+            (holdingAmount > requestFeePay) && (holdingAmount > farePay),
+            "passenger's holding < requestFee or fare"
         );
 
         bytes32 tixId = keccak256(abi.encode(msg.sender, block.timestamp));
@@ -54,19 +77,14 @@ contract RidePassenger is IRidePassenger {
         s2.tixIdToTicket[tixId].badge = _badge;
         s2.tixIdToTicket[tixId].strict = _strict;
         s2.tixIdToTicket[tixId].metres = _metres;
-        s2.tixIdToTicket[tixId].fare = fare;
+        s2.tixIdToTicket[tixId].keyLocal = _keyLocal;
+        s2.tixIdToTicket[tixId].keyPay = _keyPay;
+        s2.tixIdToTicket[tixId].requestFee = requestFeePay;
+        s2.tixIdToTicket[tixId].fare = farePay;
 
-        s2.addressToTixId[msg.sender] = tixId;
+        s2.userToTixId[msg.sender] = tixId;
 
-        emit RequestTicket(
-            msg.sender,
-            tixId,
-            s1.baseFee,
-            s1.costPerMinute,
-            s1.badgeToCostPerMetre[_badge],
-            _minutes,
-            _metres
-        );
+        emit RequestTicket(msg.sender, tixId, _minutes, _metres);
     }
 
     /**
@@ -75,18 +93,23 @@ contract RidePassenger is IRidePassenger {
      * @custom:event RequestCancelled
      */
     function cancelRequest() external override {
-        RideLibPassenger.requirePaxMatchTixPax();
-        RideLibPassenger.requireTripNotStart();
+        RideLibPassenger._requirePaxMatchTixPax();
+        RideLibPassenger._requireTripNotStart();
 
-        RideLibFee.StorageFee storage s1 = RideLibFee._storageFee();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s2.addressToTixId[msg.sender];
+        bytes32 tixId = s2.userToTixId[msg.sender];
         address driver = s2.tixIdToTicket[tixId].driver;
         if (driver != address(0)) {
             // case when cancel inbetween driver accepted, but haven't reach passenger
             // give warning at frontend to passenger
-            RideLibUser._transfer(tixId, s1.requestFee, msg.sender, driver);
+            RideLibHolding._transferCurrency(
+                tixId,
+                s2.tixIdToTicket[tixId].keyPay,
+                s2.tixIdToTicket[tixId].requestFee,
+                msg.sender,
+                driver
+            );
         }
 
         RideLibTicket._cleanUp(tixId, msg.sender, driver);
@@ -102,15 +125,17 @@ contract RidePassenger is IRidePassenger {
      * @custom:event TripStarted
      */
     function startTrip(address _driver) external override {
-        RideLibPassenger.requirePaxMatchTixPax();
-        RideLibDriver.requireDrvMatchTixDrv(_driver);
-        RideLibPassenger.requireTripNotStart();
+        RideLibPassenger._requirePaxMatchTixPax();
+        RideLibDriver._requireDrvMatchTixDrv(_driver);
+        RideLibPassenger._requireTripNotStart();
 
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s2.addressToTixId[msg.sender];
-        s1.addressToDriverReputation[_driver].countStart += 1;
+        bytes32 tixId = s2.userToTixId[msg.sender];
+        RideLibBadge
+            ._storageBadge()
+            .driverToDriverReputation[_driver]
+            .countStart += 1;
         s2.tixIdToTicket[tixId].tripStart = true;
         s2.tixIdToTicket[tixId].forceEndTimestamp = block.timestamp + 1 days; // TODO: change 1 day to setter fn
 
@@ -131,13 +156,13 @@ contract RidePassenger is IRidePassenger {
      * get passenger to destination. This prevents passenger abuse.
      */
     function endTripPax(bool _agree, uint256 _rating) external override {
-        RideLibPassenger.requirePaxMatchTixPax();
-        RideLibPassenger.requireTripInProgress();
+        RideLibPassenger._requirePaxMatchTixPax();
+        RideLibPassenger._requireTripInProgress();
 
         RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s2.addressToTixId[msg.sender];
+        bytes32 tixId = s2.userToTixId[msg.sender];
         address driver = s2.tixToDriverEnd[tixId].driver;
         require(driver != address(0), "driver must end trip");
         require(
@@ -145,20 +170,21 @@ contract RidePassenger is IRidePassenger {
             "pax must agree destination reached or not - indicated by driver"
         );
 
-        RideLibUser._transfer(
+        RideLibHolding._transferCurrency(
             tixId,
+            s2.tixIdToTicket[tixId].keyPay,
             s2.tixIdToTicket[tixId].fare,
             msg.sender,
             driver
         );
         if (s2.tixToDriverEnd[tixId].reached) {
-            s1.addressToDriverReputation[driver].metresTravelled += s2
+            s1.driverToDriverReputation[driver].metresTravelled += s2
                 .tixIdToTicket[tixId]
                 .metres;
-            s1.addressToDriverReputation[driver].countEnd += 1;
+            s1.driverToDriverReputation[driver].countEnd += 1;
         }
 
-        RideLibPassenger._giveRating(driver, _rating);
+        RideLibRater._giveRating(driver, _rating);
 
         RideLibTicket._cleanUp(tixId, msg.sender, driver);
 
@@ -174,13 +200,13 @@ contract RidePassenger is IRidePassenger {
      * no fare is paid, but driver is temporarily banned for banDuration
      */
     function forceEndPax() external override {
-        RideLibPassenger.requirePaxMatchTixPax();
-        RideLibPassenger.requireTripInProgress(); /** means both parties still active */
-        RideLibPassenger.requireForceEndAllowed();
+        RideLibPassenger._requirePaxMatchTixPax();
+        RideLibPassenger._requireTripInProgress(); /** means both parties still active */
+        RideLibPassenger._requireForceEndAllowed();
 
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s1.addressToTixId[msg.sender];
+        bytes32 tixId = s1.userToTixId[msg.sender];
         require(
             s1.tixToDriverEnd[tixId].driver == address(0),
             "driver ended trip"
@@ -188,33 +214,9 @@ contract RidePassenger is IRidePassenger {
         address driver = s1.tixIdToTicket[tixId].driver;
 
         RideLibPenalty._temporaryBan(driver);
-        RideLibPassenger._giveRating(driver, 1);
+        RideLibRater._giveRating(driver, 1);
         RideLibTicket._cleanUp(tixId, msg.sender, driver);
 
         emit ForceEndPax(msg.sender, tixId);
-    }
-
-    /**
-     * setRatingBounds sets bounds for rating
-     *
-     * @param _min | unitless integer
-     * @param _max | unitless integer
-     */
-    function setRatingBounds(uint256 _min, uint256 _max) external override {
-        RideLibPassenger._setRatingBounds(_min, _max);
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////
-    ///// ---------------------------------------------------------------------- /////
-    ///// -------------------------- getter functions -------------------------- /////
-    ///// ---------------------------------------------------------------------- /////
-    //////////////////////////////////////////////////////////////////////////////////
-
-    function getRatingMin() external view override returns (uint256) {
-        return RideLibPassenger._storagePassenger().ratingMin;
-    }
-
-    function getRatingMax() external view override returns (uint256) {
-        return RideLibPassenger._storagePassenger().ratingMax;
     }
 }

@@ -1,26 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-interface IRideUser {
+interface IRideHolding {
     event TokensDeposited(address indexed sender, uint256 amount);
 
-    function placeDeposit(uint256 _amount) external;
+    function depositTokens(bytes32 _key, uint256 _amount) external;
 
     event TokensRemoved(address indexed sender, uint256 amount);
 
-    function removeDeposit() external;
+    function withdrawTokens(bytes32 _key, uint256 _amount) external;
 
-    function getTokenAddress() external view returns (address);
+    function getHolding(bytes32 _key) external view returns (uint256);
 
-    function getAddressToDeposit(address _address)
-        external
-        view
-        returns (uint256);
-
-    event TokensTransferred(
+    event CurrencyTransferred(
         address indexed decrease,
         bytes32 indexed tixId,
         address increase,
+        bytes32 key,
         uint256 amount
     );
 }

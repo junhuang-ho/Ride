@@ -24,18 +24,18 @@ library RideLibOwnership {
         address indexed newOwner
     );
 
-    function setContractOwner(address _newOwner) internal {
+    function _setContractOwner(address _newOwner) internal {
         StorageOwnership storage s1 = _storageOwnership();
         address previousOwner = s1.contractOwner;
         s1.contractOwner = _newOwner;
         emit OwnershipTransferred(previousOwner, _newOwner);
     }
 
-    function contractOwner() internal view returns (address) {
+    function _contractOwner() internal view returns (address) {
         return _storageOwnership().contractOwner;
     }
 
-    function requireIsContractOwner() internal view {
+    function _requireIsContractOwner() internal view {
         require(
             msg.sender == _storageOwnership().contractOwner,
             "not contract owner"

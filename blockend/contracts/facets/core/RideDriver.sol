@@ -1,67 +1,19 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
 import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
 import {RideLibPenalty} from "../../libraries/core/RideLibPenalty.sol";
 import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-import {RideLibUser} from "../../libraries/core/RideLibUser.sol";
+import {RideLibHolding} from "../../libraries/core/RideLibHolding.sol";
 import {RideLibPassenger} from "../../libraries/core/RideLibPassenger.sol";
 import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
+
+import {RideLibExchange} from "../../libraries/core/RideLibExchange.sol";
 
 import {IRideDriver} from "../../interfaces/core/IRideDriver.sol";
 
 contract RideDriver is IRideDriver {
-    /**
-     * registerDriver registers approved applicants (has passed background check)
-     *
-     * @param _maxMetresPerTrip | unit in metre
-     *
-     * @custom:event RegisteredAsDriver
-     */
-    function registerAsDriver(uint256 _maxMetresPerTrip) external override {
-        RideLibDriver.requireNotDriver();
-        RideLibUser.requireNotActive();
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
-        require(
-            bytes(s1.addressToDriverReputation[msg.sender].uri).length != 0,
-            "uri not set in bg check"
-        );
-        require(msg.sender != address(0), "0 address");
-
-        s1.addressToDriverReputation[msg.sender].id = RideLibDriver._mint();
-        s1
-            .addressToDriverReputation[msg.sender]
-            .maxMetresPerTrip = _maxMetresPerTrip;
-        s1.addressToDriverReputation[msg.sender].metresTravelled = 0;
-        s1.addressToDriverReputation[msg.sender].countStart = 0;
-        s1.addressToDriverReputation[msg.sender].countEnd = 0;
-        s1.addressToDriverReputation[msg.sender].totalRating = 0;
-        s1.addressToDriverReputation[msg.sender].countRating = 0;
-
-        emit RegisteredAsDriver(msg.sender);
-    }
-
-    /**
-     * updateMaxMetresPerTrip updates maximum metre per trip of driver
-     *
-     * @param _maxMetresPerTrip | unit in metre
-     */
-    function updateMaxMetresPerTrip(uint256 _maxMetresPerTrip)
-        external
-        override
-    {
-        RideLibDriver.requireIsDriver();
-        RideLibUser.requireNotActive();
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
-        s1
-            .addressToDriverReputation[msg.sender]
-            .maxMetresPerTrip = _maxMetresPerTrip;
-
-        emit MaxMetresUpdated(msg.sender, _maxMetresPerTrip);
-    }
-
     /**
      * acceptTicket allows driver to accept passenger's ticket request
      *
@@ -76,40 +28,49 @@ contract RideDriver is IRideDriver {
      * solution: _useBadge that allows driver to choose which badge rank they want to use up to achieved badge rank
      * at frontend, default _useBadge to driver's current badge rank
      */
-    function acceptTicket(bytes32 _tixId, uint256 _useBadge) external override {
-        RideLibDriver.requireIsDriver();
-        RideLibUser.requireNotActive();
-        RideLibPenalty.requireNotBanned();
+    function acceptTicket(
+        bytes32 _keyLocal,
+        bytes32 _keyAccept,
+        bytes32 _tixId,
+        uint256 _useBadge
+    ) external override {
+        RideLibDriver._requireIsDriver();
+        RideLibTicket._requireNotActive();
+        RideLibPenalty._requireNotBanned();
+        RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyAccept);
 
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
-        RideLibUser.StorageUser storage s3 = RideLibUser._storageUser();
-        RideLibPassenger.StoragePassenger storage s4 = RideLibPassenger
-            ._storagePassenger();
 
         require(
             s2.tixIdToTicket[_tixId].passenger != address(0),
             "ticket not exists"
         );
-
-        uint256 driverScore = RideLibBadge._calculateScore(
-            s1.addressToDriverReputation[msg.sender].metresTravelled,
-            s1.addressToDriverReputation[msg.sender].countStart,
-            s1.addressToDriverReputation[msg.sender].countEnd,
-            s1.addressToDriverReputation[msg.sender].totalRating,
-            s1.addressToDriverReputation[msg.sender].countRating,
-            s4.ratingMax
+        require(
+            s2.tixIdToTicket[_tixId].keyLocal == _keyLocal,
+            "local currency key not match"
         );
+        require(
+            s2.tixIdToTicket[_tixId].keyPay == _keyAccept,
+            "payment currency key not match"
+        );
+
+        uint256 driverScore = RideLibBadge._calculateScore();
         uint256 driverBadge = RideLibBadge._getBadge(driverScore);
         require(_useBadge <= driverBadge, "badge rank not achieved");
 
+        uint256 holdingAmount = RideLibHolding._getHolding(_keyAccept);
         require(
-            s3.addressToDeposit[msg.sender] > s2.tixIdToTicket[_tixId].fare,
-            "driver's deposit < fare"
+            (holdingAmount > s2.tixIdToTicket[_tixId].requestFee) &&
+                (holdingAmount > s2.tixIdToTicket[_tixId].fare),
+            "driver's holding < requestFee or fare"
         );
+
         require(
             s2.tixIdToTicket[_tixId].metres <=
-                s1.addressToDriverReputation[msg.sender].maxMetresPerTrip,
+                RideLibBadge
+                    ._storageBadge()
+                    .driverToDriverReputation[msg.sender]
+                    .maxMetresPerTrip,
             "trip too long"
         );
         if (s2.tixIdToTicket[_tixId].strict) {
@@ -125,7 +86,7 @@ contract RideDriver is IRideDriver {
         }
 
         s2.tixIdToTicket[_tixId].driver = msg.sender;
-        s2.addressToTixId[msg.sender] = _tixId;
+        s2.userToTixId[msg.sender] = _tixId;
 
         emit AcceptedTicket(msg.sender, _tixId); // --> update frontend (also, add warning that if passenger cancel, will incure fee)
     }
@@ -136,16 +97,21 @@ contract RideDriver is IRideDriver {
      * @custom:event DriverCancelled
      */
     function cancelPickUp() external override {
-        RideLibDriver.requireDrvMatchTixDrv(msg.sender);
-        RideLibPassenger.requireTripNotStart();
+        RideLibDriver._requireDrvMatchTixDrv(msg.sender);
+        RideLibPassenger._requireTripNotStart();
 
-        RideLibFee.StorageFee storage s1 = RideLibFee._storageFee();
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s2.addressToTixId[msg.sender];
+        bytes32 tixId = s2.userToTixId[msg.sender];
         address passenger = s2.tixIdToTicket[tixId].passenger;
 
-        RideLibUser._transfer(tixId, s1.requestFee, msg.sender, passenger);
+        RideLibHolding._transferCurrency(
+            tixId,
+            s2.tixIdToTicket[tixId].keyPay,
+            s2.tixIdToTicket[tixId].requestFee,
+            msg.sender,
+            passenger
+        );
 
         RideLibTicket._cleanUp(tixId, passenger, msg.sender);
 
@@ -161,12 +127,12 @@ contract RideDriver is IRideDriver {
      */
     // TODO: test that this fn can be recalled immediately after first call so that driver can change _reached status if needed. Test in remix first.
     function endTripDrv(bool _reached) external override {
-        RideLibDriver.requireDrvMatchTixDrv(msg.sender);
-        RideLibPassenger.requireTripInProgress();
+        RideLibDriver._requireDrvMatchTixDrv(msg.sender);
+        RideLibPassenger._requireTripInProgress();
 
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s1.addressToTixId[msg.sender];
+        bytes32 tixId = s1.userToTixId[msg.sender];
         // tixToDriverEnd[tixId] = DriverEnd({driver: msg.sender, reached: true}); // takes up more space
         s1.tixToDriverEnd[tixId].driver = msg.sender;
         s1.tixToDriverEnd[tixId].reached = _reached;
@@ -183,13 +149,13 @@ contract RideDriver is IRideDriver {
      * no fare is paid, but passenger is temporarily banned for banDuration
      */
     function forceEndDrv() external override {
-        RideLibDriver.requireDrvMatchTixDrv(msg.sender);
-        RideLibPassenger.requireTripInProgress(); /** means both parties still active */
-        RideLibPassenger.requireForceEndAllowed();
+        RideLibDriver._requireDrvMatchTixDrv(msg.sender);
+        RideLibPassenger._requireTripInProgress(); /** means both parties still active */
+        RideLibPassenger._requireForceEndAllowed();
 
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
 
-        bytes32 tixId = s1.addressToTixId[msg.sender];
+        bytes32 tixId = s1.userToTixId[msg.sender];
         require(
             s1.tixToDriverEnd[tixId].driver != address(0),
             "driver must end trip"
@@ -200,30 +166,5 @@ contract RideDriver is IRideDriver {
         RideLibTicket._cleanUp(tixId, passenger, msg.sender);
 
         emit ForceEndDrv(msg.sender, tixId);
-    }
-
-    /**
-     * passBackgroundCheck of driver applicants
-     *
-     * @param _driver applicant
-     * @param _uri information of applicant
-     *
-     * @custom:event ApplicantApproved
-     */
-    function passBackgroundCheck(address _driver, string memory _uri)
-        external
-        override
-    {
-        RideLibOwnership.requireIsContractOwner();
-
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
-
-        require(
-            bytes(s1.addressToDriverReputation[_driver].uri).length == 0,
-            "uri already set"
-        );
-        s1.addressToDriverReputation[_driver].uri = _uri;
-
-        emit ApplicantApproved(_driver);
     }
 }

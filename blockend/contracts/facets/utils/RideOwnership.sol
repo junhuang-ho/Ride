@@ -6,11 +6,11 @@ import {IERC173} from "../../interfaces/utils/IERC173.sol";
 
 contract RideOwnership is IERC173 {
     function transferOwnership(address _newOwner) external override {
-        RideLibOwnership.requireIsContractOwner();
-        RideLibOwnership.setContractOwner(_newOwner);
+        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._setContractOwner(_newOwner);
     }
 
     function owner() external view override returns (address) {
-        return RideLibOwnership.contractOwner();
+        return RideLibOwnership._contractOwner();
     }
 }

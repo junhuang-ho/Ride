@@ -8,7 +8,7 @@ library RideLibPenalty {
 
     struct StoragePenalty {
         uint256 banDuration;
-        mapping(address => uint256) addressToBanEndTimestamp;
+        mapping(address => uint256) userToBanEndTimestamp;
     }
 
     function _storagePenalty()
@@ -22,10 +22,10 @@ library RideLibPenalty {
         }
     }
 
-    function requireNotBanned() internal view {
-        StoragePenalty storage s1 = _storagePenalty();
+    function _requireNotBanned() internal view {
         require(
-            block.timestamp >= s1.addressToBanEndTimestamp[msg.sender],
+            block.timestamp >=
+                _storagePenalty().userToBanEndTimestamp[msg.sender],
             "still banned"
         );
     }
@@ -38,9 +38,8 @@ library RideLibPenalty {
      * @param _banDuration | unit in unix timestamp | https://docs.soliditylang.org/en/v0.8.10/units-and-global-variables.html#time-units
      */
     function _setBanDuration(uint256 _banDuration) internal {
-        RideLibOwnership.requireIsContractOwner();
-        StoragePenalty storage s1 = _storagePenalty();
-        s1.banDuration = _banDuration;
+        RideLibOwnership._requireIsContractOwner();
+        _storagePenalty().banDuration = _banDuration;
 
         emit SetBanDuration(msg.sender, _banDuration);
     }
@@ -57,7 +56,7 @@ library RideLibPenalty {
     function _temporaryBan(address _address) internal {
         StoragePenalty storage s1 = _storagePenalty();
         uint256 banUntil = block.timestamp + s1.banDuration;
-        s1.addressToBanEndTimestamp[_address] = banUntil;
+        s1.userToBanEndTimestamp[_address] = banUntil;
 
         emit UserBanned(_address, block.timestamp, banUntil);
     }

@@ -8,7 +8,7 @@ interface IRidePenalty {
 
     function getBanDuration() external view returns (uint256);
 
-    function getAddressToBanEndTimestamp(address _address)
+    function getUserToBanEndTimestamp(address _user)
         external
         view
         returns (uint256);

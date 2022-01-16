@@ -3,6 +3,7 @@ pragma solidity ^0.8.2;
 
 import {RideBadge} from "../../facets/core/RideBadge.sol";
 import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
+import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
 
 library RideLibBadge {
     bytes32 constant STORAGE_POSITION_BADGE = keccak256("ds.badge");
@@ -25,7 +26,7 @@ library RideLibBadge {
         mapping(uint256 => uint256) badgeToBadgeMaxScore;
         mapping(uint256 => bool) _insertedMaxScore;
         uint256[] _badges;
-        mapping(address => DriverReputation) addressToDriverReputation;
+        mapping(address => DriverReputation) driverToDriverReputation;
     }
 
     function _storageBadge() internal pure returns (StorageBadge storage s) {
@@ -49,7 +50,7 @@ library RideLibBadge {
      * @param _badgesMaxScores Score that defines a specific badge rank
      */
     function _setBadgesMaxScores(uint256[] memory _badgesMaxScores) internal {
-        RideLibOwnership.requireIsContractOwner();
+        RideLibOwnership._requireIsContractOwner();
         require(
             _badgesMaxScores.length == _getBadgesCount() - 1,
             "_badgesMaxScores.length must be 1 less than Badges"
@@ -123,12 +124,6 @@ library RideLibBadge {
     /**
      * _calculateScore calculates score from driver's reputation details (see params of function)
      *
-     * @param _metresTravelled | unit in metre
-     * @param _countStart      | unitless integer
-     * @param _countEnd        | unitless integer
-     * @param _totalRating     | unitless integer
-     * @param _countRating     | unitless integer
-     * @param _maxRating       | unitless integer
      *
      * @return Driver's score to determine badge rank | unitless integer
      *
@@ -174,20 +169,28 @@ library RideLibBadge {
      * note: Score is used to determine badge rank. To determine which score corresponds to which rank,
      *       can just determine from _metresTravelled, as other variables are just penalization factors.
      */
-    function _calculateScore(
-        uint256 _metresTravelled,
-        uint256 _countStart,
-        uint256 _countEnd,
-        uint256 _totalRating,
-        uint256 _countRating,
-        uint256 _maxRating
-    ) internal pure returns (uint256) {
-        if (_countStart == 0) {
+    function _calculateScore() internal view returns (uint256) {
+        StorageBadge storage s1 = _storageBadge();
+
+        uint256 metresTravelled = s1
+            .driverToDriverReputation[msg.sender]
+            .metresTravelled;
+        uint256 countStart = s1.driverToDriverReputation[msg.sender].countStart;
+        uint256 countEnd = s1.driverToDriverReputation[msg.sender].countEnd;
+        uint256 totalRating = s1
+            .driverToDriverReputation[msg.sender]
+            .totalRating;
+        uint256 countRating = s1
+            .driverToDriverReputation[msg.sender]
+            .countRating;
+        uint256 maxRating = RideLibRater._storageRater().ratingMax;
+
+        if (countStart == 0) {
             return 0;
         } else {
             return
-                (_metresTravelled * _countEnd * _totalRating) /
-                (_countStart * _countRating * _maxRating);
+                (metresTravelled * countEnd * totalRating) /
+                (countStart * countRating * maxRating);
         }
     }
 }

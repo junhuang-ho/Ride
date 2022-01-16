@@ -6,13 +6,13 @@ import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
 import {IRideTicket} from "../../interfaces/core/IRideTicket.sol";
 
 contract RideTicket is IRideTicket {
-    function getAddressToTixId(address _address)
+    function getUserToTixId(address _user)
         external
         view
         override
         returns (bytes32)
     {
-        return RideLibTicket._storageTicket().addressToTixId[_address];
+        return RideLibTicket._storageTicket().userToTixId[_user];
     }
 
     function getTixIdToTicket(bytes32 _tixId)
