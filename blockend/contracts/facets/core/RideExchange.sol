@@ -34,7 +34,7 @@ contract RideExchange is IRideExchange {
         bytes32 _keyX,
         bytes32 _keyY,
         uint256 _amountX
-    ) external view override {
-        RideLibExchange._convertCurrency(_keyX, _keyY, _amountX);
+    ) external view override returns (uint256) {
+        return RideLibExchange._convertCurrency(_keyX, _keyY, _amountX);
     }
 }

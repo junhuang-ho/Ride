@@ -28,5 +28,5 @@ interface IRideExchange {
         bytes32 _keyX,
         bytes32 _keyY,
         uint256 _amountX
-    ) external view;
+    ) external view returns (uint256);
 }
