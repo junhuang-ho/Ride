@@ -81,7 +81,12 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         emit TokensRemoved(msg.sender, _amount);
     }
 
-    function getHolding(bytes32 _key) external view override returns (uint256) {
-        return RideLibHolding._getHolding(_key);
+    function getHolding(address _user, bytes32 _key)
+        external
+        view
+        override
+        returns (uint256)
+    {
+        return RideLibHolding._getHolding(_user, _key);
     }
 }

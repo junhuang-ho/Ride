@@ -23,12 +23,22 @@ contract RideCurrencyRegistry is IRideCurrencyRegistry {
         return RideLibCurrencyRegistry._registerCrypto(_token);
     }
 
-    function getKeyFiat(string memory _code) external view override {
-        RideLibCurrencyRegistry._getKeyFiat(_code);
+    function getKeyFiat(string memory _code)
+        external
+        view
+        override
+        returns (bytes32)
+    {
+        return RideLibCurrencyRegistry._getKeyFiat(_code);
     }
 
-    function getKeyCrypto(address _token) external view override {
-        RideLibCurrencyRegistry._getKeyCrypto(_token);
+    function getKeyCrypto(address _token)
+        external
+        view
+        override
+        returns (bytes32)
+    {
+        return RideLibCurrencyRegistry._getKeyCrypto(_token);
     }
 
     function removeCurrency(bytes32 _key) external override {

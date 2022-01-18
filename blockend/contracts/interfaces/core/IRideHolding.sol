@@ -10,7 +10,10 @@ interface IRideHolding {
 
     function withdrawTokens(bytes32 _key, uint256 _amount) external;
 
-    function getHolding(bytes32 _key) external view returns (uint256);
+    function getHolding(address _user, bytes32 _key)
+        external
+        view
+        returns (uint256);
 
     event CurrencyTransferred(
         address indexed decrease,

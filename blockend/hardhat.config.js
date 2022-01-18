@@ -48,6 +48,14 @@ module.exports = {
             },
             saveDeployments: true,
         },
+        goerli: {
+            chainId: 5,
+            url: process.env.RPC_URL_GOERLI,
+            accounts: {
+                mnemonic: process.env.MNEMONIC_0,
+            },
+            saveDeployments: true,
+        },
         polygon_mumbai: {
             url: "https://rpc-mumbai.maticvigil.com/",
             accounts: {

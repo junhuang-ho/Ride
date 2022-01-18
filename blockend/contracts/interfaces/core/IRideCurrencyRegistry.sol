@@ -8,9 +8,9 @@ interface IRideCurrencyRegistry {
 
     function registerCrypto(address _token) external returns (bytes32);
 
-    function getKeyFiat(string memory _code) external view;
+    function getKeyFiat(string memory _code) external view returns (bytes32);
 
-    function getKeyCrypto(address _token) external view;
+    function getKeyCrypto(address _token) external view returns (bytes32);
 
     event CurrencyRemoved(address indexed sender, bytes32 key);
 

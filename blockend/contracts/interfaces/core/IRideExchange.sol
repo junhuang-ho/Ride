@@ -19,7 +19,10 @@ interface IRideExchange {
 
     function removeXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) external;
 
-    function getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) external view;
+    function getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY)
+        external
+        view
+        returns (address);
 
     function convertCurrency(
         bytes32 _keyX,

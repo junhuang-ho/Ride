@@ -25,8 +25,9 @@ contract RideExchange is IRideExchange {
         external
         view
         override
+        returns (address)
     {
-        RideLibExchange._getXPerYPriceFeed(_keyX, _keyY);
+        return RideLibExchange._getXPerYPriceFeed(_keyX, _keyY);
     }
 
     function convertCurrency(

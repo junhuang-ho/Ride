@@ -108,6 +108,35 @@ const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additi
     }
 }
 
+const verify_ = async (chainId, contractName, contractDeployed, args, skip = false) =>
+{
+    if (parseInt(chainId) !== 31337)
+    {
+        try
+        {
+            if (!skip)
+            {
+                console.log("Sleeping...")
+                await sleep(100000) // 1 min zZZ
+                console.log("Awake...")
+            }
+
+            // WARNING: might need wait awahile for block confirmations !!!
+            await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
+                address: contractDeployed.address,
+                constructorArguments: args,
+            })
+            console.log(`Verifying\t| Verified ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+        } catch (err)
+        {
+            console.log(err)
+        }
+    } else
+    {
+        console.log(`Verifying\t| No verification needed for ${networkConfig[chainId].name} local deployment`)
+    }
+}
+
 const deploy = async (chainId, contractName, args = [], verify = false) =>
 {
     const dir = `./deployments/${networkConfig[chainId]["name"]}`
@@ -121,13 +150,23 @@ const deploy = async (chainId, contractName, args = [], verify = false) =>
         console.log(`Skipping\t| ${contractName} already deployed on ${networkConfig[chainId]["name"]}: ${deployedContractJSON.address}`)
 
         const deployedContractMain = await ethers.getContractAt(contractName, deployedContractJSON.address)
+
+        await verify_(chainId, contractName, deployedContractMain, args, skip = true)
+
         return deployedContractMain
     } else
     {
         // Deploying
         const contract = await ethers.getContractFactory(contractName)
         const contractDeployed = await contract.deploy(...args)
-        await contractDeployed.deployed()
+        if (parseInt(chainId) !== 31337)
+        {
+            tx = await contractDeployed.deployTransaction.wait(5)
+        } else
+        {
+            await contractDeployed.deployed()
+        }
+
         console.log(`Deploying\t| Deployed ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
 
         // Saving
@@ -174,25 +213,7 @@ const deploy = async (chainId, contractName, args = [], verify = false) =>
         // Verify
         if (verify)
         {
-            if (parseInt(chainId) !== 31337)
-            {
-                try
-                {
-                    await sleep(100000) // 1 min zZZ
-                    // WARNING: might need wait awahile for block confirmations !!!
-                    await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
-                        address: contractDeployed.address,
-                        constructorArguments: args,
-                    })
-                    console.log(`Verifying\t| Verified ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
-                } catch (err)
-                {
-                    console.log(err)
-                }
-            } else
-            {
-                console.log(`Verifying\t| No verification needed for ${networkConfig[chainId].name} local deployment`)
-            }
+            await verify_(chainId, contractName, contractDeployed, args)
         }
 
         return contractDeployed
