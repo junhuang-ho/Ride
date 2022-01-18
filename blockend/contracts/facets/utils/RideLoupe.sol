@@ -176,9 +176,13 @@ contract RideLoupe is IRideLoupe, IERC165 {
         override
         returns (address facetAddress_)
     {
-        RideLibCutAndLoupe.StorageCutAndLoupe storage s1 = RideLibCutAndLoupe
-            ._storageCutAndLoupe();
-        facetAddress_ = address(bytes20(s1.facets[_functionSelector]));
+        facetAddress_ = address(
+            bytes20(
+                RideLibCutAndLoupe._storageCutAndLoupe().facets[
+                    _functionSelector
+                ]
+            )
+        );
     }
 
     // This implements ERC-165.
@@ -188,8 +192,9 @@ contract RideLoupe is IRideLoupe, IERC165 {
         override
         returns (bool)
     {
-        RideLibCutAndLoupe.StorageCutAndLoupe storage s1 = RideLibCutAndLoupe
-            ._storageCutAndLoupe();
-        return s1.supportedInterfaces[_interfaceId];
+        return
+            RideLibCutAndLoupe._storageCutAndLoupe().supportedInterfaces[
+                _interfaceId
+            ];
     }
 }

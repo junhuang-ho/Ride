@@ -13,7 +13,7 @@ interface IRideBadge {
         view
         returns (uint256);
 
-    function getAddressToDriverReputation(address _driver)
+    function getDriverToDriverReputation(address _driver)
         external
         view
         returns (RideLibBadge.DriverReputation memory);

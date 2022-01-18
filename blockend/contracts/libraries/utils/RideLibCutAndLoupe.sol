@@ -62,7 +62,7 @@ library RideLibCutAndLoupe {
         }
         // loop through diamond cut
         for (uint256 facetIndex; facetIndex < _rideCut.length; facetIndex++) {
-            (selectorCount, selectorSlot) = addReplaceRemoveFacetSelectors(
+            (selectorCount, selectorSlot) = _addReplaceRemoveFacetSelectors(
                 selectorCount,
                 selectorSlot,
                 _rideCut[facetIndex].facetAddress,
@@ -80,10 +80,10 @@ library RideLibCutAndLoupe {
             s1.selectorSlots[selectorCount >> 3] = selectorSlot;
         }
         emit RideCut(_rideCut, _init, _calldata);
-        initializeRideCut(_init, _calldata);
+        _initializeRideCut(_init, _calldata);
     }
 
-    function addReplaceRemoveFacetSelectors(
+    function _addReplaceRemoveFacetSelectors(
         uint256 _selectorCount,
         bytes32 _selectorSlot,
         address _newFacetAddress,
@@ -96,7 +96,7 @@ library RideLibCutAndLoupe {
             "RideLibCutAndLoupe: No selectors in facet to cut"
         );
         if (_action == IRideCut.FacetCutAction.Add) {
-            requireHasContractCode(
+            _requireHasContractCode(
                 _newFacetAddress,
                 "RideLibCutAndLoupe: Add facet has no code"
             );
@@ -131,7 +131,7 @@ library RideLibCutAndLoupe {
                 _selectorCount++;
             }
         } else if (_action == IRideCut.FacetCutAction.Replace) {
-            requireHasContractCode(
+            _requireHasContractCode(
                 _newFacetAddress,
                 "RideLibCutAndLoupe: Replace facet has no code"
             );
@@ -249,7 +249,9 @@ library RideLibCutAndLoupe {
         return (_selectorCount, _selectorSlot);
     }
 
-    function initializeRideCut(address _init, bytes memory _calldata) internal {
+    function _initializeRideCut(address _init, bytes memory _calldata)
+        internal
+    {
         if (_init == address(0)) {
             require(
                 _calldata.length == 0,
@@ -261,7 +263,7 @@ library RideLibCutAndLoupe {
                 "RideLibCutAndLoupe: _calldata is empty but _init is not address(0)"
             );
             if (_init != address(this)) {
-                requireHasContractCode(
+                _requireHasContractCode(
                     _init,
                     "RideLibCutAndLoupe: _init address has no code"
                 );
@@ -278,7 +280,7 @@ library RideLibCutAndLoupe {
         }
     }
 
-    function requireHasContractCode(
+    function _requireHasContractCode(
         address _contract,
         string memory _errorMessage
     ) internal view {

@@ -49,12 +49,12 @@ contract RideBadge is IRideBadge {
         return RideLibBadge._storageBadge().badgeToBadgeMaxScore[_badge];
     }
 
-    function getAddressToDriverReputation(address _driver)
+    function getDriverToDriverReputation(address _driver)
         external
         view
         override
         returns (RideLibBadge.DriverReputation memory)
     {
-        return RideLibBadge._storageBadge().addressToDriverReputation[_driver];
+        return RideLibBadge._storageBadge().driverToDriverReputation[_driver];
     }
 }

@@ -26,13 +26,12 @@ contract RidePenalty is IRidePenalty {
         return RideLibPenalty._storagePenalty().banDuration;
     }
 
-    function getAddressToBanEndTimestamp(address _address)
+    function getUserToBanEndTimestamp(address _user)
         external
         view
         override
         returns (uint256)
     {
-        return
-            RideLibPenalty._storagePenalty().addressToBanEndTimestamp[_address];
+        return RideLibPenalty._storagePenalty().userToBanEndTimestamp[_user];
     }
 }

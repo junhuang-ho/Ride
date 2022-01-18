@@ -17,7 +17,7 @@ contract RideCut is IRideCut {
         address _init,
         bytes calldata _calldata
     ) external override {
-        RideLibOwnership.requireIsContractOwner();
+        RideLibOwnership._requireIsContractOwner();
         RideLibCutAndLoupe.StorageCutAndLoupe storage ds = RideLibCutAndLoupe
             ._storageCutAndLoupe();
         uint256 originalSelectorCount = ds.selectorCount;
@@ -33,7 +33,7 @@ contract RideCut is IRideCut {
         // loop through diamond cut
         for (uint256 facetIndex; facetIndex < _rideCut.length; facetIndex++) {
             (selectorCount, selectorSlot) = RideLibCutAndLoupe
-                .addReplaceRemoveFacetSelectors(
+                ._addReplaceRemoveFacetSelectors(
                     selectorCount,
                     selectorSlot,
                     _rideCut[facetIndex].facetAddress,
@@ -51,6 +51,6 @@ contract RideCut is IRideCut {
             ds.selectorSlots[selectorCount >> 3] = selectorSlot;
         }
         emit RideCut(_rideCut, _init, _calldata);
-        RideLibCutAndLoupe.initializeRideCut(_init, _calldata);
+        RideLibCutAndLoupe._initializeRideCut(_init, _calldata);
     }
 }

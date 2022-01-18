@@ -42,12 +42,16 @@ async function deployRideHub()
         'RideLoupe': [],
         'RideOwnership': [],
         'RideBadge': [],
+        'RideCurrencyRegistry': [],
         'RideFee': [],
+        'RideExchange': [],
+        'RideHolding': [],
         'RidePenalty': [],
         'RideTicket': [],
-        'RideUser': [],
         'RidePassenger': [],
+        'RideRater': [],
         'RideDriver': [],
+        'RideDriverRegistry': [],
     } // NOTE: for facets, args should all be EMPTY !!!
     const cut = []
     for (const FacetName in FacetNamesNArgs)
@@ -85,7 +89,8 @@ async function deployRideHub()
     // Platinum ~ up to 3 year's work, 10 * 50_000 * 30 * 12 * 3 = 540_000_000
     // Veteran  ~ more than 3 year's work
 
-    const tokenAddress = contractRide.address
+    const wethTokenAddress = "0xc778417e063141139fce010982780140aa0cd5ab" //contractRide.address
+    const priceFeedETHUSD = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
     const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"]
     const requestFee = ethers.utils.parseEther("5")
     const baseFee = ethers.utils.parseEther("2")
@@ -104,15 +109,12 @@ async function deployRideHub()
     const ratingMax = "5"
 
     const initParams = [
-        tokenAddress,
         badgesMaxScore,
-        requestFee,
-        baseFee,
-        costPerMinute,
-        badgesCostPerMetre,
         banDuration,
         ratingMin,
-        ratingMax
+        ratingMax,
+        wethTokenAddress,
+        priceFeedETHUSD
     ]
 
     console.log('Cutting A RideHub Diamond 💎')

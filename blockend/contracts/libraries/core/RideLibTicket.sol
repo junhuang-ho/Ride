@@ -15,6 +15,9 @@ library RideLibTicket {
         uint256 badge;
         bool strict;
         uint256 metres;
+        bytes32 keyLocal;
+        bytes32 keyPay;
+        uint256 requestFee;
         uint256 fare;
         bool tripStart;
         uint256 forceEndTimestamp;
@@ -29,7 +32,7 @@ library RideLibTicket {
     }
 
     struct StorageTicket {
-        mapping(address => bytes32) addressToTixId;
+        mapping(address => bytes32) userToTixId;
         mapping(bytes32 => Ticket) tixIdToTicket;
         mapping(bytes32 => DriverEnd) tixToDriverEnd;
     }
@@ -39,6 +42,13 @@ library RideLibTicket {
         assembly {
             s.slot := position
         }
+    }
+
+    function _requireNotActive() internal view {
+        require(
+            _storageTicket().userToTixId[msg.sender] == 0,
+            "caller is active"
+        );
     }
 
     event TicketCleared(address indexed sender, bytes32 indexed tixId);
@@ -60,8 +70,8 @@ library RideLibTicket {
         StorageTicket storage s1 = _storageTicket();
         delete s1.tixIdToTicket[_tixId];
         delete s1.tixToDriverEnd[_tixId];
-        delete s1.addressToTixId[_passenger];
-        delete s1.addressToTixId[_driver];
+        delete s1.userToTixId[_passenger];
+        delete s1.userToTixId[_driver];
 
         emit TicketCleared(msg.sender, _tixId);
     }
