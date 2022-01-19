@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
+import {RideLibCurrencyRegistry} from "../../libraries/core/RideLibCurrencyRegistry.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
 
 import {IRideFee} from "../../interfaces/core/IRideFee.sol";
@@ -81,7 +82,8 @@ contract RideFee is IRideFee {
     }
 
     function getBaseFee(bytes32 _key) external view override returns (uint256) {
-        return RideLibFee._getBaseFee(_key);
+        RideLibCurrencyRegistry._requireCurrencySupported(_key);
+        return RideLibFee._storageFee().currencyKeyToBaseFee[_key];
     }
 
     function getCostPerMinute(bytes32 _key)
@@ -90,7 +92,8 @@ contract RideFee is IRideFee {
         override
         returns (uint256)
     {
-        return RideLibFee._getCostPerMinute(_key);
+        RideLibCurrencyRegistry._requireCurrencySupported(_key);
+        return RideLibFee._storageFee().currencyKeyToCostPerMinute[_key];
     }
 
     function getCostPerMetre(bytes32 _key, uint256 _badge)
@@ -99,6 +102,10 @@ contract RideFee is IRideFee {
         override
         returns (uint256)
     {
-        return RideLibFee._getCostPerMetre(_key, _badge);
+        RideLibCurrencyRegistry._requireCurrencySupported(_key);
+        return
+            RideLibFee._storageFee().currencyKeyToBadgeToCostPerMetre[_key][
+                _badge
+            ];
     }
 }

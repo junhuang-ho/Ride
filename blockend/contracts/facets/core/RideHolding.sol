@@ -87,6 +87,10 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         override
         returns (uint256)
     {
-        return RideLibHolding._getHolding(_user, _key);
+        RideLibCurrencyRegistry._requireCurrencySupported(_key);
+        return
+            RideLibHolding._storageHolding().userToCurrencyKeyToHolding[_user][
+                _key
+            ];
     }
 }

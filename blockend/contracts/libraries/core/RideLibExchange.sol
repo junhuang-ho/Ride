@@ -90,14 +90,14 @@ library RideLibExchange {
         emit PriceFeedRemoved(msg.sender, priceFeed);
     }
 
-    function _getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY)
-        internal
-        view
-        returns (address)
-    {
-        _requireXPerYPriceFeedSupported(_keyX, _keyY);
-        return _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY];
-    }
+    // function _getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY)
+    //     internal
+    //     view
+    //     returns (address)
+    // {
+    //     _requireXPerYPriceFeedSupported(_keyX, _keyY);
+    //     return _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY];
+    // }
 
     function _convertCurrency(
         bytes32 _keyX,
@@ -134,8 +134,9 @@ library RideLibExchange {
         view
         returns (uint256)
     {
+        _requireXPerYPriceFeedSupported(_keyX, _keyY);
         AggregatorV3Interface priceFeed = AggregatorV3Interface(
-            _getXPerYPriceFeed(_keyX, _keyY)
+            _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY]
         );
         (, int256 xPerY, , , ) = priceFeed.latestRoundData();
         uint256 decimals = priceFeed.decimals();

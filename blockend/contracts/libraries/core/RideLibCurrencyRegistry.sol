@@ -63,19 +63,19 @@ library RideLibCurrencyRegistry {
         emit CurrencyRegistered(msg.sender, _key);
     }
 
-    // _getKeyFiat to be called externally ONLY
-    function _getKeyFiat(string memory _code) internal view returns (bytes32) {
-        bytes32 key = keccak256(abi.encode(_code));
-        _requireCurrencySupported(key);
-        return key;
-    }
+    // // _getKeyFiat to be called externally ONLY
+    // function _getKeyFiat(string memory _code) internal view returns (bytes32) {
+    //     bytes32 key = keccak256(abi.encode(_code));
+    //     _requireCurrencySupported(key);
+    //     return key;
+    // }
 
-    // _getKeyCrypto to be called externally ONLY
-    function _getKeyCrypto(address _token) internal view returns (bytes32) {
-        bytes32 key = bytes32(uint256(uint160(_token)) << 96);
-        _requireCurrencySupported(key);
-        return key;
-    }
+    // // _getKeyCrypto to be called externally ONLY
+    // function _getKeyCrypto(address _token) internal view returns (bytes32) {
+    //     bytes32 key = bytes32(uint256(uint160(_token)) << 96);
+    //     _requireCurrencySupported(key);
+    //     return key;
+    // }
 
     event CurrencyRemoved(address indexed sender, bytes32 key);
 

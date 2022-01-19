@@ -29,7 +29,9 @@ contract RideCurrencyRegistry is IRideCurrencyRegistry {
         override
         returns (bytes32)
     {
-        return RideLibCurrencyRegistry._getKeyFiat(_code);
+        bytes32 key = keccak256(abi.encode(_code));
+        RideLibCurrencyRegistry._requireCurrencySupported(key);
+        return key;
     }
 
     function getKeyCrypto(address _token)
@@ -38,7 +40,9 @@ contract RideCurrencyRegistry is IRideCurrencyRegistry {
         override
         returns (bytes32)
     {
-        return RideLibCurrencyRegistry._getKeyCrypto(_token);
+        bytes32 key = bytes32(uint256(uint160(_token)) << 96);
+        RideLibCurrencyRegistry._requireCurrencySupported(key);
+        return key;
     }
 
     function removeCurrency(bytes32 _key) external override {

@@ -58,10 +58,9 @@ contract RideDriver is IRideDriver {
         uint256 driverBadge = RideLibBadge._getBadge(driverScore);
         require(_useBadge <= driverBadge, "badge rank not achieved");
 
-        uint256 holdingAmount = RideLibHolding._getHolding(
-            msg.sender,
-            _keyAccept
-        );
+        uint256 holdingAmount = RideLibHolding
+            ._storageHolding()
+            .userToCurrencyKeyToHolding[msg.sender][_keyAccept];
         require(
             (holdingAmount > s2.tixIdToTicket[_tixId].requestFee) &&
                 (holdingAmount > s2.tixIdToTicket[_tixId].fare),

@@ -27,7 +27,11 @@ contract RideExchange is IRideExchange {
         override
         returns (address)
     {
-        return RideLibExchange._getXPerYPriceFeed(_keyX, _keyY);
+        RideLibExchange._requireXPerYPriceFeedSupported(_keyX, _keyY);
+        return
+            RideLibExchange._storageExchange().xToYToXPerYPriceFeed[_keyX][
+                _keyY
+            ];
     }
 
     function convertCurrency(

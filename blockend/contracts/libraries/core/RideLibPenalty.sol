@@ -44,20 +44,20 @@ library RideLibPenalty {
         emit SetBanDuration(msg.sender, _banDuration);
     }
 
-    event UserBanned(address indexed banned, uint256 from, uint256 to);
+    event UserBanned(address indexed user, uint256 from, uint256 to);
 
     /**
      * _temporaryBan user
      *
-     * @param _address address to be banned
+     * @param _user address to be banned
      *
      * @custom:event UserBanned
      */
-    function _temporaryBan(address _address) internal {
+    function _temporaryBan(address _user) internal {
         StoragePenalty storage s1 = _storagePenalty();
         uint256 banUntil = block.timestamp + s1.banDuration;
-        s1.userToBanEndTimestamp[_address] = banUntil;
+        s1.userToBanEndTimestamp[_user] = banUntil;
 
-        emit UserBanned(_address, block.timestamp, banUntil);
+        emit UserBanned(_user, block.timestamp, banUntil);
     }
 }

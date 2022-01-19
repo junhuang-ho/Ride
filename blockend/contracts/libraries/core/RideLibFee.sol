@@ -135,22 +135,22 @@ library RideLibFee {
         return _storageFee().currencyKeyToRequestFee[_key];
     }
 
-    function _getBaseFee(bytes32 _key) internal view returns (uint256) {
-        RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        return _storageFee().currencyKeyToBaseFee[_key];
-    }
+    // function _getBaseFee(bytes32 _key) internal view returns (uint256) {
+    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
+    //     return _storageFee().currencyKeyToBaseFee[_key];
+    // }
 
-    function _getCostPerMinute(bytes32 _key) internal view returns (uint256) {
-        RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        return _storageFee().currencyKeyToCostPerMinute[_key];
-    }
+    // function _getCostPerMinute(bytes32 _key) internal view returns (uint256) {
+    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
+    //     return _storageFee().currencyKeyToCostPerMinute[_key];
+    // }
 
-    function _getCostPerMetre(bytes32 _key, uint256 _badge)
-        internal
-        view
-        returns (uint256)
-    {
-        RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        return _storageFee().currencyKeyToBadgeToCostPerMetre[_key][_badge];
-    }
+    // function _getCostPerMetre(bytes32 _key, uint256 _badge)
+    //     internal
+    //     view
+    //     returns (uint256)
+    // {
+    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
+    //     return _storageFee().currencyKeyToBadgeToCostPerMetre[_key][_badge];
+    // }
 }

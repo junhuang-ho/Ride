@@ -56,13 +56,4 @@ library RideLibHolding {
 
         emit CurrencyTransferred(_decrease, _tixId, _increase, _key, _amount); // note decrease is sender
     }
-
-    function _getHolding(address _user, bytes32 _key)
-        internal
-        view
-        returns (uint256)
-    {
-        RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        return _storageHolding().userToCurrencyKeyToHolding[_user][_key];
-    }
 }

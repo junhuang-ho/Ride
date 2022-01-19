@@ -65,7 +65,9 @@ contract RidePassenger is IRidePassenger {
                 fareLocal
             );
         }
-        uint256 holdingAmount = RideLibHolding._getHolding(msg.sender, _keyPay);
+        uint256 holdingAmount = RideLibHolding
+            ._storageHolding()
+            .userToCurrencyKeyToHolding[msg.sender][_keyPay];
         require(
             (holdingAmount > requestFeePay) && (holdingAmount > farePay),
             "passenger's holding < requestFee or fare"
