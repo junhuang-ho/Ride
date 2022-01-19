@@ -35,7 +35,7 @@ or for a summary of contract test coverage
 
 ## gas efficiency tests
 
-1. for getter fn vs no getter fn
+1. internal getter fn vs no internal getter fn (concept applies beyond internal fns)
 ```
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
