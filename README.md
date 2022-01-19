@@ -32,6 +32,51 @@ or for a summary of contract test coverage
 ```
 ~$ yarn run hardhat size-contracts
 ```
-## using Diamond-2 Pattern
+## notes:
 
-test123dfasdf
+##### gas test for getter fn vs no getter fn
+```
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
+
+library TestLib {
+    bytes32 constant STORAGE_POSITION_BADGE = keccak256("ds.badge");
+
+    struct StorageBadge {
+        mapping(uint256 => uint256) badgeToBadgeMaxScore;
+    }
+
+    function _storageBadge() internal pure returns (StorageBadge storage s) {
+        bytes32 position = STORAGE_POSITION_BADGE;
+        assembly {
+            s.slot := position
+        }
+    }
+
+    function _setBadgeToBadgeMaxScore(uint256 _index, uint256 _value) internal {
+        StorageBadge storage s1 = _storageBadge();
+        s1.badgeToBadgeMaxScore[_index] = _value;
+    }
+
+    function _getBadgeMaxScore(uint256 _badge) internal view returns (uint256) {
+        return _storageBadge().badgeToBadgeMaxScore[_badge];
+    }
+}
+
+contract Test1 {
+    function getBadgeMaxScore1(uint256 _badge) external view returns (uint256) {
+        return TestLib._storageBadge().badgeToBadgeMaxScore[_badge];
+    }
+}
+
+contract Test2 {
+    function getBadgeMaxScore1(uint256 _badge) external view returns (uint256) {
+        return TestLib._getBadgeMaxScore(_badge);
+    }
+}
+// Deploy Test1: 135019 gas
+// Deploy Test2: 138901 gas
+
+// Execute Test1: 24004 gas
+// Execute Test2: 24047 gas
+```
