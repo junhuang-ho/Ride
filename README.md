@@ -32,9 +32,10 @@ or for a summary of contract test coverage
 ```
 ~$ yarn run hardhat size-contracts
 ```
-## notes:
 
-##### gas test for getter fn vs no getter fn
+## gas efficiency tests
+
+1. for getter fn vs no getter fn
 ```
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
