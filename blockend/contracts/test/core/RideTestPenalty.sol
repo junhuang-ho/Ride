@@ -17,6 +17,14 @@ contract RideTestPenalty is RidePenalty {
         return RideLibPenalty._storagePenalty().userToBanEndTimestamp[_user];
     }
 
+    function ssUserToBanEndTimestamp_(address _user, uint256 _endTime)
+        external
+    {
+        RideLibPenalty._storagePenalty().userToBanEndTimestamp[
+            _user
+        ] = _endTime;
+    }
+
     function requireNotBanned_() external view returns (bool) {
         RideLibPenalty._requireNotBanned();
         return true;

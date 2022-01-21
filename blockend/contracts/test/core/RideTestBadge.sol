@@ -21,6 +21,30 @@ contract RideTestBadge is RideBadge {
         return RideLibBadge._storageBadge().driverToDriverReputation[_driver];
     }
 
+    function ssDriverToDriverReputation_(
+        address _driver,
+        uint256 _id,
+        string memory _uri,
+        uint256 _maxMetresPerTrip,
+        uint256 _metresTravelled,
+        uint256 _countStart,
+        uint256 _countEnd,
+        uint256 _totalRating,
+        uint256 _countRating
+    ) external {
+        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
+        s1.driverToDriverReputation[_driver].id = _id;
+        s1.driverToDriverReputation[_driver].uri = _uri;
+        s1
+            .driverToDriverReputation[_driver]
+            .maxMetresPerTrip = _maxMetresPerTrip;
+        s1.driverToDriverReputation[_driver].metresTravelled = _metresTravelled;
+        s1.driverToDriverReputation[_driver].countStart = _countStart;
+        s1.driverToDriverReputation[_driver].countEnd = _countEnd;
+        s1.driverToDriverReputation[_driver].totalRating = _totalRating;
+        s1.driverToDriverReputation[_driver].countRating = _countRating;
+    }
+
     function setBadgesMaxScores_(uint256[] memory _badgesMaxScores) external {
         RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
     }

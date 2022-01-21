@@ -108,7 +108,7 @@ const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additi
     }
 }
 
-const verify_ = async (chainId, contractName, contractDeployed, args, skip = false) =>
+const verify_ = async (chainId, contractName, contractDeployed, args, skip = false, test = false) =>
 {
     if (parseInt(chainId) !== 31337)
     {
@@ -126,18 +126,24 @@ const verify_ = async (chainId, contractName, contractDeployed, args, skip = fal
                 address: contractDeployed.address,
                 constructorArguments: args,
             })
-            console.log(`Verifying\t| Verified ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+            if (!test)
+            {
+                console.log(`Verifying\t| Verified ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+            }
         } catch (err)
         {
             console.log(err)
         }
     } else
     {
-        console.log(`Verifying\t| No verification needed for ${networkConfig[chainId].name} local deployment`)
+        if (!test)
+        {
+            console.log(`Verifying\t| No verification needed for ${networkConfig[chainId].name} local deployment`)
+        }
     }
 }
 
-const deploy = async (chainId, contractName, args = [], verify = false) =>
+const deploy = async (chainId, contractName, args = [], verify = false, test = false) =>
 {
     const dir = `./deployments/${networkConfig[chainId]["name"]}`
     const saveDir = `${dir}/${contractName}.json`
@@ -147,11 +153,15 @@ const deploy = async (chainId, contractName, args = [], verify = false) =>
         // Skipping
         const deployedContract = fs.readFileSync(saveDir)
         const deployedContractJSON = JSON.parse(deployedContract)
-        console.log(`Skipping\t| ${contractName} already deployed on ${networkConfig[chainId]["name"]}: ${deployedContractJSON.address}`)
+        if (!test)
+        {
+            console.log(`Skipping\t| ${contractName} already deployed on ${networkConfig[chainId]["name"]}: ${deployedContractJSON.address}`)
+        }
+
 
         const deployedContractMain = await ethers.getContractAt(contractName, deployedContractJSON.address)
 
-        await verify_(chainId, contractName, deployedContractMain, args, skip = true)
+        await verify_(chainId, contractName, deployedContractMain, args, skip = true, test = test)
 
         return deployedContractMain
     } else
@@ -166,9 +176,10 @@ const deploy = async (chainId, contractName, args = [], verify = false) =>
         {
             await contractDeployed.deployed()
         }
-
-        console.log(`Deploying\t| Deployed ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
-
+        if (!test)
+        {
+            console.log(`Deploying\t| Deployed ${contractName} on ${networkConfig[chainId]["name"]}: ${contractDeployed.address}`)
+        }
         // Saving
         if (parseInt(chainId) !== 31337)
         {
@@ -204,16 +215,23 @@ const deploy = async (chainId, contractName, args = [], verify = false) =>
                     console.log(err)
                 }
             })
-            console.log(`Saving\t\t| Saved to ${saveDir}`)
+            if (!test)
+            {
+                console.log(`Saving\t\t| Saved to ${saveDir}`)
+            }
         } else
         {
-            console.log(`Saving\t\t| No saving needed for ${networkConfig[chainId]["name"]} local deployment`)
+            if (!test)
+            {
+                console.log(`Saving\t\t| No saving needed for ${networkConfig[chainId]["name"]} local deployment`)
+
+            }
         }
 
         // Verify
         if (verify)
         {
-            await verify_(chainId, contractName, contractDeployed, args)
+            await verify_(chainId, contractName, contractDeployed, args, skip = false, test = test)
         }
 
         return contractDeployed

@@ -65,7 +65,7 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         RideLibHolding.StorageHolding storage s1 = RideLibHolding
             ._storageHolding();
         require(
-            _amount >= s1.userToCurrencyKeyToHolding[msg.sender][_key],
+            s1.userToCurrencyKeyToHolding[msg.sender][_key] >= _amount,
             "insufficient holdings"
         );
         require(

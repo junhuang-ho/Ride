@@ -117,7 +117,7 @@ library RideLibExchange {
         uint256 _amountX
     ) internal view returns (uint256) {
         uint256 xPerYWei = _getXPerYInWei(_keyX, _keyY);
-        return (_amountX / xPerYWei) * 10e18; // note: no rounding occurs as value is converted into wei
+        return ((_amountX * 10**18) / xPerYWei); // note: no rounding occurs as value is converted into wei
     }
 
     function _convertInverse(
@@ -126,7 +126,7 @@ library RideLibExchange {
         uint256 _amountX
     ) internal view returns (uint256) {
         uint256 xPerYWei = _getXPerYInWei(_keyX, _keyY);
-        return (_amountX * xPerYWei) / 10e18; // note: no rounding occurs as value is converted into wei
+        return (_amountX * xPerYWei) / 10**18; // note: no rounding occurs as value is converted into wei
     }
 
     function _getXPerYInWei(bytes32 _keyX, bytes32 _keyY)

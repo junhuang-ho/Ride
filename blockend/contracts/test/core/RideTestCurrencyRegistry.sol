@@ -23,17 +23,17 @@ contract RideTestCurrencyRegistry is RideCurrencyRegistry {
                 .currencyKeyToCrypto[_key];
     }
 
-    // function ssCurrencyKeyToSupported_(bytes32 _key, bool _supported) external {
-    //     RideLibCurrencyRegistry
-    //         ._storageCurrencyRegistry()
-    //         .currencyKeyToSupported[_key] = _supported;
-    // }
+    function ssCurrencyKeyToSupported_(bytes32 _key, bool _supported) external {
+        RideLibCurrencyRegistry
+            ._storageCurrencyRegistry()
+            .currencyKeyToSupported[_key] = _supported;
+    }
 
-    // function ssCurrencyKeyToCrypto_(bytes32 _key, bool _crypto) external {
-    //     RideLibCurrencyRegistry._storageCurrencyRegistry().currencyKeyToCrypto[
-    //             _key
-    //         ] = _crypto;
-    // }
+    function ssCurrencyKeyToCrypto_(bytes32 _key, bool _crypto) external {
+        RideLibCurrencyRegistry._storageCurrencyRegistry().currencyKeyToCrypto[
+                _key
+            ] = _crypto;
+    }
 
     function requireCurrencySupported_(bytes32 _key)
         external
@@ -65,20 +65,20 @@ contract RideTestCurrencyRegistry is RideCurrencyRegistry {
         RideLibCurrencyRegistry._removeCurrency(_key);
     }
 
-    // getKeyFiat(string memory _code);
-    // getKeyCrypto(address _token);
+    // getKeyFiat(string memory _code) returns (bytes32);
+    // getKeyCrypto(address _token) returns (bytes32);
     // setupFiatWithFee(
     //             string memory _code,
     //             uint256 _requestFee,
     //             uint256 _baseFee,
     //             uint256 _costPerMinute,
     //             uint256[] memory _costPerMetre
-    //         );
+    //         ) returns (bytes32);
     // setupCryptoWithFee(
     //             address _token,
     //             uint256 _requestFee,
     //             uint256 _baseFee,
     //             uint256 _costPerMinute,
     //             uint256[] memory _costPerMetre
-    //         );
+    //         ) returns (bytes32);
 }

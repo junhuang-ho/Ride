@@ -25,6 +25,26 @@ contract RideTestExchange is RideExchange {
             RideLibExchange._storageExchange().xToYToXPerYInverse[_keyX][_keyY];
     }
 
+    function ssXToYToXPerYPriceFeed_(
+        bytes32 _keyX,
+        bytes32 _keyY,
+        address _priceFeed
+    ) external {
+        RideLibExchange._storageExchange().xToYToXPerYPriceFeed[_keyX][
+                _keyY
+            ] = _priceFeed;
+    }
+
+    function ssXToYToXPerYInverse_(
+        bytes32 _keyX,
+        bytes32 _keyY,
+        bool _inverse
+    ) external {
+        RideLibExchange._storageExchange().xToYToXPerYInverse[_keyX][
+                _keyY
+            ] = _inverse;
+    }
+
     function requireXPerYPriceFeedSupported_(bytes32 _keyX, bytes32 _keyY)
         external
         view
