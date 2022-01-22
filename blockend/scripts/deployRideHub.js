@@ -4,55 +4,94 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { getSelectors, FacetCutAction } = require('./utilsDiamond.js')
 
-async function deployRideHub()
+async function deployRideHub(test = false, testWithInit = false)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
     const accounts = await ethers.getSigners()
     const contractOwner = accounts[0]
 
+    if (test)
+    {
+        console.log("unit/integration TEST MODE")
+        const decimals = 18
+        const initialAns = "2000000000000000000"
+        contractMockV3Aggregator = await deploy(
+            chainId,
+            "MockV3Aggregator",
+            args = [decimals, initialAns],
+            verify = true,
+            test = test
+        ) // note: currently NOT part of RideHub (Diamond)
+    }
+
     const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
     const contractRide = await deploy(
         chainId,
         "Ride",
         args = [maxSupply],
-        verify = true
+        verify = true,
+        test = test
     ) // note: currently NOT part of RideHub (Diamond)
 
     const contractRideCut = await deploy(
         chainId,
         "RideCut",
         args = [],
-        verify = true
+        verify = true,
+        test = test
     )
     const contractRideHub = await deploy(
         chainId,
         "RideHub",
         args = [contractOwner.address, contractRideCut.address],
-        verify = true
+        verify = true,
+        test = test
     )
     const contractRideInitializer = await deploy(
         chainId,
         "RideInitializer0",
         args = [],
-        verify = true
+        verify = true,
+        test = test
     )
 
-    const FacetNamesNArgs = {
-        'RideLoupe': [],
-        'RideOwnership': [],
-        'RideBadge': [],
-        'RideCurrencyRegistry': [],
-        'RideFee': [],
-        'RideExchange': [],
-        'RideHolding': [],
-        'RidePenalty': [],
-        'RideTicket': [],
-        'RidePassenger': [],
-        'RideRater': [],
-        'RideDriver': [],
-        'RideDriverRegistry': [],
-    } // NOTE: for facets, args should all be EMPTY !!!
+    if (test)
+    {
+        FacetNamesNArgs = {
+            'RideLoupe': [],
+            'RideOwnership': [],
+            'RideTestBadge': [],
+            'RideTestCurrencyRegistry': [],
+            'RideTestFee': [],
+            'RideTestExchange': [],
+            'RideTestHolding': [],
+            'RideTestPenalty': [],
+            'RideTestTicket': [],
+            'RideTestPassenger': [],
+            'RideTestRater': [],
+            'RideTestDriver': [],
+            'RideTestDriverRegistry': [],
+        } // NOTE: for facets, args should all be EMPTY !!!
+    } else
+    {
+        FacetNamesNArgs = {
+            'RideLoupe': [],
+            'RideOwnership': [],
+            'RideBadge': [],
+            'RideCurrencyRegistry': [],
+            'RideFee': [],
+            'RideExchange': [],
+            'RideHolding': [],
+            'RidePenalty': [],
+            'RideTicket': [],
+            'RidePassenger': [],
+            'RideRater': [],
+            'RideDriver': [],
+            'RideDriverRegistry': [],
+        } // NOTE: for facets, args should all be EMPTY !!!
+    }
+
     const cut = []
     for (const FacetName in FacetNamesNArgs)
     {
@@ -63,7 +102,8 @@ async function deployRideHub()
                 chainId,
                 FacetName,
                 args = FacetNamesNArgs[FacetName],
-                verify = true
+                verify = true,
+                test = test
             )
             cut.push({
                 facetAddress: contractFacet.address,
@@ -120,8 +160,21 @@ async function deployRideHub()
     console.log('Cutting A RideHub Diamond 💎')
     const rideCut = await ethers.getContractAt('IRideCut', contractRideHub.address)
     // call to init function
-    let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-    const tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall)
+    if (!test)
+    {
+        let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
+        tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall)
+    } else
+    {
+        if (testWithInit)
+        {
+            let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
+            tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall)
+        } else
+        {
+            tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x")
+        }
+    }
     console.log('tx: ', tx.hash)
     const receipt = await tx.wait()
     if (!receipt.status)
@@ -133,7 +186,14 @@ async function deployRideHub()
     console.log(`Ride: ${contractRide.address}`)
     console.log(`RideHub: ${contractRideHub.address}`)
 
-    return contractRideHub.address
+    if (test)
+    {
+        return [contractRideHub.address, contractMockV3Aggregator.address]
+    } else
+    {
+        return [contractRideHub.address, ethers.constants.AddressZero]
+    }
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

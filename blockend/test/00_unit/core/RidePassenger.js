@@ -6,7 +6,7 @@ const { ethers } = require("hardhat")
 const hre = require("hardhat")
 const chainId = hre.network.config.chainId
 
-const { deployTest } = require("../../../scripts/deployTest.js")
+const { deployRideHub } = require("../../../scripts/deployRideHub.js")
 
 if (parseInt(chainId) === 31337)
 {
@@ -15,7 +15,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployTest()
+            contractAddresses = await deployRideHub(true, false)
             rideHubAddress = contractAddresses[0]
             contractRideDriver = await ethers.getContractAt('RideTestDriver', rideHubAddress)
             contractRidePassenger = await ethers.getContractAt('RideTestPassenger', rideHubAddress)
@@ -115,7 +115,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployTest()
+            contractAddresses = await deployRideHub(true, false)
             rideHubAddress = contractAddresses[0]
             mockV3AggregatorAddress = contractAddresses[1]
             contractRideDriver = await ethers.getContractAt('RideTestDriver', rideHubAddress)

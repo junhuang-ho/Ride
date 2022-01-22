@@ -6,7 +6,7 @@ const { ethers } = require("hardhat")
 const hre = require("hardhat")
 const chainId = hre.network.config.chainId
 
-const { deployTest } = require("../../../scripts/deployTest.js")
+const { deployRideHub } = require("../../../scripts/deployRideHub.js")
 
 if (parseInt(chainId) === 31337)
 {
@@ -15,7 +15,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployTest()
+            contractAddresses = await deployRideHub(true, false)
             rideHubAddress = contractAddresses[0]
             contractRideBadge = await ethers.getContractAt('RideTestBadge', rideHubAddress)
             contractRideRater = await ethers.getContractAt('RideTestRater', rideHubAddress)
@@ -33,8 +33,8 @@ if (parseInt(chainId) === 31337)
             {
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(0)).to.equal(0)
 
-                var tx = await contractRideBadge.setBadgesMaxScores_(badges)
-                var rcpt = await tx.wait()
+                var txi = await contractRideBadge.setBadgesMaxScores_(badges)
+                var rcpt = await txi.wait()
 
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(0)).to.equal(badges[0])
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(1)).to.equal(badges[1])
@@ -108,7 +108,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployTest()
+            contractAddresses = await deployRideHub(true, false)
             rideHubAddress = contractAddresses[0]
             contractRideBadge = await ethers.getContractAt('RideTestBadge', rideHubAddress)
             contractRideRater = await ethers.getContractAt('RideTestRater', rideHubAddress)
