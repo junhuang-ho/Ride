@@ -18,6 +18,7 @@ const networkConfig = {
     },
     42: {
         name: 'kovan',
+        wrappedEth: '0xd0a1e359811322d97991e03f863a0c30c2cf029c',
         linkToken: '0xa36085F69e2889c224210F603D836748e7dC0088',
         ethUsdPriceFeed: '0x9326BFA02ADD2366b30bacB125260Af641031331',
         keyHash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4',
@@ -29,6 +30,7 @@ const networkConfig = {
     },
     4: {
         name: 'rinkeby',
+        wrappedEth: '0xc778417e063141139fce010982780140aa0cd5ab',
         linkToken: '0x01be23585060835e02b77ef475b0cc51aa1e0709',
         ethUsdPriceFeed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
         keyHash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311',
@@ -58,6 +60,8 @@ const networkConfig = {
     },
     80001: {
         name: 'polygon-mumbai',
+        maticToken: '',
+        ethUsdPriceFeed: '0x0715A7794a1dc8e42615F059dD6e406A6594651A',
         linkToken: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
         keyHash: '0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4',
         VRFCoordinator: '0x8C7382F9D8f56b33781fE506E897a4F1e2d17255',
@@ -143,7 +147,7 @@ const verify_ = async (chainId, contractName, contractDeployed, args, skip = fal
     }
 }
 
-const deploy = async (chainId, contractName, args = [], verify = false, test = false) =>
+const deploy = async (deployer, chainId, contractName, args = [], verify = false, test = false) =>
 {
     const dir = `./deployments/${networkConfig[chainId]["name"]}`
     const saveDir = `${dir}/${contractName}.json`
@@ -167,7 +171,7 @@ const deploy = async (chainId, contractName, args = [], verify = false, test = f
     } else
     {
         // Deploying
-        const contract = await ethers.getContractFactory(contractName)
+        const contract = await ethers.getContractFactory(contractName, deployer)
         const contractDeployed = await contract.deploy(...args)
         if (parseInt(chainId) !== 31337)
         {

@@ -1,32 +1,48 @@
-let { deploy } = require('./utils')
+let { deploy, networkConfig } = require('./utils')
 const fs = require('fs')
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { getSelectors, FacetCutAction } = require('./utilsDiamond.js')
 
-async function deployRideHub(test = false, testWithInit = false)
+async function deployRideHub(deployerAddress, test = false, integration = false)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
-    const accounts = await ethers.getSigners()
-    const contractOwner = accounts[0]
+
+    if (deployerAddress === undefined || deployerAddress === null)
+    {
+        accounts = await ethers.getSigners()
+        deployerAddress = accounts[0].address // TODO: change (if needed) this address when deploying to mainnet !!!
+    }
 
     if (test)
     {
         console.log("unit/integration TEST MODE")
+
+        contractWETH9 = await deploy(
+            deployerAddress,
+            chainId,
+            "WETH9",
+            args = [],
+            verify = true,
+            test = test
+        )
+
         const decimals = 18
         const initialAns = "2000000000000000000"
         contractMockV3Aggregator = await deploy(
+            deployerAddress,
             chainId,
             "MockV3Aggregator",
             args = [decimals, initialAns],
             verify = true,
             test = test
-        ) // note: currently NOT part of RideHub (Diamond)
+        )
     }
 
     const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
     const contractRide = await deploy(
+        deployerAddress,
         chainId,
         "Ride",
         args = [maxSupply],
@@ -35,6 +51,7 @@ async function deployRideHub(test = false, testWithInit = false)
     ) // note: currently NOT part of RideHub (Diamond)
 
     const contractRideCut = await deploy(
+        deployerAddress,
         chainId,
         "RideCut",
         args = [],
@@ -42,13 +59,15 @@ async function deployRideHub(test = false, testWithInit = false)
         test = test
     )
     const contractRideHub = await deploy(
+        deployerAddress,
         chainId,
         "RideHub",
-        args = [contractOwner.address, contractRideCut.address],
+        args = [deployerAddress, contractRideCut.address],
         verify = true,
         test = test
     )
     const contractRideInitializer = await deploy(
+        deployerAddress,
         chainId,
         "RideInitializer0",
         args = [],
@@ -99,6 +118,7 @@ async function deployRideHub(test = false, testWithInit = false)
         {
             expect(FacetNamesNArgs[FacetName] === []) // must be empty args
             const contractFacet = await deploy(
+                deployerAddress,
                 chainId,
                 FacetName,
                 args = FacetNamesNArgs[FacetName],
@@ -129,9 +149,33 @@ async function deployRideHub(test = false, testWithInit = false)
     // Platinum ~ up to 3 year's work, 10 * 50_000 * 30 * 12 * 3 = 540_000_000
     // Veteran  ~ more than 3 year's work
 
-    const wethTokenAddress = "0xc778417e063141139fce010982780140aa0cd5ab" //contractRide.address
-    const priceFeedETHUSD = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
-    const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"]
+    if (parseInt(chainId) !== 31337)
+    {
+        if (parseInt(chainId) === 4 || parseInt(chainId) === 42 || parseInt(chainId) === 5 || parseInt(chainId) === 1)
+        {
+            nativeTokenAddress = networkConfig[chainId]["wrappedEth"]
+            nativeUSDPriceFeed = networkConfig[chainId]["ethUsdPriceFeed"]
+        } else if (parseInt(chainId) === 80001 || parseInt(chainId) === 137)
+        {
+            throw new Error(`Polygon chain not yet implemented`)
+        } else
+        {
+            throw new Error(`Supported chains are either Ethereum or Polygon, detected: ${chainId}`)
+        }
+    } else
+    {
+        if (test)
+        {
+            nativeTokenAddress = contractWETH9.address
+            nativeUSDPriceFeed = contractMockV3Aggregator.address
+        } else
+        {
+            nativeTokenAddress = "0xc778417e063141139fce010982780140aa0cd5ab" // dummy as long not zero address
+            nativeUSDPriceFeed = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e" // dummy as long not zero address
+        }
+    }
+
+    const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"] // metres
     const requestFee = ethers.utils.parseEther("5")
     const baseFee = ethers.utils.parseEther("2")
     const costPerMinute = ethers.utils.parseEther("0.15")
@@ -153,8 +197,8 @@ async function deployRideHub(test = false, testWithInit = false)
         banDuration,
         ratingMin,
         ratingMax,
-        wethTokenAddress,
-        priceFeedETHUSD
+        nativeTokenAddress,
+        nativeUSDPriceFeed
     ]
 
     console.log('Cutting A RideHub Diamond 💎')
@@ -163,18 +207,22 @@ async function deployRideHub(test = false, testWithInit = false)
     if (!test)
     {
         let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-        tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall)
+        tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
     } else
     {
-        if (testWithInit)
+        if (!integration)
         {
+            console.log("UNIT test")
             let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-            tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall)
+            tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x") // 
         } else
         {
-            tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x")
+            console.log("INTEGRATION test")
+            let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
+            tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
         }
     }
+
     console.log('tx: ', tx.hash)
     const receipt = await tx.wait()
     if (!receipt.status)
@@ -188,10 +236,10 @@ async function deployRideHub(test = false, testWithInit = false)
 
     if (test)
     {
-        return [contractRideHub.address, contractMockV3Aggregator.address]
+        return [contractRideHub.address, contractMockV3Aggregator.address, nativeTokenAddress.address]
     } else
     {
-        return [contractRideHub.address, ethers.constants.AddressZero]
+        return [contractRideHub.address, ethers.constants.AddressZero, ethers.constants.AddressZero]
     }
 
 }

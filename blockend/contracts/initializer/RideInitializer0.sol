@@ -76,6 +76,12 @@ contract RideInitializer0 {
         s1.supportedInterfaces[type(IRideExchange).interfaceId] = true;
         s1.supportedInterfaces[type(IRideRater).interfaceId] = true;
 
+        // setup
+        RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
+        RideLibPenalty._setBanDuration(_banDuration);
+        RideLibRater._setRatingBounds(_ratingMin, _ratingMax);
+        RideLibDriverRegistry._burnFirstDriverId();
+
         // setup fiat (or crypto)
         bytes32 keyX = RideLibCurrencyRegistry._registerFiat("USD");
 
@@ -116,10 +122,5 @@ contract RideInitializer0 {
         RideLibExchange._addXPerYPriceFeed(keyX, keyY, _priceFeed);
 
         // note: for frontend, call RideCurrencyRegistry.setupFiatWithFee/setupCryptoWithFee --> RideExchange.addXPerYPriceFeed
-
-        RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
-        RideLibPenalty._setBanDuration(_banDuration);
-        RideLibRater._setRatingBounds(_ratingMin, _ratingMax);
-        RideLibDriverRegistry._burnFirstDriverId();
     }
 }

@@ -15,7 +15,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployRideHub(true, false)
+            contractAddresses = await deployRideHub(accounts[0].address, true, false)
             rideHubAddress = contractAddresses[0]
             contractRideFee = await ethers.getContractAt('RideTestFee', rideHubAddress)
             contractRideCurrencyRegistry = await ethers.getContractAt('RideTestCurrencyRegistry', rideHubAddress)
@@ -115,7 +115,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployRideHub(true, false)
+            contractAddresses = await deployRideHub(accounts[0].address, true, false)
             rideHubAddress = contractAddresses[0]
             contractRideFee = await ethers.getContractAt('RideTestFee', rideHubAddress)
             contractRideCurrencyRegistry = await ethers.getContractAt('RideTestCurrencyRegistry', rideHubAddress)

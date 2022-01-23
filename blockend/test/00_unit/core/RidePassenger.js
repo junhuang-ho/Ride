@@ -15,7 +15,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployRideHub(true, false)
+            contractAddresses = await deployRideHub(accounts[0].address, true, false)
             rideHubAddress = contractAddresses[0]
             contractRideDriver = await ethers.getContractAt('RideTestDriver', rideHubAddress)
             contractRidePassenger = await ethers.getContractAt('RideTestPassenger', rideHubAddress)
@@ -115,7 +115,7 @@ if (parseInt(chainId) === 31337)
         before(async function ()
         {
             accounts = await ethers.getSigners()
-            contractAddresses = await deployRideHub(true, false)
+            contractAddresses = await deployRideHub(accounts[0].address, true, false)
             rideHubAddress = contractAddresses[0]
             mockV3AggregatorAddress = contractAddresses[1]
             contractRideDriver = await ethers.getContractAt('RideTestDriver', rideHubAddress)
