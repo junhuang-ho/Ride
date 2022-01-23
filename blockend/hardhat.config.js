@@ -57,7 +57,8 @@ module.exports = {
             saveDeployments: true,
         },
         polygon_mumbai: {
-            url: "https://rpc-mumbai.maticvigil.com/",
+            chainId: 80001,
+            url: process.env.RPC_URL_MUMBAI, // "https://rpc-mumbai.maticvigil.com/",
             accounts: {
                 mnemonic: process.env.MNEMONIC_0,
             },
@@ -72,8 +73,8 @@ module.exports = {
         // },
     },
     etherscan: {
-        apiKey: process.env.API_KEY_ETHERSCAN
-        // apiKey: process.env.API_KEY_POLYGONSCAN // actually no such thing polygonscan is powered by etherscan: https://github.com/nomiclabs/hardhat/issues/1727#issuecomment-931250893
+        // apiKey: process.env.API_KEY_ETHERSCAN
+        apiKey: process.env.API_KEY_POLYGONSCAN // actually no such thing polygonscan is powered by etherscan: https://github.com/nomiclabs/hardhat/issues/1727#issuecomment-931250893
     },
     namedAccounts: { // by hardhat-deploy
         deployer: {
@@ -81,6 +82,6 @@ module.exports = {
         }
     },
     mocha: {
-        timeout: 2000000 // 20000
+        timeout: 20000 // 20000
     }
 }
