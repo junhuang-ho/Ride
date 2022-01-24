@@ -236,7 +236,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
 
     if (test)
     {
-        return [contractRideHub.address, contractMockV3Aggregator.address, nativeTokenAddress.address]
+        return [contractRideHub.address, nativeUSDPriceFeed, nativeTokenAddress]
     } else
     {
         return [contractRideHub.address, ethers.constants.AddressZero, ethers.constants.AddressZero]

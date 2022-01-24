@@ -33,8 +33,8 @@ if (parseInt(chainId) === 31337)
             {
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(0)).to.equal(0)
 
-                var txi = await contractRideBadge.setBadgesMaxScores_(badges)
-                var rcpt = await txi.wait()
+                var tx = await contractRideBadge.setBadgesMaxScores_(badges)
+                var rcpt = await tx.wait()
 
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(0)).to.equal(badges[0])
                 expect(await contractRideBadge.sBadgeToBadgeMaxScore_(1)).to.equal(badges[1])

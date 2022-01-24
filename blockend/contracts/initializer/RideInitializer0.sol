@@ -42,6 +42,8 @@ import {RideLibCurrencyRegistry} from "../libraries/core/RideLibCurrencyRegistry
 //    then make external fns in respective facets that call those internal fns
 //    (can import library and just use the fns needed instead of inheriting)
 
+// import "hardhat/console.sol";
+
 contract RideInitializer0 {
     uint256[] yo;
     uint256[] ho;
