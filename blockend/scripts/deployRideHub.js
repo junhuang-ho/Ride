@@ -79,7 +79,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     {
         FacetNamesNArgs = {
             'RideLoupe': [],
-            'RideOwnership': [],
+            'RideTestOwnership': [],
             'RideTestBadge': [],
             'RideTestCurrencyRegistry': [],
             'RideTestFee': [],
