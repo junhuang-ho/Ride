@@ -75,7 +75,7 @@ function removeSelectors(selectors, signatures)
     selectors = selectors.filter(v => !removeSelectors.includes(v))
     return selectors
 }
-
+// [ '0x7a0ed627', '0xbda30dec' ]
 // find a particular address position in the return value of diamondLoupeFacet.facets()
 function findAddressPositionInFacets(facetAddress, facets)
 {
