@@ -15,6 +15,10 @@ https://eth-converter.com/
 
 https://www.epochconverter.com/
 
+wallet integrate with Polygon: https://docs.polygon.technology/docs/integrate/quickstart/
+
+EIP1559 way of sending transactions for wallet: https://docs.polygon.technology/docs/develop/eip1559-transactions/how-to-send-eip1559-transactions
+
 ## Testing
 ```
 ~$ cd blockend
