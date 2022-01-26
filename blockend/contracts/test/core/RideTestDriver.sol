@@ -23,13 +23,4 @@ contract RideTestDriver is RideDriver {
         RideLibDriver._requireNotDriver();
         return true;
     }
-
-    // acceptTicket(
-    //     bytes32 _keyLocal,
-    //     bytes32 _keyAccept,
-    //     bytes32 _tixId,
-    //     uint256 _useBadge);
-    // cancelPickUp();
-    // endTripDrv(bool _reached);
-    // forceEndDrv();
 }

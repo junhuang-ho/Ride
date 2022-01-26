@@ -24,17 +24,4 @@ contract RideTestPassenger is RidePassenger {
         RideLibPassenger._requireForceEndAllowed();
         return true;
     }
-
-    // function requestTicket(
-    //     bytes32 _keyLocal,
-    //     bytes32 _keyPay,
-    //     uint256 _badge,
-    //     bool _strict,
-    //     uint256 _minutes,
-    //     uint256 _metres
-    // );
-    // cancelRequest();
-    // startTrip(address _driver);
-    // endTripPax(bool _agree, uint256 _rating);
-    // forceEndPax();
 }

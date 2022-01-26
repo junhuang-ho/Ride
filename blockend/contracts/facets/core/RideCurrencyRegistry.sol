@@ -51,13 +51,13 @@ contract RideCurrencyRegistry is IRideCurrencyRegistry {
 
     function setupFiatWithFee(
         string memory _code,
-        uint256 _requestFee,
+        uint256 _cancellationFee,
         uint256 _baseFee,
         uint256 _costPerMinute,
         uint256[] memory _costPerMetre
     ) external override returns (bytes32) {
         bytes32 key = RideLibCurrencyRegistry._registerFiat(_code);
-        RideLibFee._setRequestFee(key, _requestFee);
+        RideLibFee._setCancellationFee(key, _cancellationFee);
         RideLibFee._setBaseFee(key, _baseFee);
         RideLibFee._setCostPerMinute(key, _costPerMinute);
         RideLibFee._setCostPerMetre(key, _costPerMetre);
@@ -66,13 +66,13 @@ contract RideCurrencyRegistry is IRideCurrencyRegistry {
 
     function setupCryptoWithFee(
         address _token,
-        uint256 _requestFee,
+        uint256 _cancellationFee,
         uint256 _baseFee,
         uint256 _costPerMinute,
         uint256[] memory _costPerMetre
     ) external override returns (bytes32) {
         bytes32 key = RideLibCurrencyRegistry._registerCrypto(_token);
-        RideLibFee._setRequestFee(key, _requestFee);
+        RideLibFee._setCancellationFee(key, _cancellationFee);
         RideLibFee._setBaseFee(key, _baseFee);
         RideLibFee._setCostPerMinute(key, _costPerMinute);
         RideLibFee._setCostPerMetre(key, _costPerMetre);

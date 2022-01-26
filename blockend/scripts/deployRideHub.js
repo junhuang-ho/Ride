@@ -17,27 +17,30 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
 
     if (test)
     {
-        console.log("unit/integration TEST MODE")
+        if (parseInt(chainId) === 31337)
+        {
+            console.log("unit/integration TEST MODE")
 
-        contractWETH9 = await deploy(
-            deployerAddress,
-            chainId,
-            "WETH9",
-            args = [],
-            verify = true,
-            test = test
-        )
+            contractWETH9 = await deploy(
+                deployerAddress,
+                chainId,
+                "WETH9",
+                args = [],
+                verify = true,
+                test = test
+            )
 
-        const decimals = 18
-        const initialAns = "2000000000000000000"
-        contractMockV3Aggregator = await deploy(
-            deployerAddress,
-            chainId,
-            "MockV3Aggregator",
-            args = [decimals, initialAns],
-            verify = true,
-            test = test
-        )
+            const decimals = 18
+            const initialAns = "2000000000000000000"
+            contractMockV3Aggregator = await deploy(
+                deployerAddress,
+                chainId,
+                "MockV3Aggregator",
+                args = [decimals, initialAns],
+                verify = true,
+                test = test
+            )
+        }
     }
 
     const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
@@ -153,7 +156,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     const banDuration = "604800" // 7 days // https://www.epochconverter.com/
     const ratingMin = "1"
     const ratingMax = "5"
-    const requestFeeUSD = ethers.utils.parseEther("5") // $5 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
+    const cancellationFeeUSD = ethers.utils.parseEther("5") // $5 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
     const baseFeeUSD = ethers.utils.parseEther("3") // $8 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
     const costPerMinuteUSD = ethers.utils.parseEther("0.0001") // $0 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
     const badgesCostPerMetreUSD =
@@ -234,7 +237,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         banDuration,
         ratingMin,
         ratingMax,
-        requestFeeUSD,
+        cancellationFeeUSD,
         baseFeeUSD,
         costPerMinuteUSD,
         badgesCostPerMetreUSD,
@@ -277,7 +280,19 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
 
     if (test)
     {
-        return [contractRideHub.address, priceFeeds[0], tokens[0]]
+        if (parseInt(chainId) === 31337)
+        {
+            return [contractRideHub.address, priceFeeds[0], tokens[0]]
+        } else if (parseInt(chainId) === 4 || parseInt(chainId) === 42)
+        {
+            return [contractRideHub.address, priceFeeds[0], tokens[0]]
+        } else if (parseInt(chainId) === 80001)
+        {
+            return [contractRideHub.address, priceFeeds, tokens]
+        } else
+        {
+            throw new Error(`something wrong when returning deploy data, detected chain: ${chainId}`)
+        }
     } else
     {
         return [contractRideHub.address, ethers.constants.AddressZero, ethers.constants.AddressZero]

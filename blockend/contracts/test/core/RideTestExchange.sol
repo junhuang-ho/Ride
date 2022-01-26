@@ -97,6 +97,4 @@ contract RideTestExchange is RideExchange {
     {
         return RideLibExchange._getXPerYInWei(_keyX, _keyY);
     }
-
-    // getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) returns (address);
 }

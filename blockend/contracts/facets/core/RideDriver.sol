@@ -62,9 +62,9 @@ contract RideDriver is IRideDriver {
             ._storageHolding()
             .userToCurrencyKeyToHolding[msg.sender][_keyAccept];
         require(
-            (holdingAmount > s2.tixIdToTicket[_tixId].requestFee) &&
+            (holdingAmount > s2.tixIdToTicket[_tixId].cancellationFee) &&
                 (holdingAmount > s2.tixIdToTicket[_tixId].fare),
-            "driver's holding < requestFee or fare"
+            "driver's holding < cancellationFee or fare"
         );
 
         require(
@@ -110,7 +110,7 @@ contract RideDriver is IRideDriver {
         RideLibHolding._transferCurrency(
             tixId,
             s2.tixIdToTicket[tixId].keyPay,
-            s2.tixIdToTicket[tixId].requestFee,
+            s2.tixIdToTicket[tixId].cancellationFee,
             msg.sender,
             passenger
         );

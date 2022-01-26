@@ -5,8 +5,7 @@ interface IRidePassenger {
     event RequestTicket(
         address indexed sender,
         bytes32 indexed tixId,
-        uint256 minutesTaken,
-        uint256 metresTravelled
+        uint256 fare
     );
 
     function requestTicket(

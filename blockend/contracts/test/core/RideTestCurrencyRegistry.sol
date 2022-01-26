@@ -64,21 +64,4 @@ contract RideTestCurrencyRegistry is RideCurrencyRegistry {
     function removeCurrency_(bytes32 _key) external {
         RideLibCurrencyRegistry._removeCurrency(_key);
     }
-
-    // getKeyFiat(string memory _code) returns (bytes32);
-    // getKeyCrypto(address _token) returns (bytes32);
-    // setupFiatWithFee(
-    //             string memory _code,
-    //             uint256 _requestFee,
-    //             uint256 _baseFee,
-    //             uint256 _costPerMinute,
-    //             uint256[] memory _costPerMetre
-    //         ) returns (bytes32);
-    // setupCryptoWithFee(
-    //             address _token,
-    //             uint256 _requestFee,
-    //             uint256 _baseFee,
-    //             uint256 _costPerMinute,
-    //             uint256[] memory _costPerMetre
-    //         ) returns (bytes32);
 }

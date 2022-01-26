@@ -22,7 +22,4 @@ contract RideTestDriverRegistry is RideDriverRegistry {
     function burnFirstDriverId_() external {
         RideLibDriverRegistry._burnFirstDriverId();
     }
-    // registerAsDriver(uint256 _maxMetresPerTrip)
-    // updateMaxMetresPerTrip(uint256 _maxMetresPerTrip)
-    // approveApplicant(address _driver, string memory _uri)
 }

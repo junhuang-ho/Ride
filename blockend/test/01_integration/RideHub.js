@@ -497,7 +497,7 @@ if (parseInt(chainId) === 31337)
 
         describe("Passenger cancels request - no drivers accepted yet", function ()
         {
-            it("Should remove ticket without transferring request fee", async function ()
+            it("Should remove ticket without transferring cancellation fee", async function ()
             {
                 currentPaxHolding = await contractRideHoldingO.getHolding(passenger, keyPay)
                 currentDrvHolding = await contractRideHoldingO.getHolding(driver, keyPay)
@@ -515,7 +515,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // request fee never transferred
+                // cancellation fee never transferred
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.equal(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.equal(currentDrvHolding)
 
@@ -527,7 +527,7 @@ if (parseInt(chainId) === 31337)
 
         describe("Passenger cancels request - a driver already accepted ticket", function ()
         {
-            it("Should remove ticket with transferring request fee from passenger to driver", async function ()
+            it("Should remove ticket with transferring cancellation fee from passenger to driver", async function ()
             {
                 currentPaxHolding = await contractRideHoldingO.getHolding(passenger, keyPay)
                 currentDrvHolding = await contractRideHoldingO.getHolding(driver, keyPay)
@@ -551,7 +551,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // request fee never transferred
+                // cancellation fee never transferred
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.be.below(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.be.above(currentDrvHolding)
 
@@ -563,7 +563,7 @@ if (parseInt(chainId) === 31337)
 
         describe("Driver cancels pick up", function ()
         {
-            it("Should remove ticket with transferring request fee from driver to passenger", async function ()
+            it("Should remove ticket with transferring cancellation fee from driver to passenger", async function ()
             {
                 currentPaxHolding = await contractRideHoldingO.getHolding(passenger, keyPay)
                 currentDrvHolding = await contractRideHoldingO.getHolding(driver, keyPay)
@@ -587,7 +587,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // request fee never transferred
+                // cancellation fee never transferred
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.be.above(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.be.below(currentDrvHolding)
 

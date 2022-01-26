@@ -38,7 +38,7 @@ contract RideTestTicket is RideTicket {
         uint256 _metres,
         bytes32 _keyLocal,
         bytes32 _keyPay,
-        uint256 _requestFee,
+        uint256 _cancellationFee,
         uint256 _fare,
         bool _tripStart
     ) external {
@@ -50,7 +50,7 @@ contract RideTestTicket is RideTicket {
         s1.tixIdToTicket[_tixId].metres = _metres;
         s1.tixIdToTicket[_tixId].keyLocal = _keyLocal;
         s1.tixIdToTicket[_tixId].keyPay = _keyPay;
-        s1.tixIdToTicket[_tixId].requestFee = _requestFee;
+        s1.tixIdToTicket[_tixId].cancellationFee = _cancellationFee;
         s1.tixIdToTicket[_tixId].fare = _fare;
         s1.tixIdToTicket[_tixId].tripStart = _tripStart;
     }

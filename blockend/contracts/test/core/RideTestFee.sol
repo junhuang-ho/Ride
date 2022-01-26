@@ -5,12 +5,12 @@ import {RideFee} from "../../facets/core/RideFee.sol";
 import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
 
 contract RideTestFee is RideFee {
-    function sCurrencyKeyToRequestFee_(bytes32 _key)
+    function sCurrencyKeyToCancellationFee_(bytes32 _key)
         external
         view
         returns (uint256)
     {
-        return RideLibFee._storageFee().currencyKeyToRequestFee[_key];
+        return RideLibFee._storageFee().currencyKeyToCancellationFee[_key];
     }
 
     function sCurrencyKeyToBaseFee_(bytes32 _key)
@@ -40,8 +40,10 @@ contract RideTestFee is RideFee {
             ];
     }
 
-    function setRequestFee_(bytes32 _key, uint256 _requestFee) external {
-        RideLibFee._setRequestFee(_key, _requestFee);
+    function setCancellationFee_(bytes32 _key, uint256 _cancellationFee)
+        external
+    {
+        RideLibFee._setCancellationFee(_key, _cancellationFee);
     }
 
     function setBaseFee_(bytes32 _key, uint256 _baseFee) external {
@@ -68,11 +70,7 @@ contract RideTestFee is RideFee {
             RideLibFee._getFare(_key, _badge, _minutesTaken, _metresTravelled);
     }
 
-    function getRequestFee_(bytes32 _key) external view returns (uint256) {
-        return RideLibFee._getRequestFee(_key);
+    function getCancellationFee_(bytes32 _key) external view returns (uint256) {
+        return RideLibFee._getCancellationFee(_key);
     }
-
-    // getBaseFee(bytes32 _key) returns (uint256);
-    // getCostPerMinute(bytes32 _key) returns (uint256);
-    // getCostPerMetre(bytes32 _key, uint256 _badge) returns (uint256);
 }

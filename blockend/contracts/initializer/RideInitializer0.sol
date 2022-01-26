@@ -53,7 +53,7 @@ contract RideInitializer0 {
         uint256 _banDuration,
         uint256 _ratingMin,
         uint256 _ratingMax,
-        uint256 _requestFeeUSD,
+        uint256 _cancellationFeeUSD,
         uint256 _baseFeeUSD,
         uint256 _costPerMinuteUSD,
         uint256[] memory _costPerMetreUSD,
@@ -92,7 +92,7 @@ contract RideInitializer0 {
         bytes32 keyX = RideLibCurrencyRegistry._registerFiat("USD");
 
         // setup fee
-        RideLibFee._setRequestFee(keyX, _requestFeeUSD);
+        RideLibFee._setCancellationFee(keyX, _cancellationFeeUSD);
         RideLibFee._setBaseFee(keyX, _baseFeeUSD);
         RideLibFee._setCostPerMinute(keyX, _costPerMinuteUSD);
         RideLibFee._setCostPerMetre(keyX, _costPerMetreUSD);

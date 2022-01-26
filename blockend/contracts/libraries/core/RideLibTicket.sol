@@ -17,7 +17,7 @@ library RideLibTicket {
         uint256 metres;
         bytes32 keyLocal;
         bytes32 keyPay;
-        uint256 requestFee;
+        uint256 cancellationFee;
         uint256 fare;
         bool tripStart;
         uint256 forceEndTimestamp;

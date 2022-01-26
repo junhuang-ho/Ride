@@ -9,7 +9,7 @@ library RideLibFee {
     bytes32 constant STORAGE_POSITION_FEE = keccak256("ds.fee");
 
     struct StorageFee {
-        mapping(bytes32 => uint256) currencyKeyToRequestFee;
+        mapping(bytes32 => uint256) currencyKeyToCancellationFee;
         mapping(bytes32 => uint256) currencyKeyToBaseFee;
         mapping(bytes32 => uint256) currencyKeyToCostPerMinute;
         mapping(bytes32 => mapping(uint256 => uint256)) currencyKeyToBadgeToCostPerMetre;
@@ -22,20 +22,22 @@ library RideLibFee {
         }
     }
 
-    event FeeSetRequest(address indexed sender, uint256 fee);
+    event FeeSetCancellation(address indexed sender, uint256 fee);
 
     /**
-     * _setRequestFee sets request fee
+     * _setCancellationFee sets cancellation fee
      *
      * @param _key        | currency key
-     * @param _requestFee | unit in Wei
+     * @param _cancellationFee | unit in Wei
      */
-    function _setRequestFee(bytes32 _key, uint256 _requestFee) internal {
+    function _setCancellationFee(bytes32 _key, uint256 _cancellationFee)
+        internal
+    {
         RideLibOwnership._requireIsContractOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        _storageFee().currencyKeyToRequestFee[_key] = _requestFee; // input format: token in Wei
+        _storageFee().currencyKeyToCancellationFee[_key] = _cancellationFee; // input format: token in Wei
 
-        emit FeeSetRequest(msg.sender, _requestFee);
+        emit FeeSetCancellation(msg.sender, _cancellationFee);
     }
 
     event FeeSetBase(address indexed sender, uint256 fee);
@@ -130,27 +132,8 @@ library RideLibFee {
             (costPerMetre * _metresTravelled));
     }
 
-    function _getRequestFee(bytes32 _key) internal view returns (uint256) {
+    function _getCancellationFee(bytes32 _key) internal view returns (uint256) {
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
-        return _storageFee().currencyKeyToRequestFee[_key];
+        return _storageFee().currencyKeyToCancellationFee[_key];
     }
-
-    // function _getBaseFee(bytes32 _key) internal view returns (uint256) {
-    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
-    //     return _storageFee().currencyKeyToBaseFee[_key];
-    // }
-
-    // function _getCostPerMinute(bytes32 _key) internal view returns (uint256) {
-    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
-    //     return _storageFee().currencyKeyToCostPerMinute[_key];
-    // }
-
-    // function _getCostPerMetre(bytes32 _key, uint256 _badge)
-    //     internal
-    //     view
-    //     returns (uint256)
-    // {
-    //     RideLibCurrencyRegistry._requireCurrencySupported(_key);
-    //     return _storageFee().currencyKeyToBadgeToCostPerMetre[_key][_badge];
-    // }
 }

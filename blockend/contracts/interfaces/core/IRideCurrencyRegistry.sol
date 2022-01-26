@@ -18,7 +18,7 @@ interface IRideCurrencyRegistry {
 
     function setupFiatWithFee(
         string memory _code,
-        uint256 _requestFee,
+        uint256 _cancellationFee,
         uint256 _baseFee,
         uint256 _costPerMinute,
         uint256[] memory _costPerMetre
@@ -26,7 +26,7 @@ interface IRideCurrencyRegistry {
 
     function setupCryptoWithFee(
         address _token,
-        uint256 _requestFee,
+        uint256 _cancellationFee,
         uint256 _baseFee,
         uint256 _costPerMinute,
         uint256[] memory _costPerMetre

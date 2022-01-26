@@ -27,17 +27,17 @@ if (parseInt(chainId) === 31337)
             var rcpt = await tx.wait()
         })
 
-        describe("_setRequestFee", function ()
+        describe("_setCancellationFee", function ()
         {
             it("Should set value", async function ()
             {
-                expect(await contractRideFee.sCurrencyKeyToRequestFee_(keyLocal)).to.equal(0)
+                expect(await contractRideFee.sCurrencyKeyToCancellationFee_(keyLocal)).to.equal(0)
 
-                var tx = await contractRideFee.setRequestFee_(keyLocal, 5)
+                var tx = await contractRideFee.setCancellationFee_(keyLocal, 5)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                expect(await contractRideFee.sCurrencyKeyToRequestFee_(keyLocal)).to.equal(5)
+                expect(await contractRideFee.sCurrencyKeyToCancellationFee_(keyLocal)).to.equal(5)
             })
         })
 
@@ -101,11 +101,11 @@ if (parseInt(chainId) === 31337)
             })
         })
 
-        describe("_getRequestFee", function ()
+        describe("_getCancellationFee", function ()
         {
             it("Should return correct fee value", async function ()
             {
-                expect(await contractRideFee.getRequestFee_(keyLocal)).to.equal(5)
+                expect(await contractRideFee.getCancellationFee_(keyLocal)).to.equal(5)
             })
         })
     })
@@ -127,17 +127,17 @@ if (parseInt(chainId) === 31337)
             var rcpt = await tx.wait()
         })
 
-        describe("setRequestFee", function ()
+        describe("setCancellationFee", function ()
         {
             it("Should set value", async function ()
             {
-                expect(await contractRideFee.sCurrencyKeyToRequestFee_(keyLocal)).to.equal(0)
+                expect(await contractRideFee.sCurrencyKeyToCancellationFee_(keyLocal)).to.equal(0)
 
-                var tx = await contractRideFee.setRequestFee(keyLocal, 5)
+                var tx = await contractRideFee.setCancellationFee(keyLocal, 5)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                expect(await contractRideFee.sCurrencyKeyToRequestFee_(keyLocal)).to.equal(5)
+                expect(await contractRideFee.sCurrencyKeyToCancellationFee_(keyLocal)).to.equal(5)
             })
         })
 
@@ -201,11 +201,11 @@ if (parseInt(chainId) === 31337)
             })
         })
 
-        describe("getRequestFee", function ()
+        describe("getCancellationFee", function ()
         {
             it("Should return correct fee value", async function ()
             {
-                expect(await contractRideFee.getRequestFee(keyLocal)).to.equal(5)
+                expect(await contractRideFee.getCancellationFee(keyLocal)).to.equal(5)
             })
         })
 

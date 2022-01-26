@@ -2,9 +2,10 @@
 pragma solidity ^0.8.2;
 
 interface IRideFee {
-    event FeeSetRequest(address indexed sender, uint256 fee);
+    event FeeSetCancellation(address indexed sender, uint256 fee);
 
-    function setRequestFee(bytes32 _key, uint256 _requestFee) external;
+    function setCancellationFee(bytes32 _key, uint256 _cancellationFee)
+        external;
 
     event FeeSetBase(address indexed sender, uint256 fee);
 
@@ -26,7 +27,7 @@ interface IRideFee {
         uint256 _metresTravelled
     ) external view returns (uint256);
 
-    function getRequestFee(bytes32 _key) external view returns (uint256);
+    function getCancellationFee(bytes32 _key) external view returns (uint256);
 
     function getBaseFee(bytes32 _key) external view returns (uint256);
 

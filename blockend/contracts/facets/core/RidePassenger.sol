@@ -36,28 +36,35 @@ contract RidePassenger is IRidePassenger {
         RideLibDriver._requireNotDriver();
         RideLibTicket._requireNotActive();
         RideLibPenalty._requireNotBanned();
-        RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay);
+        // RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay); // note: double check on currency supported (check is already done indirectly by _getCancellationFee & _getFare, directly by currency conversion)
+        /**
+         * Note: if frontend implement correctly, removing this line
+         *       RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay);
+         *       would NOT be a problem
+         */
 
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
-        uint256 requestFeeLocal = RideLibFee._getRequestFee(_keyLocal);
+        uint256 cancellationFeeLocal = RideLibFee._getCancellationFee(
+            _keyLocal
+        );
         uint256 fareLocal = RideLibFee._getFare(
             _keyLocal,
             _badge,
             _minutes,
             _metres
         );
-        uint256 requestFeePay;
+        uint256 cancellationFeePay;
         uint256 farePay;
         if (_keyLocal == _keyPay) {
             // when local is in crypto token
-            requestFeePay = requestFeeLocal;
+            cancellationFeePay = cancellationFeeLocal;
             farePay = fareLocal;
         } else {
-            requestFeePay = RideLibExchange._convertCurrency(
+            cancellationFeePay = RideLibExchange._convertCurrency(
                 _keyLocal,
                 _keyPay,
-                requestFeeLocal
+                cancellationFeeLocal
             );
             farePay = RideLibExchange._convertCurrency(
                 _keyLocal,
@@ -69,8 +76,8 @@ contract RidePassenger is IRidePassenger {
             ._storageHolding()
             .userToCurrencyKeyToHolding[msg.sender][_keyPay];
         require(
-            (holdingAmount > requestFeePay) && (holdingAmount > farePay),
-            "passenger's holding < requestFee or fare"
+            (holdingAmount > cancellationFeePay) && (holdingAmount > farePay),
+            "passenger's holding < cancellationFee or fare"
         );
 
         bytes32 tixId = keccak256(abi.encode(msg.sender, block.timestamp));
@@ -81,12 +88,12 @@ contract RidePassenger is IRidePassenger {
         s2.tixIdToTicket[tixId].metres = _metres;
         s2.tixIdToTicket[tixId].keyLocal = _keyLocal;
         s2.tixIdToTicket[tixId].keyPay = _keyPay;
-        s2.tixIdToTicket[tixId].requestFee = requestFeePay;
+        s2.tixIdToTicket[tixId].cancellationFee = cancellationFeePay;
         s2.tixIdToTicket[tixId].fare = farePay;
 
         s2.userToTixId[msg.sender] = tixId;
 
-        emit RequestTicket(msg.sender, tixId, _minutes, _metres);
+        emit RequestTicket(msg.sender, tixId, farePay);
     }
 
     /**
@@ -108,7 +115,7 @@ contract RidePassenger is IRidePassenger {
             RideLibHolding._transferCurrency(
                 tixId,
                 s2.tixIdToTicket[tixId].keyPay,
-                s2.tixIdToTicket[tixId].requestFee,
+                s2.tixIdToTicket[tixId].cancellationFee,
                 msg.sender,
                 driver
             );

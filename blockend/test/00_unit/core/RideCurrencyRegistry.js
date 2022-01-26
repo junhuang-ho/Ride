@@ -246,7 +246,7 @@ if (parseInt(chainId) === 31337)
 
                 expect(await contractRideCurrencyRegistry.sCurrencyKeyToSupported_(key)).to.equal(true)
 
-                expect(await contractRideFee.getRequestFee(key)).to.equal(2)
+                expect(await contractRideFee.getCancellationFee(key)).to.equal(2)
                 expect(await contractRideFee.getBaseFee(key)).to.equal(3)
                 expect(await contractRideFee.getCostPerMinute(key)).to.equal(4)
                 expect(await contractRideFee.getCostPerMetre(key, 0)).to.equal(1)
@@ -270,7 +270,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideCurrencyRegistry.sCurrencyKeyToSupported_(key)).to.equal(true)
                 expect(await contractRideCurrencyRegistry.sCurrencyKeyToCrypto_(key)).to.equal(true)
 
-                expect(await contractRideFee.getRequestFee(key)).to.equal(2)
+                expect(await contractRideFee.getCancellationFee(key)).to.equal(2)
                 expect(await contractRideFee.getBaseFee(key)).to.equal(3)
                 expect(await contractRideFee.getCostPerMinute(key)).to.equal(4)
                 expect(await contractRideFee.getCostPerMetre(key, 0)).to.equal(1)

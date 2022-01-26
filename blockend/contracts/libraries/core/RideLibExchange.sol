@@ -90,15 +90,6 @@ library RideLibExchange {
         emit PriceFeedRemoved(msg.sender, priceFeed);
     }
 
-    // function _getXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY)
-    //     internal
-    //     view
-    //     returns (address)
-    // {
-    //     _requireXPerYPriceFeedSupported(_keyX, _keyY);
-    //     return _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY];
-    // }
-
     function _convertCurrency(
         bytes32 _keyX,
         bytes32 _keyY,

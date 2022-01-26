@@ -8,16 +8,16 @@ import {IRideFee} from "../../interfaces/core/IRideFee.sol";
 
 contract RideFee is IRideFee {
     /**
-     * setRequestFee sets request fee
+     * setCancellationFee sets cancellation fee
      *
      * @param _key        | currency key
-     * @param _requestFee | unit in token
+     * @param _cancellationFee | unit in token
      */
-    function setRequestFee(bytes32 _key, uint256 _requestFee)
+    function setCancellationFee(bytes32 _key, uint256 _cancellationFee)
         external
         override
     {
-        RideLibFee._setRequestFee(_key, _requestFee);
+        RideLibFee._setCancellationFee(_key, _cancellationFee);
     }
 
     /**
@@ -72,13 +72,14 @@ contract RideFee is IRideFee {
             RideLibFee._getFare(_key, _badge, _minutesTaken, _metresTravelled);
     }
 
-    function getRequestFee(bytes32 _key)
+    function getCancellationFee(bytes32 _key)
         external
         view
         override
         returns (uint256)
     {
-        return RideLibFee._getRequestFee(_key);
+        // note: currency supported check in internal fn (_getCancellationFee) called
+        return RideLibFee._getCancellationFee(_key);
     }
 
     function getBaseFee(bytes32 _key) external view override returns (uint256) {
