@@ -53,8 +53,12 @@ contract RideInitializer0 {
         uint256 _banDuration,
         uint256 _ratingMin,
         uint256 _ratingMax,
-        address _wethToken,
-        address _priceFeed
+        uint256 _requestFeeUSD,
+        uint256 _baseFeeUSD,
+        uint256 _costPerMinuteUSD,
+        uint256[] memory _costPerMetreUSD,
+        address[] memory _tokens,
+        address[] memory _priceFeeds
     ) external {
         // ass inits within this function as needed
 
@@ -87,41 +91,22 @@ contract RideInitializer0 {
         // setup fiat (or crypto)
         bytes32 keyX = RideLibCurrencyRegistry._registerFiat("USD");
 
-        yo = [
-            20000000000000000,
-            30000000000000000,
-            40000000000000000,
-            50000000000000000,
-            60000000000000000,
-            70000000000000000
-        ];
-
         // setup fee
-        RideLibFee._setRequestFee(keyX, 5000000000000000000);
-        RideLibFee._setBaseFee(keyX, 3000000000000000000);
-        RideLibFee._setCostPerMinute(keyX, 10000000000000000);
-        RideLibFee._setCostPerMetre(keyX, yo);
+        RideLibFee._setRequestFee(keyX, _requestFeeUSD);
+        RideLibFee._setBaseFee(keyX, _baseFeeUSD);
+        RideLibFee._setCostPerMinute(keyX, _costPerMinuteUSD);
+        RideLibFee._setCostPerMetre(keyX, _costPerMetreUSD);
 
-        // setup crypto (or fiat)
-        bytes32 keyY = RideLibCurrencyRegistry._registerCrypto(_wethToken);
-
-        ho = [
-            30000000000000000,
-            40000000000000000,
-            50000000000000000,
-            60000000000000000,
-            70000000000000000,
-            80000000000000000
-        ];
-
-        // setup fee
-        RideLibFee._setRequestFee(keyY, 6000000000000000000);
-        RideLibFee._setBaseFee(keyY, 5000000000000000000);
-        RideLibFee._setCostPerMinute(keyY, 20000000000000000);
-        RideLibFee._setCostPerMetre(keyY, ho);
-
-        // setup pair
-        RideLibExchange._addXPerYPriceFeed(keyX, keyY, _priceFeed);
+        require(
+            _tokens.length == _priceFeeds.length,
+            "number of tokens and price feeds must equal"
+        );
+        for (uint256 i = 0; i < _tokens.length; i++) {
+            // setup crypto (or fiat)
+            bytes32 keyY = RideLibCurrencyRegistry._registerCrypto(_tokens[i]);
+            // setup pair
+            RideLibExchange._addXPerYPriceFeed(keyX, keyY, _priceFeeds[i]);
+        }
 
         // note: for frontend, call RideCurrencyRegistry.setupFiatWithFee/setupCryptoWithFee --> RideExchange.addXPerYPriceFeed
     }

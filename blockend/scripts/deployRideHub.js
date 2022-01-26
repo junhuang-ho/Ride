@@ -149,15 +149,69 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     // Platinum ~ up to 3 year's work, 10 * 50_000 * 30 * 12 * 3 = 540_000_000
     // Veteran  ~ more than 3 year's work
 
+    const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"] // metres
+    const banDuration = "604800" // 7 days // https://www.epochconverter.com/
+    const ratingMin = "1"
+    const ratingMax = "5"
+    const requestFeeUSD = ethers.utils.parseEther("5") // $5 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
+    const baseFeeUSD = ethers.utils.parseEther("3") // $8 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
+    const costPerMinuteUSD = ethers.utils.parseEther("0.0001") // $0 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
+    const badgesCostPerMetreUSD =
+        [
+            ethers.utils.parseEther("0.0010"),
+            ethers.utils.parseEther("0.0012"),
+            ethers.utils.parseEther("0.0014"),
+            ethers.utils.parseEther("0.0016"),
+            ethers.utils.parseEther("0.0018"),
+            ethers.utils.parseEther("0.0020")
+        ] // $2.51 per mile for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
+
     if (parseInt(chainId) !== 31337)
     {
-        if (parseInt(chainId) === 4 || parseInt(chainId) === 42 || parseInt(chainId) === 5 || parseInt(chainId) === 1)
+        if (parseInt(chainId) === 137)
         {
-            nativeTokenAddress = networkConfig[chainId]["wrappedEth"]
-            nativeUSDPriceFeed = networkConfig[chainId]["ethUsdPriceFeed"]
-        } else if (parseInt(chainId) === 80001 || parseInt(chainId) === 137)
+            tokens =
+                [
+                    networkConfig[chainId]["tokenPlasmaMATIC"],
+                    networkConfig[chainId]["tokenPoSUSDT"],
+                    networkConfig[chainId]["tokenPoSUSDC"],
+                    networkConfig[chainId]["tokenPoSUST"],
+                    networkConfig[chainId]["tokenPoSDAI"],
+                    networkConfig[chainId]["tokenPoSWETH"],
+                    networkConfig[chainId]["tokenPoSWBTC"],
+                ]
+            priceFeeds =
+                [
+                    networkConfig[chainId]["priceFeedMATICUSD"],
+                    networkConfig[chainId]["priceFeedUSDTUSD"],
+                    networkConfig[chainId]["priceFeedUSDCUSD"],
+                    networkConfig[chainId]["priceFeedUSTUSD"],
+                    networkConfig[chainId]["priceFeedDAIUSD"],
+                    networkConfig[chainId]["priceFeedETHUSD"],
+                    networkConfig[chainId]["priceFeedBTCUSD"], // TODO: or use WBTC/USD one?
+                ]
+        } else if (parseInt(chainId) === 80001)
         {
-            throw new Error(`Polygon chain not yet implemented`)
+            tokens =
+                [
+                    networkConfig[chainId]["tokenPlasmaMATIC"],
+                    networkConfig[chainId]["tokenPoSWETH"],
+                ]
+            priceFeeds =
+                [
+                    networkConfig[chainId]["priceFeedMATICUSD"],
+                    networkConfig[chainId]["priceFeedETHUSD"],
+                ]
+        } else if (parseInt(chainId) === 4 || parseInt(chainId) === 42)
+        {
+            tokens =
+                [
+                    networkConfig[chainId]["tokenWETH"],
+                ]
+            priceFeeds =
+                [
+                    networkConfig[chainId]["priceFeedETHUSD"],
+                ]
         } else
         {
             throw new Error(`Supported chains are either Ethereum or Polygon, detected: ${chainId}`)
@@ -166,39 +220,26 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     {
         if (test)
         {
-            nativeTokenAddress = contractWETH9.address
-            nativeUSDPriceFeed = contractMockV3Aggregator.address
+            tokens = [contractWETH9.address]
+            priceFeeds = [contractMockV3Aggregator.address]
         } else
         {
-            nativeTokenAddress = "0xc778417e063141139fce010982780140aa0cd5ab" // dummy as long not zero address
-            nativeUSDPriceFeed = "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e" // dummy as long not zero address
+            tokens = ["0xc778417e063141139fce010982780140aa0cd5ab"] // dummy as long not zero address
+            priceFeeds = ["0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"] // dummy as long not zero address
         }
     }
 
-    const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"] // metres
-    const requestFee = ethers.utils.parseEther("5")
-    const baseFee = ethers.utils.parseEther("2")
-    const costPerMinute = ethers.utils.parseEther("0.15")
-    const badgesCostPerMetre =
-        [
-            ethers.utils.parseEther("0.10"),
-            ethers.utils.parseEther("0.20"),
-            ethers.utils.parseEther("0.30"),
-            ethers.utils.parseEther("0.40"),
-            ethers.utils.parseEther("0.50"),
-            ethers.utils.parseEther("0.60")
-        ]
-    const banDuration = "604800" // 7 days // https://www.epochconverter.com/
-    const ratingMin = "1"
-    const ratingMax = "5"
-
-    const initParams = [
+    initParams = [
         badgesMaxScore,
         banDuration,
         ratingMin,
         ratingMax,
-        nativeTokenAddress,
-        nativeUSDPriceFeed
+        requestFeeUSD,
+        baseFeeUSD,
+        costPerMinuteUSD,
+        badgesCostPerMetreUSD,
+        tokens,
+        priceFeeds
     ]
 
     console.log('Cutting A RideHub Diamond 💎')
@@ -236,7 +277,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
 
     if (test)
     {
-        return [contractRideHub.address, nativeUSDPriceFeed, nativeTokenAddress]
+        return [contractRideHub.address, priceFeeds[0], tokens[0]]
     } else
     {
         return [contractRideHub.address, ethers.constants.AddressZero, ethers.constants.AddressZero]

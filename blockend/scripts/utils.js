@@ -1,72 +1,69 @@
 const { ethers } = require("hardhat")
-const fs = require('fs')
+const fs = require("fs")
 
 const networkConfig = {
     default: {
-        name: 'hardhat',
-        fee: '100000000000000000',
-        keyHash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4',
-        jobId: '29fa9aa13bf1468788b7cc4a500a45b8',
-        fundAmount: "1000000000000000000"
+        name: "hardhat",
     },
     31337: {
-        name: 'localhost',
-        feeLink: '100000000000000000',
-        keyHash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4',
-        jobId: '29fa9aa13bf1468788b7cc4a500a45b8',
-        fundAmount: "1000000000000000000"
-    },
-    42: {
-        name: 'kovan',
-        wrappedEth: '0xd0a1e359811322d97991e03f863a0c30c2cf029c',
-        linkToken: '0xa36085F69e2889c224210F603D836748e7dC0088',
-        ethUsdPriceFeed: '0x9326BFA02ADD2366b30bacB125260Af641031331',
-        keyHash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4',
-        VRFCoordinator: '0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9',
-        oracle: '0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e',
-        jobId: '29fa9aa13bf1468788b7cc4a500a45b8',
-        feeLink: '100000000000000000',
-        fundAmount: "1000000000000000000"
-    },
-    4: {
-        name: 'rinkeby',
-        wrappedEth: '0xc778417e063141139fce010982780140aa0cd5ab',
-        linkToken: '0x01be23585060835e02b77ef475b0cc51aa1e0709',
-        ethUsdPriceFeed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
-        keyHash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311',
-        VRFCoordinator: '0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B',
-        oracle: '0x7AFe1118Ea78C1eae84ca8feE5C65Bc76CcF879e',
-        jobId: '6d1bfe27e7034b1d87b5270556b17277',
-        feeLink: '100000000000000000',
-        fundAmount: "1000000000000000000"
+        name: "localhost",
     },
     1: {
-        name: 'mainnet',
-        linkToken: '0x514910771af9ca656af840dff83e8264ecf986ca',
-        fundAmount: "0"
+        name: "mainnet",
+        tokenWETH: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        priceFeedETHUSD: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    },
+    4: {
+        name: "rinkeby",
+        tokenWETH: "0xc778417e063141139fce010982780140aa0cd5ab",
+        priceFeedETHUSD: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
+    },
+    42: {
+        name: "kovan",
+        tokenWETH: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+        priceFeedETHUSD: "0x9326BFA02ADD2366b30bacB125260Af641031331",
+
     },
     5: {
-        name: 'goerli',
-        linkToken: '0x326c977e6efc84e512bb9c30f76e30c160ed06fb',
-        fundAmount: "0"
+        name: "goerli",
+        tokenWETH: "0x0bb7509324ce409f7bbc4b701f932eaca9736ab7",
     },
     137: {
-        name: 'polygon-mainnet',
-        linkToken: '0xb0897686c545045aFc77CF20eC7A532E3120E0F1',
-        keyHash: '0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da',
-        VRFCoordinator: '0x3d2341ADb2D31f1c5530cDC622016af293177AE0',
-        feeLink: '100000000000000',
-        fundAmount: '200000000000000'
+        name: "polygon-mainnet",
+        tokenPlasmaMATIC: "0x0000000000000000000000000000000000001010",
+        tokenPoSUSDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        tokenPoSUSDC: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        tokenPoSUST: "0x692597b009d13c4049a947cab2239b7d6517875f",
+        tokenPoSDAI: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+        // tokenPlasmaDAI: "0x84000b263080BC37D1DD73A29D92794A6CF1564e",
+        tokenPoSWETH: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+        // tokenPlasmaWETH: "0x8cc8538d60901d19692F5ba22684732Bc28F54A3",
+        tokenPoSWBTC: "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+        priceFeedMATICUSD: "0xAB594600376Ec9fD91F8e885dADF0CE036862dE0",
+        priceFeedUSDTUSD: "0x0A6513e40db6EB1b165753AD52E80663aeA50545",
+        priceFeedUSDCUSD: "0xfE4A8cc5b5B2366C1B58Bea3858e81843581b2F7",
+        priceFeedUSTUSD: "0x2D455E55e8Ad3BA965E3e95e7AaB7dF1C671af19",
+        priceFeedDAIUSD: "0x4746DeC9e833A82EC7C2C1356372CcF2cfcD2F3D",
+        priceFeedETHUSD: "0xF9680D99D6C9589e2a93a78A04A279e509205945",
+        priceFeedBTCUSD: "0xc907E116054Ad103354f2D350FD2514433D57F6f",
+        priceFeedWBTCUSD: "0xDE31F8bFBD8c84b5360CFACCa3539B938dd78ae6",
+        // priceFeedRIDEUSD: "",
     },
     80001: {
-        name: 'polygon-mumbai',
-        maticToken: '',
-        ethUsdPriceFeed: '0x0715A7794a1dc8e42615F059dD6e406A6594651A',
-        linkToken: '0x326C977E6efc84E512bB9C30f76E30c160eD06FB',
-        keyHash: '0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4',
-        VRFCoordinator: '0x8C7382F9D8f56b33781fE506E897a4F1e2d17255',
-        feeLink: '100000000000000',
-        fundAmount: '200000000000000'
+        name: "polygon-mumbai",
+        tokenPlasmaMATIC: "0x0000000000000000000000000000000000001010",
+        tokenPoSWETH: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
+        tokenPlasmaWETH: "0x4DfAe612aaCB5b448C12A591cD0879bFa2e51d62",
+        tokenERC20Dummy: "0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1",
+        tokenERC20Test: "0x2d7882beDcbfDDce29Ba99965dd3cdF7fcB10A1e",
+        priceFeedMATICUSD: "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
+        priceFeedUSDTUSD: "0x92C09849638959196E976289418e5973CC96d645",
+        priceFeedUSDCUSD: "0x572dDec9087154dC5dfBB1546Bb62713147e0Ab0",
+        // priceFeedUSTUSD: "",
+        priceFeedDAIUSD: "0x0FCAa9c899EC5A91eBc3D5Dd869De833b06fB046",
+        priceFeedETHUSD: "0x0715A7794a1dc8e42615F059dD6e406A6594651A",
+        priceFeedBTCUSD: "0x007A22900a3B98143368Bd5906f8E17e9867581b",
+        // priceFeedRIDEUSD: "",
     },
 }
 
