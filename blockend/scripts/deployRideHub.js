@@ -175,7 +175,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         {
             tokens =
                 [
-                    networkConfig[chainId]["tokenPlasmaMATIC"],
+                    // networkConfig[chainId]["tokenWMATIC"],
                     networkConfig[chainId]["tokenPoSUSDT"],
                     networkConfig[chainId]["tokenPoSUSDC"],
                     networkConfig[chainId]["tokenPoSUST"],
@@ -185,7 +185,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
                 ]
             priceFeeds =
                 [
-                    networkConfig[chainId]["priceFeedMATICUSD"],
+                    // networkConfig[chainId]["priceFeedMATICUSD"],
                     networkConfig[chainId]["priceFeedUSDTUSD"],
                     networkConfig[chainId]["priceFeedUSDCUSD"],
                     networkConfig[chainId]["priceFeedUSTUSD"],
@@ -197,7 +197,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         {
             tokens =
                 [
-                    networkConfig[chainId]["tokenPlasmaMATIC"],
+                    networkConfig[chainId]["tokenWMATIC"],
                     networkConfig[chainId]["tokenPoSWETH"],
                 ]
             priceFeeds =

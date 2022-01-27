@@ -30,7 +30,7 @@ const networkConfig = {
     },
     137: {
         name: "polygon-mainnet",
-        tokenPlasmaMATIC: "0x0000000000000000000000000000000000001010",
+        // tokenWMATIC: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", // not sure PoS or Plasma | not as popular as others, maybe no support?
         tokenPoSUSDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
         tokenPoSUSDC: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
         tokenPoSUST: "0x692597b009d13c4049a947cab2239b7d6517875f",
@@ -51,7 +51,7 @@ const networkConfig = {
     },
     80001: {
         name: "polygon-mumbai",
-        tokenPlasmaMATIC: "0x0000000000000000000000000000000000001010",
+        tokenWMATIC: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
         tokenPoSWETH: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
         tokenPlasmaWETH: "0x4DfAe612aaCB5b448C12A591cD0879bFa2e51d62",
         tokenERC20Dummy: "0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1",
