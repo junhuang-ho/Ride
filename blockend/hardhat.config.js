@@ -88,7 +88,7 @@ module.exports = {
         // gasPriceApi: process.env.GAS_PRICE_API_ETH,
         token: "MATIC",
         gasPriceApi: process.env.GAS_PRICE_API_MATIC,
-    },
+    }, // TODO: check this price decimal precision updated? https://github.com/cgewecke/hardhat-gas-reporter/issues/88
     namedAccounts: { // by hardhat-deploy
         deployer: {
             default: 0

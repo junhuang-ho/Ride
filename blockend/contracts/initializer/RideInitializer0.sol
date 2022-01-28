@@ -84,6 +84,8 @@ contract RideInitializer0 {
         s1.supportedInterfaces[type(IRideExchange).interfaceId] = true;
         s1.supportedInterfaces[type(IRideRater).interfaceId] = true;
 
+        // TODO: register function selectors in interfaces
+
         // setup
         RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
         RideLibPenalty._setBanDuration(_banDuration);
