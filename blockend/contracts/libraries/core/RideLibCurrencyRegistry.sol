@@ -41,6 +41,7 @@ library RideLibCurrencyRegistry {
 
     // code must follow: ISO-4217 Currency Code Standard: https://www.iso.org/iso-4217-currency-codes.html
     function _registerFiat(string memory _code) internal returns (bytes32) {
+        require(bytes(_code).length != 0, "empty code string");
         bytes32 key = keccak256(abi.encode(_code));
         _register(key);
         return key;

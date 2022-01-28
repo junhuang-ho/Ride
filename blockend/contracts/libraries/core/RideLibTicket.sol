@@ -35,6 +35,7 @@ library RideLibTicket {
         mapping(address => bytes32) userToTixId;
         mapping(bytes32 => Ticket) tixIdToTicket;
         mapping(bytes32 => DriverEnd) tixToDriverEnd;
+        uint256 forceEndDelay; // seconds
     }
 
     function _storageTicket() internal pure returns (StorageTicket storage s) {
@@ -49,6 +50,14 @@ library RideLibTicket {
             _storageTicket().userToTixId[msg.sender] == 0,
             "caller is active"
         );
+    }
+
+    event ForceEndDelaySet(address indexed sender, uint256 newDelayPeriod);
+
+    function _setForceEndDelay(uint256 _delayPeriod) internal {
+        _storageTicket().forceEndDelay = _delayPeriod;
+
+        emit ForceEndDelaySet(msg.sender, _delayPeriod);
     }
 
     event TicketCleared(address indexed sender, bytes32 indexed tixId);

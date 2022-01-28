@@ -32,11 +32,11 @@ contract RideDriverRegistry is IRideDriverRegistry {
         s1
             .driverToDriverReputation[msg.sender]
             .maxMetresPerTrip = _maxMetresPerTrip;
-        s1.driverToDriverReputation[msg.sender].metresTravelled = 0;
-        s1.driverToDriverReputation[msg.sender].countStart = 0;
-        s1.driverToDriverReputation[msg.sender].countEnd = 0;
-        s1.driverToDriverReputation[msg.sender].totalRating = 0;
-        s1.driverToDriverReputation[msg.sender].countRating = 0;
+        // s1.driverToDriverReputation[msg.sender].metresTravelled = 0;
+        // s1.driverToDriverReputation[msg.sender].countStart = 0;
+        // s1.driverToDriverReputation[msg.sender].countEnd = 0;
+        // s1.driverToDriverReputation[msg.sender].totalRating = 0;
+        // s1.driverToDriverReputation[msg.sender].countRating = 0;
 
         emit RegisteredAsDriver(msg.sender);
     }

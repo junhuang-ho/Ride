@@ -6,6 +6,10 @@ import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
 import {IRideTicket} from "../../interfaces/core/IRideTicket.sol";
 
 contract RideTicket is IRideTicket {
+    function setForceEndDelay(uint256 _delayPeriod) external override {
+        RideLibTicket._setForceEndDelay(_delayPeriod);
+    }
+
     function getUserToTixId(address _user)
         external
         view

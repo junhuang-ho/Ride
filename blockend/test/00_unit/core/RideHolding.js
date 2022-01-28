@@ -73,16 +73,16 @@ if (parseInt(chainId) === 31337)
             {
                 await expect(contractRideHolding.depositTokens(keyLocal, 0)).to.revertedWith("zero amount")
             })
-            it("Should revert if decoded address is zero address", async function ()
-            {
-                zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
-                var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
-                var rcpt = await tx.wait()
-                var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
-                var rcpt = await tx.wait()
+            // it("Should revert if decoded address is zero address", async function ()
+            // {
+            //     zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
+            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
+            //     var rcpt = await tx.wait()
+            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
+            //     var rcpt = await tx.wait()
 
-                await expect(contractRideHolding.depositTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
-            })
+            //     await expect(contractRideHolding.depositTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
+            // })
             it("Should revert if allowance not approved")
             it("Should set amount of holding for currency to user")
         })
@@ -93,16 +93,16 @@ if (parseInt(chainId) === 31337)
             {
                 await expect(contractRideHolding.withdrawTokens(keyLocal, 0)).to.revertedWith("zero amount")
             })
-            it("Should revert if decoded address is zero address", async function ()
-            {
-                zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
-                var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
-                var rcpt = await tx.wait()
-                var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
-                var rcpt = await tx.wait()
+            // it("Should revert if decoded address is zero address", async function ()
+            // {
+            //     zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
+            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
+            //     var rcpt = await tx.wait()
+            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
+            //     var rcpt = await tx.wait()
 
-                await expect(contractRideHolding.withdrawTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
-            })
+            //     await expect(contractRideHolding.withdrawTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
+            // })
             it("Should revert if user has insufficient deposits for currency", async function ()
             {
                 var tx = await contractRideHolding.ssUserToCurrencyKeyToHolding_(accounts[0].address, keyLocal, 3)

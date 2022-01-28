@@ -25,6 +25,10 @@ contract RideTestTicket is RideTicket {
         return RideLibTicket._storageTicket().tixToDriverEnd[_tixId];
     }
 
+    function sForceEndDelay() external view returns (uint256) {
+        return RideLibTicket._storageTicket().forceEndDelay;
+    }
+
     function ssUserToTixId_(address _user, bytes32 _tixId) external {
         RideLibTicket._storageTicket().userToTixId[_user] = _tixId;
     }
@@ -74,6 +78,10 @@ contract RideTestTicket is RideTicket {
     function requireNotActive_() external view returns (bool) {
         RideLibTicket._requireNotActive();
         return true;
+    }
+
+    function setForceEndDelay_(uint256 _delayPeriod) external {
+        RideLibTicket._setForceEndDelay(_delayPeriod);
     }
 
     function cleanUp_(

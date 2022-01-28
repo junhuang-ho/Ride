@@ -28,6 +28,7 @@ import {RideLibPassenger} from "../libraries/core/RideLibPassenger.sol";
 import {RideLibDriver} from "../libraries/core/RideLibDriver.sol";
 import {RideLibDriverRegistry} from "../libraries/core/RideLibDriverRegistry.sol";
 import {RideLibRater} from "../libraries/core/RideLibRater.sol";
+import {RideLibTicket} from "../libraries/core/RideLibTicket.sol";
 
 import {RideLibExchange} from "../libraries/core/RideLibExchange.sol";
 import {RideLibCurrencyRegistry} from "../libraries/core/RideLibCurrencyRegistry.sol";
@@ -51,6 +52,7 @@ contract RideInitializer0 {
     function init(
         uint256[] memory _badgesMaxScores,
         uint256 _banDuration,
+        uint256 _delayPeriod,
         uint256 _ratingMin,
         uint256 _ratingMax,
         uint256 _cancellationFeeUSD,
@@ -85,6 +87,7 @@ contract RideInitializer0 {
         // setup
         RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
         RideLibPenalty._setBanDuration(_banDuration);
+        RideLibTicket._setForceEndDelay(_delayPeriod);
         RideLibRater._setRatingBounds(_ratingMin, _ratingMax);
         RideLibDriverRegistry._burnFirstDriverId();
 

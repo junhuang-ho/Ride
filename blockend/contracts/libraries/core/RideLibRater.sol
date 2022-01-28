@@ -29,6 +29,8 @@ library RideLibRater {
      */
     function _setRatingBounds(uint256 _min, uint256 _max) internal {
         RideLibOwnership._requireIsContractOwner();
+        require(_min > 0, "cannot have zero rating bound");
+        require(_max > _min, "maximum rating must be more than minimum rating");
         StorageRater storage s1 = _storageRater();
         s1.ratingMin = _min;
         s1.ratingMax = _max;
@@ -47,8 +49,10 @@ library RideLibRater {
         RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         StorageRater storage s2 = _storageRater();
 
-        require(s2.ratingMin > 0, "minimum rating must be more than zero");
-        require(s2.ratingMax > 0, "maximum rating must be more than zero");
+        // require(s2.ratingMax > 0, "maximum rating must be more than zero");
+        // require(s2.ratingMin > 0, "minimum rating must be more than zero");
+        // since remove greater than 0 check, makes pax call more gas efficient,
+        // but make sure _setRatingBounds called at init
         require(
             _rating >= s2.ratingMin && _rating <= s2.ratingMax,
             "rating must be within min and max ratings (inclusive)"

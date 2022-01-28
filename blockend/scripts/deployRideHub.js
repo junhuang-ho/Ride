@@ -154,6 +154,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
 
     const badgesMaxScore = ["500000", "15000000", "90000000", "180000000", "540000000"] // metres
     const banDuration = "604800" // 7 days // https://www.epochconverter.com/
+    const forceEndDelay = "86400"; // 1 day
     const ratingMin = "1"
     const ratingMax = "5"
     const cancellationFeeUSD = ethers.utils.parseEther("5") // $5 for random search on Uber: Central Park --> Brooklyn https://www.uber.com/global/en/price-estimate/
@@ -235,6 +236,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     initParams = [
         badgesMaxScore,
         banDuration,
+        forceEndDelay,
         ratingMin,
         ratingMax,
         cancellationFeeUSD,

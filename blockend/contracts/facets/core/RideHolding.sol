@@ -25,7 +25,7 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         RideLibCurrencyRegistry._requireIsCrypto(_key);
         require(_amount > 0, "zero amount");
         address token = address(bytes20(_key)); // convert to address
-        require(token != address(0), "zero token address");
+        // require(token != address(0), "zero token address"); // checked at currency registration
 
         require(
             IERC20(token).allowance(msg.sender, address(this)) >= _amount,
@@ -60,7 +60,7 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         RideLibCurrencyRegistry._requireIsCrypto(_key);
         require(_amount > 0, "zero amount");
         address token = address(bytes20(_key)); // convert to address
-        require(token != address(0), "zero token address");
+        // require(token != address(0), "zero token address"); // checked at currency registration
 
         RideLibHolding.StorageHolding storage s1 = RideLibHolding
             ._storageHolding();

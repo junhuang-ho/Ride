@@ -64,6 +64,20 @@ if (parseInt(chainId) === 31337)
             })
         })
 
+        describe("_setForceEndDelay", function ()
+        {
+            it("Should set delay value", async function ()
+            {
+                expect(await contractRideTicket.sForceEndDelay()).to.equal(0)
+
+                var tx = await contractRideTicket.setForceEndDelay_(86400)
+                var rcpt = await tx.wait()
+
+
+                expect(await contractRideTicket.sForceEndDelay()).to.equal(86400)
+            })
+        })
+
         describe("_cleanUp", function ()
         {
             it("Should remove user to ticket, ticket and driver end data", async function ()
@@ -147,6 +161,20 @@ if (parseInt(chainId) === 31337)
                 tixId, accounts[1].address, true
             )
             var rcpt = await tx.wait()
+        })
+
+        describe("setForceEndDelay", function ()
+        {
+            it("Should set delay value", async function ()
+            {
+                expect(await contractRideTicket.sForceEndDelay()).to.equal(0)
+
+                var tx = await contractRideTicket.setForceEndDelay(86400)
+                var rcpt = await tx.wait()
+
+
+                expect(await contractRideTicket.sForceEndDelay()).to.equal(86400)
+            })
         })
 
         describe("getUserToTixId", function ()

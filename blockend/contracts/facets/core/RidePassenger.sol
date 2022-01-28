@@ -80,7 +80,7 @@ contract RidePassenger is IRidePassenger {
             "passenger's holding < cancellationFee or fare"
         );
 
-        bytes32 tixId = keccak256(abi.encode(msg.sender, block.timestamp));
+        bytes32 tixId = keccak256(abi.encode(msg.sender, block.timestamp)); // encode gas seems less? but diff very small
 
         s2.tixIdToTicket[tixId].passenger = msg.sender;
         s2.tixIdToTicket[tixId].badge = _badge;
@@ -146,7 +146,9 @@ contract RidePassenger is IRidePassenger {
             .driverToDriverReputation[_driver]
             .countStart += 1;
         s2.tixIdToTicket[tixId].tripStart = true;
-        s2.tixIdToTicket[tixId].forceEndTimestamp = block.timestamp + 1 days; // TODO: change 1 day to setter fn
+        s2.tixIdToTicket[tixId].forceEndTimestamp =
+            block.timestamp +
+            s2.forceEndDelay;
 
         emit TripStarted(msg.sender, tixId, _driver); // update frontend
     }

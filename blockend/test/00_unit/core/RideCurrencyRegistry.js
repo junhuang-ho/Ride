@@ -78,6 +78,10 @@ if (parseInt(chainId) === 31337)
 
         describe("_registerFiat", function ()
         {
+            it("Should revert if empty code string", async function ()
+            {
+                await expect(contractRideCurrencyRegistry.registerFiat_("")).to.revertedWith("empty code string")
+            })
             it("Should convert string currency coode to bytes32 key and set as supported", async function ()
             {
                 var tx = await contractRideCurrencyRegistry.registerFiat_("USD")
@@ -146,6 +150,10 @@ if (parseInt(chainId) === 31337)
     {
         describe("registerFiat", function ()
         {
+            it("Should revert if empty code string", async function ()
+            {
+                await expect(contractRideCurrencyRegistry.registerFiat("")).to.revertedWith("empty code string")
+            })
             it("Should convert string currency coode to bytes32 key and set as supported", async function ()
             {
                 var tx = await contractRideCurrencyRegistry.registerFiat("USD")

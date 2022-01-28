@@ -121,7 +121,7 @@ library RideLibFee {
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         StorageFee storage s1 = _storageFee();
 
-        uint256 baseFee = s1.currencyKeyToBaseFee[_key];
+        uint256 baseFee = s1.currencyKeyToBaseFee[_key]; // not much diff in terms of gas to assign temporary variable vs using directly (below)
         uint256 costPerMinute = s1.currencyKeyToCostPerMinute[_key];
         uint256 costPerMetre = s1.currencyKeyToBadgeToCostPerMetre[_key][
             _badge

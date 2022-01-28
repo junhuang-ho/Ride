@@ -2,20 +2,22 @@ require("@nomiclabs/hardhat-waffle")
 require("@nomiclabs/hardhat-etherscan")
 require('hardhat-deploy')
 require('solidity-coverage')
-require('hardhat-contract-sizer');
-require("hardhat-deploy-ethers");
+require('hardhat-contract-sizer')
+require("hardhat-deploy-ethers")
+require("hardhat-gas-reporter")
 require('dotenv').config()
 
 module.exports = {
     solidity: {
-        compilers: [
-            { version: "0.8.0" }, // MUST SAME AS .sol FILES VERSION !!! IF NOT HAVE VERIFY ISSUE !!!
-            { version: "0.8.2" },
-            { version: "0.5.11" },
-            { version: "0.4.24" }, // for mocks
-            // { version: "0.4.16" },
-            { version: "0.6.6" } // for mocks
-        ],
+        compilers:
+            [
+                { version: "0.8.0" }, // MUST SAME AS .sol FILES VERSION !!! IF NOT HAVE VERIFY ISSUE !!!
+                { version: "0.8.2" },
+                { version: "0.5.11" },
+                { version: "0.4.24" }, // for mocks
+                // { version: "0.4.16" },
+                { version: "0.6.6" } // for mocks
+            ],
         settings: {
             optimizer: {
                 enabled: true,
@@ -76,6 +78,16 @@ module.exports = {
     etherscan: {
         // apiKey: process.env.API_KEY_ETHERSCAN
         apiKey: process.env.API_KEY_POLYGONSCAN // actually no such thing polygonscan is powered by etherscan: https://github.com/nomiclabs/hardhat/issues/1727#issuecomment-931250893
+    },
+    gasReporter: {
+        // enabled: (process.env.REPORT_GAS) ? true : false,
+        currency: "USD",
+        coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+
+        // token: "ETH",
+        // gasPriceApi: process.env.GAS_PRICE_API_ETH,
+        token: "MATIC",
+        gasPriceApi: process.env.GAS_PRICE_API_MATIC,
     },
     namedAccounts: { // by hardhat-deploy
         deployer: {
