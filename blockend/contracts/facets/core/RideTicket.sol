@@ -36,4 +36,8 @@ contract RideTicket is IRideTicket {
     {
         return RideLibTicket._storageTicket().tixToDriverEnd[_tixId];
     }
+
+    function getForceEndDelay() external view override returns (uint256) {
+        return RideLibTicket._storageTicket().forceEndDelay;
+    }
 }

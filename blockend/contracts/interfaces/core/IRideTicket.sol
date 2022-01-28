@@ -20,5 +20,7 @@ interface IRideTicket {
         view
         returns (RideLibTicket.DriverEnd memory);
 
+    function getForceEndDelay() external view returns (uint256);
+
     event TicketCleared(address indexed sender, bytes32 indexed tixId);
 }
