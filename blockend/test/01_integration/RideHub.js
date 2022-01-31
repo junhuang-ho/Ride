@@ -111,6 +111,7 @@ if (parseInt(chainId) === 31337)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).countRating).to.equal(0)
 
                 // admin does not call approveApplicant
+
                 await expect(contractRideDriverRegistry.registerAsDriver(500)).to.revertedWith("uri not set in bg check")
 
             })
@@ -120,7 +121,7 @@ if (parseInt(chainId) === 31337)
         {
             it("Should allow driver deposit", async function ()
             {
-                // convert ETH to wETH
+                // convert ETH to wETH in wallet
                 expect(await contractWETH9O.balanceOf(driver)).to.equal(0)
 
                 wallet = new ethers.Wallet(pkDriver, waffle.provider)
@@ -129,7 +130,7 @@ if (parseInt(chainId) === 31337)
 
                 expect(await contractWETH9O.balanceOf(driver)).to.equal(ethers.utils.parseEther(sendAmountInETH))
 
-                // approve RideHub
+                // approve RideHub contract to be able to handle user's wETH
                 var tx = await contractWETH9D.approve(rideHubAddress, ethers.utils.parseEther(approveAmountInWETH))
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
@@ -146,7 +147,7 @@ if (parseInt(chainId) === 31337)
 
             it("Should allow passenger deposit", async function ()
             {
-                // convert ETH to wETH
+                // convert ETH to wETH in wallet
                 expect(await contractWETH9O.balanceOf(passenger)).to.equal(0)
 
                 wallet = new ethers.Wallet(pkPassenger, waffle.provider)
@@ -155,7 +156,7 @@ if (parseInt(chainId) === 31337)
 
                 expect(await contractWETH9O.balanceOf(passenger)).to.equal(ethers.utils.parseEther(sendAmountInETH))
 
-                // approve RideHub
+                // approve RideHub contract to be able to handle user's wETH
                 var tx = await contractWETH9P.approve(rideHubAddress, ethers.utils.parseEther(approveAmountInWETH))
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
@@ -256,7 +257,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // passenger disagress, ends trip, and gives rating
+                // passenger disagress, CANNOT end trip
                 await expect(contractRidePassengerP.endTripPax(false, 4)).to.revertedWith("pax must agree destination reached or not - indicated by driver")
 
                 // driver switches destination status
@@ -302,7 +303,7 @@ if (parseInt(chainId) === 31337)
 
                 // "destination" reached
 
-                // driver ends trip
+                // driver ends trip, set destination not reached
                 var tx = await contractRideDriverD.endTripDrv(false)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
@@ -345,12 +346,12 @@ if (parseInt(chainId) === 31337)
 
                 // "destination" reached
 
-                // driver ends trip
+                // driver ends trip, set destination not reached
                 var tx = await contractRideDriverD.endTripDrv(false)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // passenger disagress, ends trip, and gives rating
+                // passenger disagress, CANNOT end trip
                 await expect(contractRidePassengerP.endTripPax(false, 4)).to.revertedWith("pax must agree destination reached or not - indicated by driver")
 
                 // driver switches destination status
@@ -515,7 +516,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // cancellation fee never transferred
+                // cancellation fee never transferred (because no driver accept ticket yet)
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.equal(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.equal(currentDrvHolding)
 
@@ -551,7 +552,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // cancellation fee never transferred
+                // cancellation fee transferred
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.be.below(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.be.above(currentDrvHolding)
 
@@ -587,7 +588,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                // cancellation fee never transferred
+                // cancellation fee transferred
                 expect(await contractRideHoldingO.getHolding(passenger, keyPay)).to.be.above(currentPaxHolding)
                 expect(await contractRideHoldingO.getHolding(driver, keyPay)).to.be.below(currentDrvHolding)
 
