@@ -21,6 +21,8 @@ EIP1559 way of sending transactions for wallet: https://docs.polygon.technology/
 
 Polygon gas station: https://docs.polygon.technology/docs/develop/tools/polygon-gas-station
 
+in addition to google maps, check out HERE we go (strong competitor to google maps): https://developer.here.com/
+
 ## Testing
 ```
 ~$ cd blockend
