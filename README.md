@@ -21,7 +21,9 @@ EIP1559 way of sending transactions for wallet: https://docs.polygon.technology/
 
 Polygon gas station: https://docs.polygon.technology/docs/develop/tools/polygon-gas-station
 
-in addition to google maps, check out HERE we go (strong competitor to google maps): https://developer.here.com/
+in addition to google maps, check out 
+1. HERE we go (strong competitor to google maps): https://developer.here.com/
+2. 2. OpenStreetMaps (open source maps): https://www.openstreetmap.org/#map=7/3.464/101.635
 
 ## Testing
 ```
