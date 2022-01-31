@@ -34,7 +34,7 @@ library RideLibTicket {
     struct StorageTicket {
         mapping(address => bytes32) userToTixId;
         mapping(bytes32 => Ticket) tixIdToTicket;
-        mapping(bytes32 => DriverEnd) tixToDriverEnd;
+        mapping(bytes32 => DriverEnd) tixIdToDriverEnd;
         uint256 forceEndDelay; // seconds
     }
 
@@ -78,7 +78,7 @@ library RideLibTicket {
     ) internal {
         StorageTicket storage s1 = _storageTicket();
         delete s1.tixIdToTicket[_tixId];
-        delete s1.tixToDriverEnd[_tixId];
+        delete s1.tixIdToDriverEnd[_tixId];
         delete s1.userToTixId[_passenger];
         delete s1.userToTixId[_driver];
 

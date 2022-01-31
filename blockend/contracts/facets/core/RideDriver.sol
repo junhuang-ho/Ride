@@ -135,9 +135,9 @@ contract RideDriver is IRideDriver {
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
 
         bytes32 tixId = s1.userToTixId[msg.sender];
-        // tixToDriverEnd[tixId] = DriverEnd({driver: msg.sender, reached: true}); // takes up more space
-        s1.tixToDriverEnd[tixId].driver = msg.sender;
-        s1.tixToDriverEnd[tixId].reached = _reached;
+        // tixIdToDriverEnd[tixId] = DriverEnd({driver: msg.sender, reached: true}); // takes up more space
+        s1.tixIdToDriverEnd[tixId].driver = msg.sender;
+        s1.tixIdToDriverEnd[tixId].reached = _reached;
 
         emit TripEndedDrv(msg.sender, tixId, _reached);
     }
@@ -159,7 +159,7 @@ contract RideDriver is IRideDriver {
 
         bytes32 tixId = s1.userToTixId[msg.sender];
         require(
-            s1.tixToDriverEnd[tixId].driver != address(0),
+            s1.tixIdToDriverEnd[tixId].driver != address(0),
             "driver must end trip"
         ); // TODO: test
         address passenger = s1.tixIdToTicket[tixId].passenger;

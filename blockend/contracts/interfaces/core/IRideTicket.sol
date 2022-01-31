@@ -15,7 +15,7 @@ interface IRideTicket {
         view
         returns (RideLibTicket.Ticket memory);
 
-    function getTixToDriverEnd(bytes32 _tixId)
+    function getTixIdToDriverEnd(bytes32 _tixId)
         external
         view
         returns (RideLibTicket.DriverEnd memory);

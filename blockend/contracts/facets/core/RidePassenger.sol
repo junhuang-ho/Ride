@@ -174,7 +174,7 @@ contract RidePassenger is IRidePassenger {
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
         bytes32 tixId = s2.userToTixId[msg.sender];
-        address driver = s2.tixToDriverEnd[tixId].driver;
+        address driver = s2.tixIdToDriverEnd[tixId].driver;
         require(driver != address(0), "driver must end trip");
         require(
             _agree,
@@ -188,7 +188,7 @@ contract RidePassenger is IRidePassenger {
             msg.sender,
             driver
         );
-        if (s2.tixToDriverEnd[tixId].reached) {
+        if (s2.tixIdToDriverEnd[tixId].reached) {
             s1.driverToDriverReputation[driver].metresTravelled += s2
                 .tixIdToTicket[tixId]
                 .metres;
@@ -219,7 +219,7 @@ contract RidePassenger is IRidePassenger {
 
         bytes32 tixId = s1.userToTixId[msg.sender];
         require(
-            s1.tixToDriverEnd[tixId].driver == address(0),
+            s1.tixIdToDriverEnd[tixId].driver == address(0),
             "driver ended trip"
         ); // TODO: test
         address driver = s1.tixIdToTicket[tixId].driver;

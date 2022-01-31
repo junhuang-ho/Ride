@@ -17,12 +17,12 @@ contract RideTestTicket is RideTicket {
         return RideLibTicket._storageTicket().tixIdToTicket[_tixId];
     }
 
-    function sTixToDriverEnd_(bytes32 _tixId)
+    function sTixIdToDriverEnd_(bytes32 _tixId)
         external
         view
         returns (RideLibTicket.DriverEnd memory)
     {
-        return RideLibTicket._storageTicket().tixToDriverEnd[_tixId];
+        return RideLibTicket._storageTicket().tixIdToDriverEnd[_tixId];
     }
 
     function sForceEndDelay() external view returns (uint256) {
@@ -66,12 +66,12 @@ contract RideTestTicket is RideTicket {
         s1.tixIdToTicket[_tixId].forceEndTimestamp = _forceEndTimestamp;
     }
 
-    function ssTixToDriverEnd_(
+    function ssTixIdToDriverEnd_(
         bytes32 _tixId,
         address _driver,
         bool _reached
     ) external {
-        RideLibTicket._storageTicket().tixToDriverEnd[_tixId] = RideLibTicket
+        RideLibTicket._storageTicket().tixIdToDriverEnd[_tixId] = RideLibTicket
             .DriverEnd({driver: _driver, reached: _reached});
     }
 
@@ -94,5 +94,5 @@ contract RideTestTicket is RideTicket {
 
     // getUserToTixId(address _user) returns (bytes32);
     // getTixIdToTicket(bytes32 _tixId) returns (RideLibTicket.Ticket memory);
-    // getTixToDriverEnd(bytes32 _tixId) returns (RideLibTicket.DriverEnd memory);
+    // getTixIdToDriverEnd(bytes32 _tixId) returns (RideLibTicket.DriverEnd memory);
 }

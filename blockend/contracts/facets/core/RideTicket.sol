@@ -28,13 +28,13 @@ contract RideTicket is IRideTicket {
         return RideLibTicket._storageTicket().tixIdToTicket[_tixId];
     }
 
-    function getTixToDriverEnd(bytes32 _tixId)
+    function getTixIdToDriverEnd(bytes32 _tixId)
         external
         view
         override
         returns (RideLibTicket.DriverEnd memory)
     {
-        return RideLibTicket._storageTicket().tixToDriverEnd[_tixId];
+        return RideLibTicket._storageTicket().tixIdToDriverEnd[_tixId];
     }
 
     function getForceEndDelay() external view override returns (uint256) {
