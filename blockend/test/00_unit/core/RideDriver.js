@@ -282,15 +282,15 @@ if (parseInt(chainId) === 31337)
                 )
                 var rcpt = await tx.wait()
 
-                expect((await contractRideTestTicket.sTixToDriverEnd_(tixId)).driver).to.equal(ethers.constants.AddressZero)
-                expect((await contractRideTestTicket.sTixToDriverEnd_(tixId)).reached).to.equal(false)
+                expect((await contractRideTestTicket.sTixIdToDriverEnd_(tixId)).driver).to.equal(ethers.constants.AddressZero)
+                expect((await contractRideTestTicket.sTixIdToDriverEnd_(tixId)).reached).to.equal(false)
 
                 var tx = await contractRideDriver.endTripDrv(true)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                expect((await contractRideTestTicket.sTixToDriverEnd_(tixId)).driver).to.equal(accounts[0].address)
-                expect((await contractRideTestTicket.sTixToDriverEnd_(tixId)).reached).to.equal(true)
+                expect((await contractRideTestTicket.sTixIdToDriverEnd_(tixId)).driver).to.equal(accounts[0].address)
+                expect((await contractRideTestTicket.sTixIdToDriverEnd_(tixId)).reached).to.equal(true)
             })
         })
 
@@ -304,7 +304,7 @@ if (parseInt(chainId) === 31337)
                 )
                 var rcpt = await tx.wait()
 
-                var tx = await contractRideTestTicket.ssTixToDriverEnd_(
+                var tx = await contractRideTestTicket.ssTixIdToDriverEnd_(
                     tixId, ethers.constants.AddressZero, false
                 )
                 var rcpt = await tx.wait()

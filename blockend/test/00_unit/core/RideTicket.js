@@ -41,7 +41,7 @@ if (parseInt(chainId) === 31337)
                 tixId, 1234
             )
             var rcpt = await tx.wait()
-            var tx = await contractRideTicket.ssTixToDriverEnd_(
+            var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                 tixId, accounts[1].address, true
             )
             var rcpt = await tx.wait()
@@ -97,8 +97,8 @@ if (parseInt(chainId) === 31337)
                 expect((await contractRideTicket.sTixIdToTicket_(tixId)).tripStart).to.equal(true)
                 expect((await contractRideTicket.sTixIdToTicket_(tixId)).forceEndTimestamp).to.equal(1234)
 
-                expect((await contractRideTicket.sTixToDriverEnd_(tixId)).driver).to.equal(accounts[1].address)
-                expect((await contractRideTicket.sTixToDriverEnd_(tixId)).reached).to.equal(true)
+                expect((await contractRideTicket.sTixIdToDriverEnd_(tixId)).driver).to.equal(accounts[1].address)
+                expect((await contractRideTicket.sTixIdToDriverEnd_(tixId)).reached).to.equal(true)
 
                 var tx = await contractRideTicket.cleanUp_(tixId, accounts[2].address, accounts[1].address)
                 var rcpt = await tx.wait()
@@ -118,8 +118,8 @@ if (parseInt(chainId) === 31337)
                 expect((await contractRideTicket.sTixIdToTicket_(tixId)).tripStart).to.equal(false)
                 expect((await contractRideTicket.sTixIdToTicket_(tixId)).forceEndTimestamp).to.equal(0)
 
-                expect((await contractRideTicket.sTixToDriverEnd_(tixId)).driver).to.equal(ethers.constants.AddressZero)
-                expect((await contractRideTicket.sTixToDriverEnd_(tixId)).reached).to.equal(false)
+                expect((await contractRideTicket.sTixIdToDriverEnd_(tixId)).driver).to.equal(ethers.constants.AddressZero)
+                expect((await contractRideTicket.sTixIdToDriverEnd_(tixId)).reached).to.equal(false)
             })
         })
     })
@@ -157,7 +157,7 @@ if (parseInt(chainId) === 31337)
                 tixId, 1234
             )
             var rcpt = await tx.wait()
-            var tx = await contractRideTicket.ssTixToDriverEnd_(
+            var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                 tixId, accounts[1].address, true
             )
             var rcpt = await tx.wait()
@@ -204,12 +204,12 @@ if (parseInt(chainId) === 31337)
             })
         })
 
-        describe("getTixToDriverEnd", function ()
+        describe("getTixIdToDriverEnd", function ()
         {
             it("Should get driver end details", async function ()
             {
-                expect((await contractRideTicket.getTixToDriverEnd(tixId)).driver).to.equal(accounts[1].address)
-                expect((await contractRideTicket.getTixToDriverEnd(tixId)).reached).to.equal(true)
+                expect((await contractRideTicket.getTixIdToDriverEnd(tixId)).driver).to.equal(accounts[1].address)
+                expect((await contractRideTicket.getTixIdToDriverEnd(tixId)).reached).to.equal(true)
             })
         })
     })

@@ -233,7 +233,7 @@ if (parseInt(chainId) === 31337)
         {
             it("Should revert if driver is zero address", async function ()
             {
-                var tx = await contractRideTicket.ssTixToDriverEnd_(
+                var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                     tixId_, ethers.constants.AddressZero, true
                 )
                 var rcpt = await tx.wait()
@@ -241,7 +241,7 @@ if (parseInt(chainId) === 31337)
             })
             it("Should revert if passenger does not agree", async function ()
             {
-                var tx = await contractRideTicket.ssTixToDriverEnd_(
+                var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                     tixId_, accounts[1].address, true
                 )
                 var rcpt = await tx.wait()
@@ -287,7 +287,7 @@ if (parseInt(chainId) === 31337)
                     tixId_, 1234
                 )
 
-                var tx = await contractRideTicket.ssTixToDriverEnd_(
+                var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                     tixId_, accounts[1].address, true
                 )
                 var rcpt = await tx.wait()
@@ -296,7 +296,7 @@ if (parseInt(chainId) === 31337)
             })
             it("Should allow pass if driver end details set", async function ()
             {
-                var tx = await contractRideTicket.ssTixToDriverEnd_(
+                var tx = await contractRideTicket.ssTixIdToDriverEnd_(
                     tixId_, ethers.constants.AddressZero, true
                 )
                 var rcpt = await tx.wait()
