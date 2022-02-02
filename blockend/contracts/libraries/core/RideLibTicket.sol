@@ -7,7 +7,6 @@ library RideLibTicket {
     /**
      * @dev if a ticket exists (details not 0) in tixIdToTicket, then it is considered active
      *
-     * @custom:TODO: Make it loopable so that can list to drivers?
      */
     struct Ticket {
         address passenger;
@@ -22,6 +21,7 @@ library RideLibTicket {
         bool tripStart;
         uint256 forceEndTimestamp;
     }
+    // TODO: add location
 
     /**
      * *Required to confirm if driver did initiate destination reached or not
