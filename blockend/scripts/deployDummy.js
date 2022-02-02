@@ -4,14 +4,16 @@ const { ethers } = require("hardhat")
 async function deployDummy(test = false, testWithInit = false)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
-    const networkName = hre.network.name
+    // const networkName = hre.network.name
     const accounts = await ethers.getSigners()
 
     const contract = await deploy(
+        accounts[0],
         chainId,
         "Greeter",
         args = ["Hello World!"],
         verify = true,
+        test = false
     )
 
     console.log(`Contract: ${contract.address}`)

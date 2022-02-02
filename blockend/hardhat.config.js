@@ -67,17 +67,34 @@ module.exports = {
             },
             saveDeployments: true,
         },
-        // polygon-mainnet: {
+        // polygon_mainnet: {
         //     url: "https://polygon-rpc.com/",
         //     // accounts: {
         //     //     mnemonic: process.env.MNEMONIC_0,
         //     // },
         //     saveDeployments: true,
         // },
+        avalanche_fuji: {
+            chainId: 43113,
+            url: "https://api.avax-test.network/ext/bc/C/rpc",
+            accounts: {
+                mnemonic: process.env.MNEMONIC_0,
+            },
+            saveDeployments: true,
+        },
+        avalanche_mainnet: {
+            chainId: 43114,
+            url: "https://api.avax.network/ext/bc/C/rpc",
+            accounts: {
+                mnemonic: process.env.MNEMONIC_0,
+            },
+            saveDeployments: true,
+        },
     },
     etherscan: {
         // apiKey: process.env.API_KEY_ETHERSCAN
-        apiKey: process.env.API_KEY_POLYGONSCAN // actually no such thing polygonscan is powered by etherscan: https://github.com/nomiclabs/hardhat/issues/1727#issuecomment-931250893
+        apiKey: process.env.API_KEY_POLYGONSCAN // actually no such thing, polygonscan is powered by etherscan: https://github.com/nomiclabs/hardhat/issues/1727#issuecomment-931250893
+        // apiKey: process.env.API_KEY_SNOWTRACE
     },
     gasReporter: {
         // enabled: (process.env.REPORT_GAS) ? true : false,
@@ -88,6 +105,8 @@ module.exports = {
         // gasPriceApi: process.env.GAS_PRICE_API_ETH,
         token: "MATIC",
         gasPriceApi: process.env.GAS_PRICE_API_MATIC,
+        // token: "AVAX",
+        // gasPriceApi: process.env.GAS_PRICE_API_AVAX,
     }, // TODO: check this price decimal precision updated? https://github.com/cgewecke/hardhat-gas-reporter/issues/88
     namedAccounts: { // by hardhat-deploy
         deployer: {

@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 contract Greeter {
     string private greeting;
+    uint256 dummy = 5;
 
     constructor(string memory _greeting) {
         greeting = _greeting;

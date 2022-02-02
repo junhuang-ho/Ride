@@ -65,6 +65,12 @@ const networkConfig = {
         priceFeedBTCUSD: "0x007A22900a3B98143368Bd5906f8E17e9867581b",
         // priceFeedRIDEUSD: "",
     },
+    43114: {
+        name: "avalanche-mainnet",
+    },
+    43113: {
+        name: "avalanche-fuji",
+    },
 }
 
 const developmentChains = ["hardhat", "localhost"]
