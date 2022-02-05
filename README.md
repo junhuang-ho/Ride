@@ -25,6 +25,30 @@ in addition to google maps, check out
 1. HERE we go (strong competitor to google maps): https://developer.here.com/
 2. 2. OpenStreetMaps (open source maps): https://www.openstreetmap.org/#map=7/3.464/101.635
 
+### RIDE Token Specs
+
+ 1. ERC20
+ 2. ERC20Permit (single transaction)
+ 3. ERC20Votes (governance compatible)
+ 4. Non-Upgradable (no proxy, no diamond)
+ 5. if want extend functionality in future, use ERC20Wrapper
+ 
+Typical way to increase allowance is to call approve more than once. Safe way to do is call approve then increaseAllowance/decreaseAllowance.
+
+TODOs:
+
+1. ERC20: Test if can straight away call increaseAllowance/decreaseAllowance on first call.
+2. ERC20Permit: Test permit actually transfers/deposits the token into "calling contract".
+3. ERC20Permit: Test if calling increaseAllowance/decreaseAllowance works with permit as well? i.e calling permit then increase/decrease.
+4. ERC20Permit: can just call permit multiple times to act as increasing allowance as well? (besides transferring)
+5. Change RideHub to use SafeERC20/SafeERC20Permit libraries.
+6. Implement RIDE Token Specs as above.
+7. ERC20Votes: Test governance on Box.sol.
+
+8. Study if need add special functions to Ride.sol if in future want make it mappable/bridgeable to Ethereum: https://docs.polygon.technology/docs/develop/ethereum-polygon/mintable-assets#what-are-the-requirements-to-be-satisfied
+Ans: yes need add special fns, and need a child contract in Ethereum as well.
+Ans2: this is like ERC20Wrapper?
+
 ## Testing
 ```
 ~$ cd blockend
