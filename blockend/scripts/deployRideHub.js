@@ -206,6 +206,45 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
                     networkConfig[chainId]["priceFeedMATICUSD"],
                     networkConfig[chainId]["priceFeedETHUSD"],
                 ]
+        } else if (parseInt(chainId) === 43114)
+        {
+            tokens =
+                [
+                    // networkConfig[chainId]["tokenWAVAX"],
+                    networkConfig[chainId]["tokenUSDTe"],
+                    networkConfig[chainId]["tokenUSDCe"],
+                    networkConfig[chainId]["tokenUSTe"],
+                    networkConfig[chainId]["tokenDATe"],
+                    networkConfig[chainId]["tokenWETHe"],
+                    networkConfig[chainId]["tokenWBTCe"],
+                ]
+            priceFeeds =
+                [
+                    // networkConfig[chainId]["priceFeedAVAXUSD"],
+                    networkConfig[chainId]["priceFeedUSDTUSD"],
+                    networkConfig[chainId]["priceFeedUSDCUSD"],
+                    networkConfig[chainId]["priceFeedUSTUSD"],
+                    networkConfig[chainId]["priceFeedDAIUSD"],
+                    networkConfig[chainId]["priceFeedETHUSD"],
+                    networkConfig[chainId]["priceFeedBTCUSD"], // TODO: or use WBTC/USD one?
+                ]
+        } else if (parseInt(chainId) === 43113)
+        {
+            throw new Error(`TODO: add Fuji data !!!!!!!!!!!!! find from Fuji bridge`)
+            tokens =
+                [
+                    // networkConfig[chainId]["tokenWAVAX"],
+                    networkConfig[chainId]["tokenUSDTe"],
+                    networkConfig[chainId]["tokenWETHe"],
+                    networkConfig[chainId]["tokenWBTCe"],
+                ]
+            priceFeeds =
+                [
+                    // networkConfig[chainId]["priceFeedAVAXUSD"],
+                    networkConfig[chainId]["priceFeedUSDTUSD"],
+                    networkConfig[chainId]["priceFeedETHUSD"],
+                    networkConfig[chainId]["priceFeedBTCUSD"], // TODO: or use WBTC/USD one?
+                ]
         } else if (parseInt(chainId) === 4 || parseInt(chainId) === 42)
         {
             tokens =
@@ -218,7 +257,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
                 ]
         } else
         {
-            throw new Error(`Supported chains are either Ethereum or Polygon, detected: ${chainId}`)
+            throw new Error(`WARNING: Supported chains are either Ethereum or Polygon, detected: ${chainId}`)
         }
     } else
     {

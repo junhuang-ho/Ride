@@ -101,10 +101,10 @@ module.exports = {
         currency: "USD",
         coinmarketcap: process.env.COINMARKETCAP_API_KEY,
 
-        // token: "ETH",
-        // gasPriceApi: process.env.GAS_PRICE_API_ETH,
-        token: "MATIC",
-        gasPriceApi: process.env.GAS_PRICE_API_MATIC,
+        token: "ETH",
+        gasPriceApi: process.env.GAS_PRICE_API_ETH,
+        // token: "MATIC",
+        // gasPriceApi: process.env.GAS_PRICE_API_MATIC,
         // token: "AVAX",
         // gasPriceApi: process.env.GAS_PRICE_API_AVAX,
     }, // TODO: check this price decimal precision updated? https://github.com/cgewecke/hardhat-gas-reporter/issues/88
