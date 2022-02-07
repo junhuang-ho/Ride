@@ -43,15 +43,15 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         }
     }
 
-    const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
-    const contractRide = await deploy(
-        deployerAddress,
-        chainId,
-        "Ride",
-        args = [maxSupply],
-        verify = true,
-        test = test
-    ) // note: currently NOT part of RideHub (Diamond)
+    // const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
+    // const contractRide = await deploy(
+    //     deployerAddress,
+    //     chainId,
+    //     "Ride",
+    //     args = [maxSupply],
+    //     verify = true,
+    //     test = test
+    // ) // note: currently NOT part of RideHub (Diamond)
 
     const contractRideCut = await deploy(
         deployerAddress,
@@ -316,7 +316,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     }
     console.log('Completed RideHub Diamond Cut')
 
-    console.log(`Ride: ${contractRide.address}`)
+    // console.log(`Ride: ${contractRide.address}`)
     console.log(`RideHub: ${contractRideHub.address}`)
 
     if (test)
