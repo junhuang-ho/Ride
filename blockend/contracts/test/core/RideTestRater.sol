@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideRater} from "../../facets/core/RideRater.sol";
-import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
+import {RideRater} from "../../diamondRideHub/facets/core/RideRater.sol";
+import {RideLibRater} from "../../diamondRideHub/libraries/core/RideLibRater.sol";
 
 contract RideTestRater is RideRater {
     function sRatingMin_() external view returns (uint256) {

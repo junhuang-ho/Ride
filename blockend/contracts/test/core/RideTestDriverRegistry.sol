@@ -3,8 +3,8 @@ pragma solidity ^0.8.2;
 
 import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
 
-import {RideDriverRegistry} from "../../facets/core/RideDriverRegistry.sol";
-import {RideLibDriverRegistry} from "../../libraries/core/RideLibDriverRegistry.sol";
+import {RideDriverRegistry} from "../../diamondRideHub/facets/core/RideDriverRegistry.sol";
+import {RideLibDriverRegistry} from "../../diamondRideHub/libraries/core/RideLibDriverRegistry.sol";
 
 contract RideTestDriverRegistry is RideDriverRegistry {
     function s_driverIdCounter_()
