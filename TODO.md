@@ -1,5 +1,7 @@
 - supply demo DApp to grant
 
+- look through all contracts replace those input params that is contract address, with the contract type itself (internally still read as address).
+
 - do integration test for add/replace/remove of diamond facets
 
 - do token (from RideHub) + governance deploy script
