@@ -13,7 +13,9 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     {
         accounts = await ethers.getSigners()
         deployerAddress = accounts[0].address // TODO: change (if needed) this address when deploying to mainnet !!!
+        console.log(`Using default address`)
     }
+    console.log(`Deployer address is ${deployerAddress}`)
 
     if (test)
     {

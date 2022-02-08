@@ -22,6 +22,7 @@
     "hardhat-deploy-ethers": "^0.3.0-beta.13",
     "hardhat-gas-reporter": "^1.0.7",
     "nft.storage": "^5.2.0",
-    "solidity-coverage": "^0.7.17"
+    "solidity-coverage": "^0.7.17",
+    "web3-eth-abi": "^1.7.0"
   }
 }

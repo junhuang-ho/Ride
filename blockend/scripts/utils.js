@@ -149,7 +149,6 @@ const verify_ = async (chainId, contractName, contractDeployed, args, skip = fal
                 await sleep(100000) // 1 min zZZ
                 console.log("Awake...")
             }
-
             // WARNING: might need wait awahile for block confirmations !!!
             await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
                 address: contractDeployed.address,
