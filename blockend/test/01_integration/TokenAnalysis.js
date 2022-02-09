@@ -26,6 +26,8 @@ if (parseInt(chainId) === 31337)
             person1 = accounts[1].address // pre-registration is considered an applicant
             person2 = accounts[2].address
             other = accounts[9].address
+            someone = accounts[8].address
+            person3 = accounts[7].address
 
             pkAdmin0x = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
             pkPerson10x = "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"
@@ -255,7 +257,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(0)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // other now delegate self
@@ -285,7 +287,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balancePerson2)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // person2 delegates self
@@ -315,7 +317,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balancePerson2 + balanceOther)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // person2 gives voting power to other again
@@ -345,7 +347,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(balancePerson2)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balanceOther)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // other delegates voting power to person2
@@ -375,7 +377,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balancePerson2 + balanceOther)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // everyone gets back own voting power based on own balance
@@ -408,7 +410,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(balancePerson2 + balanceOther)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(0)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // person2 transfers half of their balance to other
@@ -439,7 +441,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(balancePerson2 + transferAmount)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balanceOther - transferAmount)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 // person2 delegates to other
@@ -469,7 +471,7 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(balancePerson2)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balanceOther)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
                 /**
@@ -510,10 +512,107 @@ if (parseInt(chainId) === 31337)
                 expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
                 expect(await contractRideA.getPastVotes(other, blockNumber - 1)).to.equal(balancePerson2 + balanceOther)
 
-                // total voting power
+                // total balances
                 expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000300")
 
+                // someone mint new
+                var tx = await contractRideA.mint(someone, 100)
+                var rcpt = tx.wait()
 
+                contractRideS = await ethers.getContractAt("Ride", addressRide, someone)
+
+                // someone with no voting power, transfers an amount to person2 with NO voting power, but delegated to other
+                expect(await contractRideA.getVotes(someone)).to.equal(0)
+                transferAmount3 = parseInt((await contractRideA.balanceOf(someone)).toString()) / 2
+                var tx = await contractRideS.transfer(person2, transferAmount3.toString())
+                var rcpt = tx.wait()
+                blockNumber = await waffle.provider.getBlockNumber()
+
+                // other voting power iterates by 1
+                expect(await contractRideA.numCheckpoints(person2)).to.equal(7)
+                expect(await contractRideA.numCheckpoints(other)).to.equal(10)
+                expect(await contractRideA.numCheckpoints(someone)).to.equal(0)
+
+                // someone delegates to no one
+                expect(await contractRideA.delegates(person2)).to.equal(other)
+                expect(await contractRideA.delegates(someone)).to.equal(ethers.constants.AddressZero)
+
+                // voting power of other increased by someone's transfer to person2 because person2 still delegates to other
+                balancePerson2 = parseInt((await contractRideA.balanceOf(person2)).toString())
+                balanceOther = parseInt((await contractRideA.balanceOf(other)).toString())
+                expect(await contractRideA.getVotes(person2)).to.equal(0)
+                expect(await contractRideA.getVotes(someone)).to.equal(0)
+                expect(await contractRideA.getVotes(other)).to.equal(balancePerson2 + balanceOther)
+
+                // pervious voting power no change
+                expect(await contractRideA.getPastVotes(person2, blockNumber - 1)).to.equal(0)
+                expect(await contractRideA.getPastVotes(admin, blockNumber - 1)).to.equal(0)
+
+                // total balances
+                expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000400")
+
+                // person3 mint new
+                var tx = await contractRideA.mint(person3, 100)
+                var rcpt = tx.wait()
+
+                contractRideP3 = await ethers.getContractAt("Ride", addressRide, person3)
+
+                // someone with no voting power, transfers an amount to person3 with NO voting power, and no delegate
+                expect(await contractRideA.getVotes(person3)).to.equal(0)
+                transferAmount3 = parseInt((await contractRideA.balanceOf(person3)).toString()) / 2
+                var tx = await contractRideS.transfer(person3, transferAmount3.toString())
+                var rcpt = tx.wait()
+                blockNumber = await waffle.provider.getBlockNumber()
+
+                // all voting checkpoint NO CHANGE
+                expect(await contractRideA.numCheckpoints(person2)).to.equal(7)
+                expect(await contractRideA.numCheckpoints(other)).to.equal(10)
+                expect(await contractRideA.numCheckpoints(someone)).to.equal(0)
+                expect(await contractRideA.numCheckpoints(person3)).to.equal(0)
+
+                // person3 delegates to no one
+                expect(await contractRideA.delegates(person2)).to.equal(other)
+                expect(await contractRideA.delegates(someone)).to.equal(ethers.constants.AddressZero)
+                expect(await contractRideA.delegates(person3)).to.equal(ethers.constants.AddressZero)
+
+                // voting power no change
+                balancePerson2 = parseInt((await contractRideA.balanceOf(person2)).toString())
+                balanceOther = parseInt((await contractRideA.balanceOf(other)).toString())
+                expect(await contractRideA.getVotes(person2)).to.equal(0)
+                expect(await contractRideA.getVotes(someone)).to.equal(0)
+                expect(await contractRideA.getVotes(other)).to.equal(balancePerson2 + balanceOther)
+                expect(await contractRideA.getVotes(person3)).to.equal(0)
+
+                // total balances
+                expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000500")
+
+                // person3 with no voting power, transfers an amount to other with voting power, and self delegates
+                transferAmount4 = parseInt((await contractRideA.balanceOf(person3)).toString()) / 2
+                var tx = await contractRideP3.transfer(other, transferAmount4)
+                var rcpt = tx.wait()
+                blockNumber = await waffle.provider.getBlockNumber()
+
+                // other voting checkpoint iterates by 1
+                expect(await contractRideA.numCheckpoints(person2)).to.equal(7)
+                expect(await contractRideA.numCheckpoints(other)).to.equal(11)
+                expect(await contractRideA.numCheckpoints(someone)).to.equal(0)
+                expect(await contractRideA.numCheckpoints(person3)).to.equal(0)
+
+                // no delegate changes
+                expect(await contractRideA.delegates(person2)).to.equal(other)
+                expect(await contractRideA.delegates(someone)).to.equal(ethers.constants.AddressZero)
+                expect(await contractRideA.delegates(person3)).to.equal(ethers.constants.AddressZero)
+
+                // voting power no change
+                balancePerson2 = parseInt((await contractRideA.balanceOf(person2)).toString())
+                balanceOther = parseInt((await contractRideA.balanceOf(other)).toString())
+                expect(await contractRideA.getVotes(person2)).to.equal(0)
+                expect(await contractRideA.getVotes(someone)).to.equal(0)
+                expect(await contractRideA.getVotes(other)).to.equal(balancePerson2 + balanceOther)
+                expect(await contractRideA.getVotes(person3)).to.equal(0)
+
+                // total balances
+                expect((await contractRideA.getPastTotalSupply(blockNumber - 1)).toString()).to.equal("100000000000000000500")
             })
         })
     })
