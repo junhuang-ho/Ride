@@ -6,21 +6,7 @@
 
 - do integration test for add/replace/remove of diamond facets
 
-- do token (from RideHub) + governance deploy script
-
-- do integration test for token + governance
-
-- add deposit/withdraw features of permit to RideHub
-- ERC20Permit: Test if calling increaseAllowance/decreaseAllowance works with permit as well? i.e calling permit then increase/decrease.
-- ERC20Permit: can just call permit multiple times to act as increasing allowance as well? (besides transferring)
-- Change RideHub to use SafeERC20/SafeERC20Permit libraries.
-- Implement RIDE Token Specs as above.
-- ERC20Votes: Test governance on Box.sol.
-- How to talk to RideHub diamond pattern contract?
-- Study if need add special functions to Ride.sol if in future want make it mappable/bridgeable to Ethereum: https://docs.polygon.technology/docs/develop/ethereum-polygon/mintable-assets#what-are-the-requirements-to-be-satisfied
-Ans: yes need add special fns, and need a child contract in Ethereum as well.
-Ans2: this is like ERC20Wrapper?
-
+- calling ERC20Permit deposit a second time in a row - having issues
 
 - RIDE minting strategy (refactor script & test accordingly)
 
