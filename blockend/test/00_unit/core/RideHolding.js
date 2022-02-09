@@ -73,18 +73,22 @@ if (parseInt(chainId) === 31337)
             {
                 await expect(contractRideHolding.depositTokens(keyLocal, 0)).to.revertedWith("zero amount")
             })
-            // it("Should revert if decoded address is zero address", async function ()
-            // {
-            //     zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
-            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
-            //     var rcpt = await tx.wait()
-            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
-            //     var rcpt = await tx.wait()
+            it("Should set amount of holding for currency to user", async function ()
+            {
+                // refer DepositWithdraw.js
+            })
+        })
 
-            //     await expect(contractRideHolding.depositTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
-            // })
-            it("Should revert if allowance not approved")
-            it("Should set amount of holding for currency to user")
+        describe("depositTokensPermit", function ()
+        {
+            it("Should revert if input amount is zero", async function ()
+            {
+                await expect(contractRideHolding.depositTokensPermit(keyLocal, 0, 0, 0, ethers.constants.HashZero, ethers.constants.HashZero)).to.revertedWith("zero amount")
+            })
+            it("Should set amount of holding for currency to user", async function ()
+            {
+                // refer DepositWithdraw.js
+            })
         })
 
         describe("withdrawTokens", function ()
@@ -93,16 +97,6 @@ if (parseInt(chainId) === 31337)
             {
                 await expect(contractRideHolding.withdrawTokens(keyLocal, 0)).to.revertedWith("zero amount")
             })
-            // it("Should revert if decoded address is zero address", async function ()
-            // {
-            //     zeroBytes32Key = "0x0000000000000000000000000000000000000000000000000000000000000000"
-            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToSupported_(zeroBytes32Key, true)
-            //     var rcpt = await tx.wait()
-            //     var tx = await contractRideCurrencyRegistry.ssCurrencyKeyToCrypto_(zeroBytes32Key, true)
-            //     var rcpt = await tx.wait()
-
-            //     await expect(contractRideHolding.withdrawTokens(zeroBytes32Key, 5)).to.revertedWith("zero token address")
-            // })
             it("Should revert if user has insufficient deposits for currency", async function ()
             {
                 var tx = await contractRideHolding.ssUserToCurrencyKeyToHolding_(accounts[0].address, keyLocal, 3)
@@ -110,9 +104,14 @@ if (parseInt(chainId) === 31337)
 
                 await expect(contractRideHolding.withdrawTokens(keyLocal, 5)).to.revertedWith("insufficient holdings")
             })
-            it("Should revert if amount to withdraw is larger than amount in currency contract")
-            it("Should reduce amount in holdings")
-            it("Should transfer the token out of RideHub contract into caller's wallet")
+            it("Should reduce amount in holdings", async function ()
+            {
+                // refer DepositWithdraw.js
+            })
+            it("Should transfer the token out of RideHub contract into caller's wallet", async function ()
+            {
+                // refer DepositWithdraw.js
+            })
         })
 
         describe("getHolding", function ()

@@ -131,6 +131,8 @@ if (parseInt(chainId) === 31337)
                 expect(await contractWETH9O.balanceOf(driver)).to.equal(ethers.utils.parseEther(sendAmountInETH))
 
                 // approve RideHub contract to be able to handle user's wETH
+                // NOTE: if in token contract, increaseAllowance/decreaseAllowance is available instead, use it!!
+                // otherwise use approve, but keep best practice: https://ethereum.org/en/developers/tutorials/erc20-annotated-code/#allowance-functions
                 var tx = await contractWETH9D.approve(rideHubAddress, ethers.utils.parseEther(approveAmountInWETH))
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
@@ -157,6 +159,8 @@ if (parseInt(chainId) === 31337)
                 expect(await contractWETH9O.balanceOf(passenger)).to.equal(ethers.utils.parseEther(sendAmountInETH))
 
                 // approve RideHub contract to be able to handle user's wETH
+                // NOTE: if in token contract, increaseAllowance/decreaseAllowance is available instead, use it!!
+                // otherwise use approve, but keep best practice: https://ethereum.org/en/developers/tutorials/erc20-annotated-code/#allowance-functions
                 var tx = await contractWETH9P.approve(rideHubAddress, ethers.utils.parseEther(approveAmountInWETH))
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)

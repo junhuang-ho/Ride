@@ -6,6 +6,15 @@ interface IRideHolding {
 
     function depositTokens(bytes32 _key, uint256 _amount) external;
 
+    function depositTokensPermit(
+        bytes32 _key,
+        uint256 _amount,
+        uint256 _deadline,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+    ) external;
+
     event TokensRemoved(address indexed sender, uint256 amount);
 
     function withdrawTokens(bytes32 _key, uint256 _amount) external;
