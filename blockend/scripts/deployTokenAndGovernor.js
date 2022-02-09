@@ -26,11 +26,6 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
         test = test
     )
 
-    // deployer set self as delegatee, why? 
-    // from internal fn _moveVotingPower, seems like do nothing, TODO: TEST THIS
-    var tx = await contractRide.delegate(deployerAddress)
-    var rcpt = await tx.wait()
-
     const minDelay = 1 // in seconds - demo purposes // TODO
     const contractRideTimelock = await deploy(
         deployerAddress,
@@ -42,7 +37,7 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
     )
 
     const votingDelay = 1 // blocks // TODO
-    const votingPeriod = 5 // blocks // TODO
+    const votingPeriod = 10 // blocks // TODO
     const proposalThreshold = 0 // value in terms of voting power // TODO
     const quorumPercentage = 4
     const contractRideGovernor = await deploy(
@@ -53,6 +48,10 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
         verify = true,
         test = test
     )
+
+    expect(await contractRideGovernor.votingDelay()).to.equal(votingDelay)
+    expect(await contractRideGovernor.votingPeriod()).to.equal(votingPeriod)
+    expect(await contractRideGovernor.proposalThreshold()).to.equal(proposalThreshold)
 
     // lets grant some roles
     roleProposer = await contractRideTimelock.PROPOSER_ROLE()
