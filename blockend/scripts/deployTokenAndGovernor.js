@@ -16,7 +16,7 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
     }
     console.log(`Deployer address is ${deployerAddress}`)
 
-    const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes // TODO
+    // const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes // TODO
     const contractRide = await deploy(
         deployerAddress,
         chainId,

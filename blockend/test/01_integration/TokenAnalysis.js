@@ -9,9 +9,9 @@ const chainId = hre.network.config.chainId
 const ethSigUtil = require('eth-sig-util')
 const { fromRpcSig } = require('ethereumjs-util')
 
-const Web3 = require('web3');
-const localWeb3 = new Web3();
-const BN = localWeb3.utils.BN;
+// const Web3 = require('web3');
+// const localWeb3 = new Web3();
+// const BN = localWeb3.utils.BN;
 
 const { deployTestToken } = require("../../scripts/experimental/deployTestToken.js")
 
