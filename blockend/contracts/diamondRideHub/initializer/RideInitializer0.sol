@@ -46,9 +46,6 @@ import {RideLibCurrencyRegistry} from "../libraries/core/RideLibCurrencyRegistry
 // import "hardhat/console.sol";
 
 contract RideInitializer0 {
-    uint256[] yo;
-    uint256[] ho;
-
     function init(
         uint256[] memory _badgesMaxScores,
         uint256 _banDuration,

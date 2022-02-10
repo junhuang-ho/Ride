@@ -45,16 +45,6 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         }
     }
 
-    // const maxSupply = ethers.utils.parseEther("100000000") // 100 mil - demo purposes
-    // const contractRide = await deploy(
-    //     deployerAddress,
-    //     chainId,
-    //     "Ride",
-    //     args = [maxSupply],
-    //     verify = true,
-    //     test = test
-    // ) // note: currently NOT part of RideHub (Diamond)
-
     const contractRideCut = await deploy(
         deployerAddress,
         chainId,
@@ -287,26 +277,24 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
         tokens,
         priceFeeds
     ]
+    let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
 
     console.log('Cutting A RideHub Diamond 💎')
     const rideCut = await ethers.getContractAt('IRideCut', contractRideHub.address)
     // call to init function
     if (!test)
     {
-        let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-        tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
+        var tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
     } else
     {
         if (!integration)
         {
             console.log("UNIT test")
-            let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-            tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x") // 
+            var tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x")
         } else
         {
             console.log("INTEGRATION test")
-            let functionCall = contractRideInitializer.interface.encodeFunctionData("init", initParams)
-            tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
+            var tx = await rideCut.rideCut(cut, contractRideInitializer.address, functionCall) // ethers.constants.AddressZero, "0x"
         }
     }
 
@@ -318,7 +306,6 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     }
     console.log('Completed RideHub Diamond Cut')
 
-    // console.log(`Ride: ${contractRide.address}`)
     console.log(`RideHub: ${contractRideHub.address}`)
 
     if (test)

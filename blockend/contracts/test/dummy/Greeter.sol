@@ -2,12 +2,8 @@
 pragma solidity ^0.8.0;
 
 contract Greeter {
-    string private greeting;
+    string private greeting = "helo";
     uint256 dummy = 5;
-
-    constructor(string memory _greeting) {
-        greeting = _greeting;
-    }
 
     function greet() public view returns (string memory) {
         return greeting;
