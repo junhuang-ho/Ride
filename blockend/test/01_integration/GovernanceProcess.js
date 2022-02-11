@@ -6,9 +6,6 @@ const { ethers, waffle } = require("hardhat")
 const hre = require("hardhat")
 const chainId = hre.network.config.chainId
 
-const Web3EthAbi = require('web3-eth-abi')
-const fs = require("fs")
-
 const { deployTokenAndGovernor } = require("../../scripts/deployTokenAndGovernor.js")
 const { deployTestBox } = require("../../scripts/experimental/deployTestBox.js")
 

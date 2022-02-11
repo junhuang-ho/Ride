@@ -65,9 +65,10 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
     var rcpt = await tx.wait()
     var tx = await contractRideTimelock.grantRole(roleExecutor, ethers.constants.AddressZero) // anyone can execute
     var rcpt = await tx.wait()
-    var tx = await contractRideTimelock.revokeRole(roleAdmin, deployerAddress) // TODO: test same as renounceRole
+    // var tx = await contractRideTimelock.revokeRole(roleAdmin, deployerAddress) // TODO: test same as renounceRole
+    // var rcpt = await tx.wait()
+    var tx = await contractRideTimelock.renounceRole(roleAdmin, deployerAddress)
     var rcpt = await tx.wait()
-    // contractRideTimelock.renounceRole(roleAdmin, deployerAddress)
 
     expect(await contractRideTimelock.hasRole(roleAdmin, contractRideTimelock.address)).to.equal(true)
     expect(await contractRideTimelock.hasRole(roleAdmin, deployerAddress)).to.equal(false)
