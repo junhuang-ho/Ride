@@ -4,8 +4,6 @@
 
 - lookout for SafeERC20Permit OZ implementation
 
-- do integration test for add/replace/remove of diamond facets
-
 - calling ERC20Permit deposit a second time in a row - having issues
 
 - RIDE minting strategy (refactor script & test accordingly)
