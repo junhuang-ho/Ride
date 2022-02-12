@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideBadge} from "../../diamondRideHub/facets/core/RideBadge.sol";
-import {RideLibBadge} from "../../diamondRideHub/libraries/core/RideLibBadge.sol";
+import "../../diamondRideHub/facets/core/RideBadge.sol";
+import "../../diamondRideHub/libraries/core/RideLibBadge.sol";
 
 contract RideTestBadge is RideBadge {
     function sBadgeToBadgeMaxScore_(uint256 _badge)

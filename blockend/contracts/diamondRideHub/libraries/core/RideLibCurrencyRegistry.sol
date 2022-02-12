@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
 
 // CurrencyRegistry is separated from Exchange mainly to ease checks for Holding and Fee, and to separately register fiat and crypto easily
 library RideLibCurrencyRegistry {

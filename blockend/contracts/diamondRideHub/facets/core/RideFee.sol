@@ -1,10 +1,9 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibCurrencyRegistry} from "../../libraries/core/RideLibCurrencyRegistry.sol";
-import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
-
-import {IRideFee} from "../../interfaces/core/IRideFee.sol";
+import "../../interfaces/core/IRideFee.sol";
+import "../../libraries/core/RideLibFee.sol";
+import "../../libraries/core/RideLibCurrencyRegistry.sol";
 
 contract RideFee is IRideFee {
     /**

@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideTicket} from "../../diamondRideHub/facets/core/RideTicket.sol";
-import {RideLibTicket} from "../../diamondRideHub/libraries/core/RideLibTicket.sol";
+import "../../diamondRideHub/facets/core/RideTicket.sol";
+import "../../diamondRideHub/libraries/core/RideLibTicket.sol";
 
 contract RideTestTicket is RideTicket {
     function sUserToTixId_(address _user) external view returns (bytes32) {

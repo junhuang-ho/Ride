@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
-
-import {IRideRater} from "../../interfaces/core/IRideRater.sol";
+import "../../interfaces/core/IRideRater.sol";
+import "../../libraries/core/RideLibRater.sol";
 
 contract RideRater is IRideRater {
     /**

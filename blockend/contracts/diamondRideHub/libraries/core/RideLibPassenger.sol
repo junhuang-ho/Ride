@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibTicket.sol";
 
 library RideLibPassenger {
     function _requirePaxMatchTixPax() internal view {

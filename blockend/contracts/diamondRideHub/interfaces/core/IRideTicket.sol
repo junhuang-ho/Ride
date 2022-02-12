@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibTicket.sol";
 
 interface IRideTicket {
     event ForceEndDelaySet(address indexed sender, uint256 newDelayPeriod);

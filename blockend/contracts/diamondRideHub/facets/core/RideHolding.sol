@@ -1,18 +1,14 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-
-import {IERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
-
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
-import {RideLibCurrencyRegistry} from "../../libraries/core/RideLibCurrencyRegistry.sol";
-import {RideLibHolding} from "../../libraries/core/RideLibHolding.sol";
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-
-import {IRideHolding} from "../../interfaces/core/IRideHolding.sol";
+import "../../interfaces/core/IRideHolding.sol";
+import "../../libraries/core/RideLibHolding.sol";
+import "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibCurrencyRegistry.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 
 // TODO: keep an eye out for SafeERC20Permit
 

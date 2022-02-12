@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideHolding} from "../../diamondRideHub/facets/core/RideHolding.sol";
-import {RideLibHolding} from "../../diamondRideHub/libraries/core/RideLibHolding.sol";
+import "../../diamondRideHub/facets/core/RideHolding.sol";
+import "../../diamondRideHub/libraries/core/RideLibHolding.sol";
 
 contract RideTestHolding is RideHolding {
     function sUserToCurrencyKeyToHolding_(address _user, bytes32 _key)

@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibExchange} from "../../libraries/core/RideLibExchange.sol";
-
-import {IRideExchange} from "../../interfaces/core/IRideExchange.sol";
+import "../../interfaces/core/IRideExchange.sol";
+import "../../libraries/core/RideLibExchange.sol";
 
 contract RideExchange is IRideExchange {
     function addXPerYPriceFeed(

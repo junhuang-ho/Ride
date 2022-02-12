@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/core/RideLibCurrencyRegistry.sol";
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-import {RideLibCurrencyRegistry} from "../../libraries/core/RideLibCurrencyRegistry.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 library RideLibExchange {
     bytes32 constant STORAGE_POSITION_EXCHANGE = keccak256("ds.exchange");

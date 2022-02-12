@@ -1,13 +1,12 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
-import {RideLibDriverRegistry} from "../../libraries/core/RideLibDriverRegistry.sol";
-
-import {IRideDriverRegistry} from "../../interfaces/core/IRideDriverRegistry.sol";
+import "../../interfaces/core/IRideDriverRegistry.sol";
+import "../../libraries/core/RideLibDriverRegistry.sol";
+import "../../libraries/core/RideLibBadge.sol";
+import "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibDriver.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
 
 contract RideDriverRegistry is IRideDriverRegistry {
     /**

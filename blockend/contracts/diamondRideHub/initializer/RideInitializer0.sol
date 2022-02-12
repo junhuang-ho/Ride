@@ -1,37 +1,34 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../interfaces/core/IRideFee.sol";
+import "../interfaces/core/IRideRater.sol";
+import "../interfaces/core/IRideBadge.sol";
+import "../interfaces/core/IRideDriver.sol";
+import "../interfaces/core/IRideTicket.sol";
+import "../interfaces/core/IRidePenalty.sol";
+import "../interfaces/core/IRideHolding.sol";
+import "../interfaces/core/IRideExchange.sol";
+import "../interfaces/core/IRidePassenger.sol";
+import "../interfaces/core/IRideDriverRegistry.sol";
+import "../interfaces/core/IRideCurrencyRegistry.sol";
+import "../interfaces/utils/IERC165.sol";
+import "../interfaces/utils/IERC173.sol";
+import "../interfaces/utils/IRideCut.sol";
+import "../interfaces/utils/IRideLoupe.sol";
 
-import {IERC165} from "../interfaces/utils/IERC165.sol";
-import {IERC173} from "../interfaces/utils/IERC173.sol";
-import {IRideCut} from "../interfaces/utils/IRideCut.sol";
-import {IRideLoupe} from "../interfaces/utils/IRideLoupe.sol";
-import {IRideBadge} from "../interfaces/core/IRideBadge.sol";
-import {IRideCurrencyRegistry} from "../interfaces/core/IRideCurrencyRegistry.sol";
-import {IRideFee} from "../interfaces/core/IRideFee.sol";
-import {IRideExchange} from "../interfaces/core/IRideExchange.sol";
-import {IRidePenalty} from "../interfaces/core/IRidePenalty.sol";
-import {IRideTicket} from "../interfaces/core/IRideTicket.sol";
-import {IRideHolding} from "../interfaces/core/IRideHolding.sol";
-import {IRidePassenger} from "../interfaces/core/IRidePassenger.sol";
-import {IRideRater} from "../interfaces/core/IRideRater.sol";
-import {IRideDriver} from "../interfaces/core/IRideDriver.sol";
-import {IRideDriverRegistry} from "../interfaces/core/IRideDriverRegistry.sol";
-
-import {RideLibCutAndLoupe} from "../libraries/utils/RideLibCutAndLoupe.sol";
-import {RideLibBadge} from "../libraries/core/RideLibBadge.sol";
-import {RideLibPenalty} from "../libraries/core/RideLibPenalty.sol";
-import {RideLibFee} from "../libraries/core/RideLibFee.sol";
-import {RideLibHolding} from "../libraries/core/RideLibHolding.sol";
-import {RideLibPassenger} from "../libraries/core/RideLibPassenger.sol";
-import {RideLibDriver} from "../libraries/core/RideLibDriver.sol";
-import {RideLibDriverRegistry} from "../libraries/core/RideLibDriverRegistry.sol";
-import {RideLibRater} from "../libraries/core/RideLibRater.sol";
-import {RideLibTicket} from "../libraries/core/RideLibTicket.sol";
-
-import {RideLibExchange} from "../libraries/core/RideLibExchange.sol";
-import {RideLibCurrencyRegistry} from "../libraries/core/RideLibCurrencyRegistry.sol";
+import "../libraries/core/RideLibFee.sol";
+import "../libraries/core/RideLibRater.sol";
+import "../libraries/core/RideLibBadge.sol";
+import "../libraries/core/RideLibDriver.sol";
+import "../libraries/core/RideLibTicket.sol";
+import "../libraries/core/RideLibPenalty.sol";
+import "../libraries/core/RideLibHolding.sol";
+import "../libraries/core/RideLibExchange.sol";
+import "../libraries/core/RideLibPassenger.sol";
+import "../libraries/core/RideLibDriverRegistry.sol";
+import "../libraries/core/RideLibCurrencyRegistry.sol";
+import "../libraries/utils/RideLibCutAndLoupe.sol";
 
 // It is exapected that this contract is customized if you want to deploy your diamond
 // with data from a deployment script. Use the init function to initialize state variables

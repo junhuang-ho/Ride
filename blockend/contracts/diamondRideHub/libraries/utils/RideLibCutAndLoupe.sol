@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {IRideCut} from "../../interfaces/utils/IRideCut.sol";
+import "../../interfaces/utils/IRideCut.sol";
 
 library RideLibCutAndLoupe {
     bytes32 constant STORAGE_POSITION_CUTANDLOUPE = keccak256("ds.cutandloupe");

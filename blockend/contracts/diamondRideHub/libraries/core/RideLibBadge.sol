@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideBadge} from "../../facets/core/RideBadge.sol";
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
+import "../../facets/core/RideBadge.sol";
+import "../../libraries/core/RideLibRater.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
 
 library RideLibBadge {
     bytes32 constant STORAGE_POSITION_BADGE = keccak256("ds.badge");

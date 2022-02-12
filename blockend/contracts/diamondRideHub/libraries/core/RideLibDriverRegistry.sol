@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 library RideLibDriverRegistry {
     using Counters for Counters.Counter;

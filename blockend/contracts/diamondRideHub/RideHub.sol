@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import {IRideCut} from "./interfaces/utils/IRideCut.sol";
-
-import {RideLibOwnership} from "./libraries/utils/RideLibOwnership.sol";
-import {RideLibCutAndLoupe} from "./libraries/utils/RideLibCutAndLoupe.sol";
+import "./interfaces/utils/IRideCut.sol";
+import "./libraries/utils/RideLibOwnership.sol";
+import "./libraries/utils/RideLibCutAndLoupe.sol";
 
 contract RideHub {
     constructor(address _contractOwner, address _rideCutFacet) payable {

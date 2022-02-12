@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibCurrencyRegistry} from "../../libraries/core/RideLibCurrencyRegistry.sol";
+import "../../libraries/core/RideLibCurrencyRegistry.sol";
 
 library RideLibHolding {
     bytes32 constant STORAGE_POSITION_HOLDING = keccak256("ds.holding");

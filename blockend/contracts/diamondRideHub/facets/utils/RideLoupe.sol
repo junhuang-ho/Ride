@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import {IRideLoupe} from "../../interfaces/utils/IRideLoupe.sol";
-import {IERC165} from "../../interfaces/utils/IERC165.sol";
-
-import {RideLibCutAndLoupe} from "../../libraries/utils/RideLibCutAndLoupe.sol";
+import "../../interfaces/utils/IRideLoupe.sol";
+import "../../interfaces/utils/IERC165.sol";
+import "../../libraries/utils/RideLibCutAndLoupe.sol";
 
 contract RideLoupe is IRideLoupe, IERC165 {
     // Diamond Loupe Functions

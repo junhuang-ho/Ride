@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibBadge.sol";
+import "../../libraries/core/RideLibTicket.sol";
 
 library RideLibDriver {
     function _requireDrvMatchTixDrv(address _driver) internal view {

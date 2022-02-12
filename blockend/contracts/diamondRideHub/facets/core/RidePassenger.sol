@@ -1,18 +1,16 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
-import {RideLibFee} from "../../libraries/core/RideLibFee.sol";
-import {RideLibPenalty} from "../../libraries/core/RideLibPenalty.sol";
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-import {RideLibHolding} from "../../libraries/core/RideLibHolding.sol";
-import {RideLibPassenger} from "../../libraries/core/RideLibPassenger.sol";
-import {RideLibDriver} from "../../libraries/core/RideLibDriver.sol";
-
-import {RideLibExchange} from "../../libraries/core/RideLibExchange.sol";
-import {RideLibRater} from "../../libraries/core/RideLibRater.sol";
-
-import {IRidePassenger} from "../../interfaces/core/IRidePassenger.sol";
+import "../../interfaces/core/IRidePassenger.sol";
+import "../../libraries/core/RideLibPassenger.sol";
+import "../../libraries/core/RideLibFee.sol";
+import "../../libraries/core/RideLibRater.sol";
+import "../../libraries/core/RideLibBadge.sol";
+import "../../libraries/core/RideLibDriver.sol";
+import "../../libraries/core/RideLibTicket.sol";
+import "../../libraries/core/RideLibPenalty.sol";
+import "../../libraries/core/RideLibHolding.sol";
+import "../../libraries/core/RideLibExchange.sol";
 
 contract RidePassenger is IRidePassenger {
     /**

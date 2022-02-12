@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RidePenalty} from "../../diamondRideHub/facets/core/RidePenalty.sol";
-import {RideLibPenalty} from "../../diamondRideHub/libraries/core/RideLibPenalty.sol";
+import "../../diamondRideHub/facets/core/RidePenalty.sol";
+import "../../diamondRideHub/libraries/core/RideLibPenalty.sol";
 
 contract RideTestPenalty is RidePenalty {
     function sBanDuration_() external view returns (uint256) {

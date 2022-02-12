@@ -1,10 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibPenalty} from "../../libraries/core/RideLibPenalty.sol";
-// import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-
-import {IRidePenalty} from "../../interfaces/core/IRidePenalty.sol";
+import "../../interfaces/core/IRidePenalty.sol";
+import "../../libraries/core/RideLibPenalty.sol";
 
 contract RidePenalty is IRidePenalty {
     /**

@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibTicket} from "../../libraries/core/RideLibTicket.sol";
-
-import {IRideTicket} from "../../interfaces/core/IRideTicket.sol";
+import "../../interfaces/core/IRideTicket.sol";
+import "../../libraries/core/RideLibTicket.sol";
 
 contract RideTicket is IRideTicket {
     function setForceEndDelay(uint256 _delayPeriod) external override {

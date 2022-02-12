@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-import {IERC173} from "../../interfaces/utils/IERC173.sol";
+import "../../interfaces/utils/IERC173.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
 
 contract RideOwnership is IERC173 {
     function owner() external view override returns (address) {

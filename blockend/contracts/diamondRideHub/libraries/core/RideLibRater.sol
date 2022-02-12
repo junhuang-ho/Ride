@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibOwnership} from "../../libraries/utils/RideLibOwnership.sol";
-import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
+import "../../libraries/core/RideLibBadge.sol";
+import "../../libraries/utils/RideLibOwnership.sol";
 
 library RideLibRater {
     bytes32 constant STORAGE_POSITION_RATER = keccak256("ds.rater");

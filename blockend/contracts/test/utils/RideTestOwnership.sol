@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideOwnership} from "../../diamondRideHub/facets/utils/RideOwnership.sol";
-import {RideLibOwnership} from "../../diamondRideHub/libraries/utils/RideLibOwnership.sol";
+import "../../diamondRideHub/facets/utils/RideOwnership.sol";
+import "../../diamondRideHub/libraries/utils/RideLibOwnership.sol";
 
 contract RideTestOwnership is RideOwnership {
     function sOwner() external view returns (address) {

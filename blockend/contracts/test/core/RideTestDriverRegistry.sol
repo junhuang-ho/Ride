@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
+import "../../diamondRideHub/facets/core/RideDriverRegistry.sol";
+import "../../diamondRideHub/libraries/core/RideLibDriverRegistry.sol";
 
-import {RideDriverRegistry} from "../../diamondRideHub/facets/core/RideDriverRegistry.sol";
-import {RideLibDriverRegistry} from "../../diamondRideHub/libraries/core/RideLibDriverRegistry.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract RideTestDriverRegistry is RideDriverRegistry {
     function s_driverIdCounter_()

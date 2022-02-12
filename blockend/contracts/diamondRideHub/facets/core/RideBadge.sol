@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import {RideLibBadge} from "../../libraries/core/RideLibBadge.sol";
-
-import {IRideBadge} from "../../interfaces/core/IRideBadge.sol";
+import "../../interfaces/core/IRideBadge.sol";
+import "../../libraries/core/RideLibBadge.sol";
 
 /// @title Badge rank for drivers
 contract RideBadge is IRideBadge {
