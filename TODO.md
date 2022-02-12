@@ -1,5 +1,7 @@
 - supply demo DApp to grant
 
+- Ensure states only exists in library solidity files. No where else.
+
 - look through all contracts replace those input params that is contract address, with the contract type itself (internally still read as address).
 
 - lookout for SafeERC20Permit OZ implementation
