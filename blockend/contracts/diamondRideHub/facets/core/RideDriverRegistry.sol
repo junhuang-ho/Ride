@@ -29,6 +29,7 @@ contract RideDriverRegistry is IRideDriverRegistry {
 
         s1.driverToDriverReputation[msg.sender].id = RideLibDriverRegistry
             ._mint();
+        // s1.driverToDriverReputation[msg.sender].uri = _uri; // URI set from another contract to prevent anyone passing random string
         s1
             .driverToDriverReputation[msg.sender]
             .maxMetresPerTrip = _maxMetresPerTrip;
@@ -72,7 +73,7 @@ contract RideDriverRegistry is IRideDriverRegistry {
         external
         override
     {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
 
         RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
 

@@ -38,7 +38,7 @@ library RideLibPenalty {
      * @param _banDuration | unit in unix timestamp | https://docs.soliditylang.org/en/v0.8.10/units-and-global-variables.html#time-units
      */
     function _setBanDuration(uint256 _banDuration) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         _storagePenalty().banDuration = _banDuration;
 
         emit SetBanDuration(msg.sender, _banDuration);

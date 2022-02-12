@@ -5,7 +5,7 @@ library RideLibOwnership {
     bytes32 constant STORAGE_POSITION_OWNERSHIP = keccak256("ds.ownership");
 
     struct StorageOwnership {
-        address contractOwner;
+        address owner;
     }
 
     function _storageOwnership()
@@ -24,21 +24,18 @@ library RideLibOwnership {
         address indexed newOwner
     );
 
-    function _setContractOwner(address _newOwner) internal {
+    function _setOwner(address _newOwner) internal {
         StorageOwnership storage s1 = _storageOwnership();
-        address previousOwner = s1.contractOwner;
-        s1.contractOwner = _newOwner;
+        address previousOwner = s1.owner;
+        s1.owner = _newOwner;
         emit OwnershipTransferred(previousOwner, _newOwner);
     }
 
-    function _contractOwner() internal view returns (address) {
-        return _storageOwnership().contractOwner;
+    function _getOwner() internal view returns (address) {
+        return _storageOwnership().owner;
     }
 
-    function _requireIsContractOwner() internal view {
-        require(
-            msg.sender == _storageOwnership().contractOwner,
-            "not contract owner"
-        );
+    function _requireIsOwner() internal view {
+        require(msg.sender == _storageOwnership().owner, "not contract owner");
     }
 }

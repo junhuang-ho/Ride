@@ -17,7 +17,7 @@ contract RideCut is IRideCut {
         address _init,
         bytes calldata _calldata
     ) external override {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCutAndLoupe.StorageCutAndLoupe storage ds = RideLibCutAndLoupe
             ._storageCutAndLoupe();
         uint256 originalSelectorCount = ds.selectorCount;

@@ -28,7 +28,7 @@ library RideLibRater {
      * @param _max | unitless integer
      */
     function _setRatingBounds(uint256 _min, uint256 _max) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         require(_min > 0, "cannot have zero rating bound");
         require(_max > _min, "maximum rating must be more than minimum rating");
         StorageRater storage s1 = _storageRater();

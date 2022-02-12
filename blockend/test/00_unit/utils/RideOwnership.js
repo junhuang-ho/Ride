@@ -24,12 +24,12 @@ if (parseInt(chainId) === 31337)
         {
             it("Should allow pass if caller is owner", async function ()
             {
-                expect(await contractRideOwnership.requireIsContractOwner_()).to.equal(true)
+                expect(await contractRideOwnership.requireIsOwner_()).to.equal(true)
             })
             it("Should revert if caller is not owner", async function ()
             {
                 contractRideOwnership1 = await ethers.getContractAt('RideTestOwnership', rideHubAddress, accounts[1].address)
-                await expect(contractRideOwnership1.requireIsContractOwner_()).to.revertedWith("not contract owner")
+                await expect(contractRideOwnership1.requireIsOwner_()).to.revertedWith("not contract owner")
             })
         })
 
@@ -37,7 +37,7 @@ if (parseInt(chainId) === 31337)
         {
             it("Should return contract owner", async function ()
             {
-                expect(await contractRideOwnership.contractOwner_()).to.equal(accounts[0].address)
+                expect(await contractRideOwnership.getOwner_()).to.equal(accounts[0].address)
             })
         })
 
@@ -45,11 +45,11 @@ if (parseInt(chainId) === 31337)
         {
             it("Should set new owner", async function ()
             {
-                var tx = await contractRideOwnership.setContractOwner_(accounts[1].address)
+                var tx = await contractRideOwnership.setOwner_(accounts[1].address)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                expect(await contractRideOwnership.contractOwner_()).to.equal(accounts[1].address)
+                expect(await contractRideOwnership.getOwner_()).to.equal(accounts[1].address)
             })
         })
     })
@@ -80,7 +80,7 @@ if (parseInt(chainId) === 31337)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
-                expect(await contractRideOwnership.contractOwner_()).to.equal(accounts[1].address)
+                expect(await contractRideOwnership.owner()).to.equal(accounts[1].address)
             })
         })
     })

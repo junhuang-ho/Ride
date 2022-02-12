@@ -58,7 +58,7 @@ library RideLibCurrencyRegistry {
     event CurrencyRegistered(address indexed sender, bytes32 key);
 
     function _register(bytes32 _key) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         _storageCurrencyRegistry().currencyKeyToSupported[_key] = true;
 
         emit CurrencyRegistered(msg.sender, _key);
@@ -67,7 +67,7 @@ library RideLibCurrencyRegistry {
     event CurrencyRemoved(address indexed sender, bytes32 key);
 
     function _removeCurrency(bytes32 _key) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         _requireCurrencySupported(_key);
         StorageCurrencyRegistry storage s1 = _storageCurrencyRegistry();
         delete s1.currencyKeyToSupported[_key]; // delete cheaper than set false

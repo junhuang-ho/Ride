@@ -33,7 +33,7 @@ library RideLibFee {
     function _setCancellationFee(bytes32 _key, uint256 _cancellationFee)
         internal
     {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToCancellationFee[_key] = _cancellationFee; // input format: token in Wei
 
@@ -49,7 +49,7 @@ library RideLibFee {
      * @param _baseFee | unit in Wei
      */
     function _setBaseFee(bytes32 _key, uint256 _baseFee) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToBaseFee[_key] = _baseFee; // input format: token in Wei
 
@@ -65,7 +65,7 @@ library RideLibFee {
      * @param _costPerMinute | unit in Wei
      */
     function _setCostPerMinute(bytes32 _key, uint256 _costPerMinute) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToCostPerMinute[_key] = _costPerMinute; // input format: token in Wei
 
@@ -83,7 +83,7 @@ library RideLibFee {
     function _setCostPerMetre(bytes32 _key, uint256[] memory _costPerMetre)
         internal
     {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         require(
             _costPerMetre.length == RideLibBadge._getBadgesCount(),

@@ -8,7 +8,7 @@ import {RideLibCutAndLoupe} from "./libraries/utils/RideLibCutAndLoupe.sol";
 
 contract RideHub {
     constructor(address _contractOwner, address _rideCutFacet) payable {
-        RideLibOwnership._setContractOwner(_contractOwner);
+        RideLibOwnership._setOwner(_contractOwner);
 
         // Add the rideCut external function from the RideCut.sol
         IRideCut.FacetCut[] memory cut = new IRideCut.FacetCut[](1);

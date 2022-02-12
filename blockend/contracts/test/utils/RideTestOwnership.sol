@@ -5,24 +5,24 @@ import {RideOwnership} from "../../diamondRideHub/facets/utils/RideOwnership.sol
 import {RideLibOwnership} from "../../diamondRideHub/libraries/utils/RideLibOwnership.sol";
 
 contract RideTestOwnership is RideOwnership {
-    function sContractOwner() external view returns (address) {
-        return RideLibOwnership._storageOwnership().contractOwner;
+    function sOwner() external view returns (address) {
+        return RideLibOwnership._storageOwnership().owner;
     }
 
-    function ssContractOwner(address _owner) external {
-        RideLibOwnership._storageOwnership().contractOwner = _owner;
+    function ssOwner(address _owner) external {
+        RideLibOwnership._storageOwnership().owner = _owner;
     }
 
-    function requireIsContractOwner_() external view returns (bool) {
-        RideLibOwnership._requireIsContractOwner();
+    function requireIsOwner_() external view returns (bool) {
+        RideLibOwnership._requireIsOwner();
         return true;
     }
 
-    function setContractOwner_(address _newOwner) external {
-        RideLibOwnership._setContractOwner(_newOwner);
+    function setOwner_(address _newOwner) external {
+        RideLibOwnership._setOwner(_newOwner);
     }
 
-    function contractOwner_() external view returns (address) {
-        return RideLibOwnership._contractOwner();
+    function getOwner_() external view returns (address) {
+        return RideLibOwnership._getOwner();
     }
 }

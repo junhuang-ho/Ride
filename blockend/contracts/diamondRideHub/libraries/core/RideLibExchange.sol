@@ -48,7 +48,7 @@ library RideLibExchange {
         bytes32 _keyY,
         address _priceFeed
     ) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         RideLibCurrencyRegistry._requireCurrencySupported(_keyX);
         RideLibCurrencyRegistry._requireCurrencySupported(_keyY);
 
@@ -68,7 +68,7 @@ library RideLibExchange {
     event PriceFeedRemoved(address indexed sender, address priceFeed);
 
     function _removeXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         _requireXPerYPriceFeedSupported(_keyX, _keyY);
 
         StorageExchange storage s1 = _storageExchange();

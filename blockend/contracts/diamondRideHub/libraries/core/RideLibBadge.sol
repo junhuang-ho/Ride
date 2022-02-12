@@ -50,7 +50,7 @@ library RideLibBadge {
      * @param _badgesMaxScores Score that defines a specific badge rank
      */
     function _setBadgesMaxScores(uint256[] memory _badgesMaxScores) internal {
-        RideLibOwnership._requireIsContractOwner();
+        RideLibOwnership._requireIsOwner();
         require(
             _badgesMaxScores.length == _getBadgesCount() - 1,
             "_badgesMaxScores.length must be 1 less than Badges"
