@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RideDriverRegistry.sol";
-import "../../diamondRideHub/libraries/core/RideLibDriverRegistry.sol";
+import "../../diamonds/facets/core/RideDriverRegistry.sol";
+import "../../diamonds/libraries/core/RideLibDriverRegistry.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 

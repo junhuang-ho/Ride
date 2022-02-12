@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RideDriver.sol";
-import "../../diamondRideHub/libraries/core/RideLibDriver.sol";
+import "../../diamonds/facets/core/RideDriver.sol";
+import "../../diamonds/libraries/core/RideLibDriver.sol";
 
 contract RideTestDriver is RideDriver {
     function requireDrvMatchTixDrv_(address _driver)

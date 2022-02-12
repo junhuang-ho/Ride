@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RideExchange.sol";
-import "../../diamondRideHub/libraries/core/RideLibExchange.sol";
+import "../../diamonds/facets/core/RideExchange.sol";
+import "../../diamonds/libraries/core/RideLibExchange.sol";
 
 contract RideTestExchange is RideExchange {
     function sXToYToXPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY)

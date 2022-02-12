@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RideCurrencyRegistry.sol";
-import "../../diamondRideHub/libraries/core/RideLibCurrencyRegistry.sol";
+import "../../diamonds/facets/core/RideCurrencyRegistry.sol";
+import "../../diamonds/libraries/core/RideLibCurrencyRegistry.sol";
 
 contract RideTestCurrencyRegistry is RideCurrencyRegistry {
     function sCurrencyKeyToSupported_(bytes32 _key)

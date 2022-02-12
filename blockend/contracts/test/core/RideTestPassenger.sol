@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RidePassenger.sol";
-import "../../diamondRideHub/libraries/core/RideLibPassenger.sol";
+import "../../diamonds/facets/core/RidePassenger.sol";
+import "../../diamonds/libraries/core/RideLibPassenger.sol";
 
 contract RideTestPassenger is RidePassenger {
     function requirePaxMatchTixPax_() external view returns (bool) {

@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../diamondRideHub/facets/core/RideFee.sol";
-import "../../diamondRideHub/libraries/core/RideLibFee.sol";
+import "../../diamonds/facets/core/RideFee.sol";
+import "../../diamonds/libraries/core/RideLibFee.sol";
 
 contract RideTestFee is RideFee {
     function sCurrencyKeyToCancellationFee_(bytes32 _key)
