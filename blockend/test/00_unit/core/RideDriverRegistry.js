@@ -6,6 +6,7 @@ const { ethers } = require("hardhat")
 const hre = require("hardhat")
 const chainId = hre.network.config.chainId
 
+const { deployAdministration } = require("../../../scripts/deployAdministration.js")
 const { deployRideHub } = require("../../../scripts/deployRideHub.js")
 
 if (parseInt(chainId) === 31337)
@@ -64,25 +65,39 @@ if (parseInt(chainId) === 31337)
             rideHubAddress = contractAddresses[0]
             contractRideDriverRegistry = await ethers.getContractAt('RideTestDriverRegistry', rideHubAddress)
             contractRideBadge = await ethers.getContractAt('RideTestBadge', rideHubAddress)
+
+            contractAddresses = await deployAdministration(accounts[0].address, true, false)
+            administrationAddress = contractAddresses[0]
+            contractRideDriverAssistant = await ethers.getContractAt('RideDriverAssistant', administrationAddress)
+
+            // set admin address into RideHub
+            contractRideSettings = await ethers.getContractAt('RideTestSettings', rideHubAddress)
+            var tx = await contractRideSettings.setAdministrationAddress(administrationAddress)
+            var rcpt = await tx.wait()
+            expect(tx.confirmations).to.equal(1)
+
+            var tx = await contractRideDriverAssistant.approveApplicant(accounts[0].address, "testme123")
+            var rcpt = await tx.wait()
+            expect(tx.confirmations).to.equal(1)
         })
 
-        describe("approveApplicant", function ()
-        {
-            it("Should set applicant uri", async function ()
-            {
-                expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("")
+        // describe("approveApplicant", function ()
+        // {
+        //     it("Should set applicant uri", async function ()
+        //     {
+        //         expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("")
 
-                var tx = await contractRideDriverRegistry.approveApplicant(accounts[0].address, "testme123")
-                var rcpt = await tx.wait()
-                expect(tx.confirmations).to.equal(1)
+        //         var tx = await contractRideDriverRegistry.approveApplicant(accounts[0].address, "testme123")
+        //         var rcpt = await tx.wait()
+        //         expect(tx.confirmations).to.equal(1)
 
-                expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("testme123")
-            })
-            it("Should revert if uri already set", async function ()
-            {
-                await expect(contractRideDriverRegistry.approveApplicant(accounts[0].address, "testme456")).to.revertedWith("uri already set")
-            })
-        })
+        //         expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("testme123")
+        //     })
+        //     it("Should revert if uri already set", async function ()
+        //     {
+        //         await expect(contractRideDriverRegistry.approveApplicant(accounts[0].address, "testme456")).to.revertedWith("uri already set")
+        //     })
+        // })
 
         describe("registerAsDriver", function ()
         {
@@ -96,7 +111,6 @@ if (parseInt(chainId) === 31337)
 
 
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).id).to.equal(0)
-                expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("testme123")
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).maxMetresPerTrip).to.equal(0)
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).metresTravelled).to.equal(0)
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).countStart).to.equal(0)
@@ -113,7 +127,6 @@ if (parseInt(chainId) === 31337)
                 expect(tx.confirmations).to.equal(1)
 
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).id).to.equal(1)
-                expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).uri).to.equal("testme123")
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).maxMetresPerTrip).to.equal(500)
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).metresTravelled).to.equal(0)
                 expect((await contractRideBadge.sDriverToDriverReputation_(accounts[0].address)).countStart).to.equal(0)

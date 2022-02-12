@@ -13,7 +13,7 @@ library RideLibBadge {
      */
     struct DriverReputation {
         uint256 id;
-        string uri;
+        // string uri;
         uint256 maxMetresPerTrip; // TODO: necessary? when ticket showed to driver, he can see destination and metres and choose to accept or not!!
         uint256 metresTravelled;
         uint256 countStart;

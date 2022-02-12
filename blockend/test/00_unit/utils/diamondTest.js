@@ -50,7 +50,7 @@ if (parseInt(chainId) === 31337)
                 addresses.push(address)
             }
 
-            assert.equal(addresses.length, 14)
+            assert.equal(addresses.length, 15)
         })
 
         it('facets should have the right function selectors -- call to facetFunctionSelectors function', async () =>

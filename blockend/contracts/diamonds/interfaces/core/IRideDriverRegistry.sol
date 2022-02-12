@@ -10,7 +10,7 @@ interface IRideDriverRegistry {
 
     function updateMaxMetresPerTrip(uint256 _maxMetresPerTrip) external;
 
-    event ApplicantApproved(address indexed applicant);
+    // event ApplicantApproved(address indexed applicant);
 
-    function approveApplicant(address _driver, string memory _uri) external;
+    // function approveApplicant(address _driver, string memory _uri) external;
 }

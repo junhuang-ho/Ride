@@ -4,6 +4,7 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
 const { deployTokenAndGovernor } = require("./deployTokenAndGovernor.js")
+const { deployAdministration } = require("./deployAdministration.js")
 const { deployRideHub } = require("./deployRideHub.js")
 
 async function deployEndToEnd(deployerAddress, test = false, integration = false)
@@ -19,23 +20,36 @@ async function deployEndToEnd(deployerAddress, test = false, integration = false
     }
     console.log(`Deployer address is ${deployerAddress}`)
 
-    addressesTokenNGovernor = await deployTokenAndGovernor(deployerAddress, false, false)
+    addressesTokenNGovernor = await deployTokenAndGovernor(deployerAddress, test, integration)
     addressRideToken = addressesTokenNGovernor[0]
     addressRideTimelock = addressesTokenNGovernor[1]
     addressRideGovernor = addressesTokenNGovernor[2]
 
-    addressesRideHub = await deployRideHub(deployerAddress, false, false)
+    addressesRideAdministration = await deployAdministration(deployerAddress, test, integration)
+    addressRideAdministration = addressesRideAdministration[0]
+
+    addressesRideHub = await deployRideHub(deployerAddress, test, integration)
     addressRideHub = addressesRideHub[0]
 
     contractRideToken = await ethers.getContractAt("Ride", addressRideToken, deployerAddress)
     contractRideTimelock = await ethers.getContractAt("RideTimelock", addressRideTimelock, deployerAddress)
     contractRideGovernor = await ethers.getContractAt("RideGovernor", addressRideGovernor, deployerAddress)
-    contractOwnership = await ethers.getContractAt("RideOwnership", addressRideHub, deployerAddress)
-    contractCurrencyRegistry = await ethers.getContractAt("RideCurrencyRegistry", addressRideHub, deployerAddress)
+    contractOwnership = await ethers.getContractAt("IERC173", addressRideHub, deployerAddress)
+    contractCurrencyRegistry = await ethers.getContractAt("IRideCurrencyRegistry", addressRideHub, deployerAddress)
 
     // initialization steps TODO
 
-    // 1. tokenomics strategy (if not done already in Ride contract)
+    // 1. more RideHub initializations since no space in RideInitializer0.sol
+
+    // set admin address into RideHub
+    contractSettings = await ethers.getContractAt('IRideSettings', addressRideHub, deployerAddress)
+
+    expect(await contractSettings.getAdministrationAddress()).to.equal(ethers.constants.AddressZero)
+    var tx = await contractSettings.setAdministrationAddress(addressRideAdministration)
+    var rcpt = await tx.wait()
+    expect(await contractSettings.getAdministrationAddress()).to.equal(addressRideAdministration)
+
+    // 2. tokenomics strategy (if not done already in Ride contract)
 
     ////////////////////////////////////////////////////////////////////////////////////////
     ///// ---------------------------------------------------------------------------- /////
@@ -74,12 +88,12 @@ async function deployEndToEnd(deployerAddress, test = false, integration = false
     ///// ---------------------------------------------------------------------------- /////
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    // 2. setup RideHub to support RIDE token (besides step to add priceFeed - or maybe token would be deployed sometime before RideHub, in that case would have priceFeed)
+    // 3. setup RideHub to support RIDE token (besides step to add priceFeed - or maybe token would be deployed sometime before RideHub, in that case would have priceFeed)
 
     var tx = await contractCurrencyRegistry.registerCrypto(addressRideToken)
     var rcpt = await tx.wait()
 
-    // 3. transfer RideHub ownership to governor
+    // 4. transfer RideHub ownership to governor
 
     expect(await contractOwnership.owner()).to.equal(deployerAddress)
     var tx = await contractOwnership.transferOwnership(addressRideTimelock)

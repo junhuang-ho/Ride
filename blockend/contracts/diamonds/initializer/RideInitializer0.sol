@@ -9,6 +9,7 @@ import "../interfaces/core/IRideTicket.sol";
 import "../interfaces/core/IRidePenalty.sol";
 import "../interfaces/core/IRideHolding.sol";
 import "../interfaces/core/IRideExchange.sol";
+import "../interfaces/core/IRideSettings.sol";
 import "../interfaces/core/IRidePassenger.sol";
 import "../interfaces/core/IRideDriverRegistry.sol";
 import "../interfaces/core/IRideCurrencyRegistry.sol";
@@ -25,6 +26,7 @@ import "../libraries/core/RideLibTicket.sol";
 import "../libraries/core/RideLibPenalty.sol";
 import "../libraries/core/RideLibHolding.sol";
 import "../libraries/core/RideLibExchange.sol";
+import "../libraries/core/RideLibSettings.sol";
 import "../libraries/core/RideLibPassenger.sol";
 import "../libraries/core/RideLibDriverRegistry.sol";
 import "../libraries/core/RideLibCurrencyRegistry.sol";
@@ -77,6 +79,7 @@ contract RideInitializer0 {
         s1.supportedInterfaces[type(IRideCurrencyRegistry).interfaceId] = true;
         s1.supportedInterfaces[type(IRideExchange).interfaceId] = true;
         s1.supportedInterfaces[type(IRideRater).interfaceId] = true;
+        s1.supportedInterfaces[type(IRideSettings).interfaceId] = true;
 
         // TODO: register function selectors in interfaces
 

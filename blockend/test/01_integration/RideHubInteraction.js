@@ -6,6 +6,7 @@ const { ethers, waffle } = require("hardhat")
 const hre = require("hardhat")
 const chainId = hre.network.config.chainId
 
+const { deployAdministration } = require("../../scripts/deployAdministration.js")
 const { deployRideHub } = require("../../scripts/deployRideHub.js")
 
 if (parseInt(chainId) === 31337)
@@ -29,6 +30,16 @@ if (parseInt(chainId) === 31337)
             rideHubAddress = contractAddresses[0]
             mockV3AggregatorAddress = contractAddresses[1]
             wETH9Address = contractAddresses[2]
+
+            contractAddresses = await deployAdministration(accounts[0].address, true, false)
+            administrationAddress = contractAddresses[0]
+            contractRideDriverAssistantA = await ethers.getContractAt('RideDriverAssistant', administrationAddress, admin)
+
+            // set admin address into RideHub
+            contractRideSettingsA = await ethers.getContractAt('IRideSettings', rideHubAddress, admin)
+            var tx = await contractRideSettingsA.setAdministrationAddress(administrationAddress)
+            var rcpt = await tx.wait()
+            expect(tx.confirmations).to.equal(1)
 
             // contracts required to be called by Admin for setup and others
             contractRideDriverRegistryA = await ethers.getContractAt('IRideDriverRegistry', rideHubAddress, admin)
@@ -67,7 +78,6 @@ if (parseInt(chainId) === 31337)
             it("Should successfully register applicant", async function ()
             {
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).id).to.equal(0)
-                expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).uri).to.equal("")
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).maxMetresPerTrip).to.equal(0)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).metresTravelled).to.equal(0)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).countStart).to.equal(0)
@@ -76,16 +86,20 @@ if (parseInt(chainId) === 31337)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).countRating).to.equal(0)
 
                 applicationDocumentsURI = "testDocs" // applicant submits (driver)
-                var tx = await contractRideDriverRegistryA.approveApplicant(driver, applicationDocumentsURI)
+                var tx = await contractRideDriverAssistantA.approveApplicant(driver, applicationDocumentsURI)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
+
+
+                // var tx = await contractRideDriverRegistryA.approveApplicant(driver, applicationDocumentsURI)
+                // var rcpt = await tx.wait()
+                // expect(tx.confirmations).to.equal(1)
 
                 var tx = await contractRideDriverRegistryD.registerAsDriver(500)
                 var rcpt = await tx.wait()
                 expect(tx.confirmations).to.equal(1)
 
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).id).to.equal(1)
-                expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).uri).to.equal(applicationDocumentsURI)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).maxMetresPerTrip).to.equal(500)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).metresTravelled).to.equal(0)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(driver)).countStart).to.equal(0)
@@ -102,7 +116,6 @@ if (parseInt(chainId) === 31337)
                 contractRideDriverRegistry = await ethers.getContractAt('IRideDriverRegistry', rideHubAddress, accounts[3].address)
 
                 expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).id).to.equal(0)
-                expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).uri).to.equal("")
                 expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).maxMetresPerTrip).to.equal(0)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).metresTravelled).to.equal(0)
                 expect((await contractRideBadgeO.getDriverToDriverReputation(accounts[3].address)).countStart).to.equal(0)

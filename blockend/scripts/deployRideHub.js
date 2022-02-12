@@ -86,6 +86,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
             'RideTestRater': [],
             'RideTestDriver': [],
             'RideTestDriverRegistry': [],
+            'RideTestSettings': [],
         } // NOTE: for facets, args should all be EMPTY !!!
     } else
     {
@@ -103,6 +104,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
             'RideRater': [],
             'RideDriver': [],
             'RideDriverRegistry': [],
+            'RideSettings': [],
         } // NOTE: for facets, args should all be EMPTY !!!
     }
 

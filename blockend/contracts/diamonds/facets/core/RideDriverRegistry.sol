@@ -6,7 +6,8 @@ import "../../libraries/core/RideLibDriverRegistry.sol";
 import "../../libraries/core/RideLibBadge.sol";
 import "../../libraries/core/RideLibTicket.sol";
 import "../../libraries/core/RideLibDriver.sol";
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/core/RideLibSettings.sol";
+import "../../interfaces/administration/IRideDriverAssistant.sol";
 
 contract RideDriverRegistry is IRideDriverRegistry {
     /**
@@ -21,14 +22,17 @@ contract RideDriverRegistry is IRideDriverRegistry {
         RideLibTicket._requireNotActive();
         RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         require(
-            bytes(s1.driverToDriverReputation[msg.sender].uri).length != 0,
+            bytes(
+                IRideDriverAssistant(
+                    RideLibSettings._storageSettings().administration
+                ).getDriverURI(msg.sender)
+            ).length != 0,
             "uri not set in bg check"
         );
         require(msg.sender != address(0), "0 address");
 
         s1.driverToDriverReputation[msg.sender].id = RideLibDriverRegistry
             ._mint();
-        // s1.driverToDriverReputation[msg.sender].uri = _uri; // URI set from another contract to prevent anyone passing random string
         s1
             .driverToDriverReputation[msg.sender]
             .maxMetresPerTrip = _maxMetresPerTrip;
@@ -60,28 +64,28 @@ contract RideDriverRegistry is IRideDriverRegistry {
         emit MaxMetresUpdated(msg.sender, _maxMetresPerTrip);
     }
 
-    /**
-     * approveApplicant of driver applicants
-     *
-     * @param _driver applicant
-     * @param _uri information of applicant
-     *
-     * @custom:event ApplicantApproved
-     */
-    function approveApplicant(address _driver, string memory _uri)
-        external
-        override
-    {
-        RideLibOwnership._requireIsOwner();
+    // /**
+    //  * approveApplicant of driver applicants
+    //  *
+    //  * @param _driver applicant
+    //  * @param _uri information of applicant
+    //  *
+    //  * @custom:event ApplicantApproved
+    //  */
+    // function approveApplicant(address _driver, string memory _uri)
+    //     external
+    //     override
+    // {
+    //     RideLibOwnership._requireIsOwner();
 
-        RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
+    //     RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
 
-        require(
-            bytes(s1.driverToDriverReputation[_driver].uri).length == 0,
-            "uri already set"
-        );
-        s1.driverToDriverReputation[_driver].uri = _uri;
+    //     require(
+    //         bytes(s1.driverToDriverReputation[_driver].uri).length == 0,
+    //         "uri already set"
+    //     );
+    //     s1.driverToDriverReputation[_driver].uri = _uri;
 
-        emit ApplicantApproved(_driver);
-    }
+    //     emit ApplicantApproved(_driver);
+    // }
 }

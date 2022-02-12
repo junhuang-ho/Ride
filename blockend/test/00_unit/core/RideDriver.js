@@ -58,7 +58,7 @@ if (parseInt(chainId) === 31337)
         {
             it("Should allow pass if caller is driver", async function ()
             {
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 50, 2, 2, 10, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 50, 2, 2, 10, 2)
                 var rcpt = await tx.wait()
 
                 expect(await contractRideDriver.requireIsDriver_()).to.equal(true)
@@ -127,7 +127,7 @@ if (parseInt(chainId) === 31337)
 
             var tx = await contractRideBadge.setBadgesMaxScores_(badges)
             var rcpt = await tx.wait()
-            var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 50, 2, 2, 10, 2)
+            var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 50, 2, 2, 10, 2)
             var rcpt = await tx.wait()
 
             var tx = await contractRideHolding.ssUserToCurrencyKeyToHolding_(accounts[0].address, keyPay, "5")
@@ -185,13 +185,13 @@ if (parseInt(chainId) === 31337)
             })
             it("Should revert if metres more than driver's max distance preference", async function ()
             {
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 1, 50, 2, 2, 10, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 1, 50, 2, 2, 10, 2)
                 var rcpt = await tx.wait()
                 await expect(contractRideDriver.acceptTicket(keyLocal, keyPay, tixId, 0)).to.revertedWith("trip too long")
             })
             it("Should revert if requested badge not meet driver's badge - strict", async function ()
             { // TODO: case where acceptable - matching badge
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 500001, 2, 2, 10, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 500001, 2, 2, 10, 2)
                 var rcpt = await tx.wait()
                 var score = await contractRideBadge.calculateScore_()
                 var badge = await contractRideBadge.getBadge_(score.toString())
@@ -211,7 +211,7 @@ if (parseInt(chainId) === 31337)
             })
             it("Should revert if requested badge not meet driver's badge", async function ()
             { // TODO: case where acceptable - matching badge OR pax request lower badge than driver's badge
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 500001, 2, 2, 10, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 500001, 2, 2, 10, 2)
                 var rcpt = await tx.wait()
                 var score = await contractRideBadge.calculateScore_()
                 var badge = await contractRideBadge.getBadge_(score.toString())
@@ -252,7 +252,7 @@ if (parseInt(chainId) === 31337)
                 var tx = await contractRideRater.setRatingBounds_(1, 5)
                 var rcpt = await tx.wait()
 
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 50, 2, 2, 10, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 50, 2, 2, 10, 2)
                 var rcpt = await tx.wait()
 
                 var tx = await contractRideHolding.ssUserToCurrencyKeyToHolding_(accounts[0].address, keyPay, "5")

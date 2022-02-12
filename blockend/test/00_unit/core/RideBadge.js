@@ -92,7 +92,7 @@ if (parseInt(chainId) === 31337)
 
                 score = Math.floor((metresTravelled * countEnd * totalRating) / (countStart * countRating * maxRating))
 
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, metresTravelled, countStart, countEnd, totalRating, countRating)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, metresTravelled, countStart, countEnd, totalRating, countRating)
                 var rcpt = await tx.wait()
 
                 var tx = await contractRideRater.setRatingBounds_(1, maxRating)
@@ -158,7 +158,6 @@ if (parseInt(chainId) === 31337)
             it("Should return driver reputation", async function ()
             {
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).id).to.equal(0)
-                expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).uri).to.equal("")
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).maxMetresPerTrip).to.equal(0)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).metresTravelled).to.equal(0)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).countStart).to.equal(0)
@@ -166,11 +165,10 @@ if (parseInt(chainId) === 31337)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).totalRating).to.equal(0)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).countRating).to.equal(0)
 
-                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, "test123", 500, 33, 2, 1, 3, 2)
+                var tx = await contractRideBadge.ssDriverToDriverReputation_(accounts[0].address, 1, 500, 33, 2, 1, 3, 2)
                 var rcpt = await tx.wait()
 
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).id).to.equal(1)
-                expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).uri).to.equal("test123")
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).maxMetresPerTrip).to.equal(500)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).metresTravelled).to.equal(33)
                 expect((await contractRideBadge.getDriverToDriverReputation(accounts[0].address)).countStart).to.equal(2)
