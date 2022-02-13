@@ -48,7 +48,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     const contractRideCut = await deploy(
         deployerAddress,
         chainId,
-        "RideCut",
+        "RideCutOwnership",
         args = [],
         verify = true,
         test = test

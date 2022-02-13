@@ -5,7 +5,7 @@ import "../../interfaces/utils/IRideCut.sol";
 import "../../libraries/utils/RideLibCutAndLoupe.sol";
 import "../../libraries/utils/RideLibOwnership.sol";
 
-contract RideCut is IRideCut {
+contract RideCutOwnership is IRideCut {
     /// @notice Add/replace/remove any number of functions and optionally execute
     ///         a function with delegatecall
     /// @param _rideCut Contains the facet addresses and function selectors

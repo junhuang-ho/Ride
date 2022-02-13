@@ -19,6 +19,10 @@ library RideLibOwnership {
         }
     }
 
+    function _requireIsOwner() internal view {
+        require(msg.sender == _storageOwnership().owner, "not contract owner");
+    }
+
     event OwnershipTransferred(
         address indexed previousOwner,
         address indexed newOwner
@@ -33,9 +37,5 @@ library RideLibOwnership {
 
     function _getOwner() internal view returns (address) {
         return _storageOwnership().owner;
-    }
-
-    function _requireIsOwner() internal view {
-        require(msg.sender == _storageOwnership().owner, "not contract owner");
     }
 }

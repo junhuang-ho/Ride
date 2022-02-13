@@ -2,12 +2,19 @@
 pragma solidity ^0.8.2;
 
 import "./interfaces/utils/IRideCut.sol";
-import "./libraries/utils/RideLibOwnership.sol";
+import "./facets/utils/RideAccessControl.sol";
+import "./libraries/utils/RideLibAccessControl.sol";
 import "./libraries/utils/RideLibCutAndLoupe.sol";
 
+// import "./libraries/utils/RideLibOwnership.sol";
+
 contract RideAdministration {
-    constructor(address _owner, address _rideCutFacet) payable {
-        RideLibOwnership._setOwner(_owner);
+    constructor(address _admin, address _rideCutFacet) payable {
+        RideLibAccessControl._setupRole(
+            RideLibAccessControl.DEFAULT_ADMIN_ROLE,
+            _admin
+        );
+        // RideLibOwnership._setOwner(_admin);
 
         // Add the rideCut external function from the RideCut.sol
         IRideCut.FacetCut[] memory cut = new IRideCut.FacetCut[](1);

@@ -20,7 +20,7 @@ async function deployDummyDiamond(deployerAddress, test = false, integration = f
     const contractRideCut = await deploy(
         deployerAddress,
         chainId,
-        "RideCut",
+        "RideCutOwnership",
         args = [],
         verify = true,
         test = test

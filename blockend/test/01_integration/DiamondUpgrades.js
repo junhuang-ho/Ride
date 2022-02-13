@@ -28,7 +28,7 @@ if (parseInt(chainId) === 31337)
 
             addresses = await deployDummyDiamond(admin, true, true)
             dummyDiamondAddress = addresses[0]
-            diamondCutFacet = await ethers.getContractAt('RideCut', dummyDiamondAddress)
+            diamondCutFacet = await ethers.getContractAt('IRideCut', dummyDiamondAddress)
             diamondLoupeFacet = await ethers.getContractAt('RideLoupe', dummyDiamondAddress)
             ownershipFacet = await ethers.getContractAt('RideOwnership', dummyDiamondAddress)
         })

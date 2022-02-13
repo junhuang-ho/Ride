@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "../../interfaces/administration/IRideDriverAssistant.sol";
 import "../../libraries/administration/RideLibDriverAssistant.sol";
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibAccessControl.sol";
 
 contract RideDriverAssistant is IRideDriverAssistant {
     /**
@@ -18,7 +18,9 @@ contract RideDriverAssistant is IRideDriverAssistant {
         external
         override
     {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.DEFAULT_ADMIN_ROLE
+        );
 
         RideLibDriverAssistant.StorageDriverAssistant
             storage s1 = RideLibDriverAssistant._storageDriverAssistant();

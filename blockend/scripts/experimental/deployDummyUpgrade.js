@@ -18,7 +18,7 @@ async function deployDummyDiamond(deployerAddress, test = false, integration = f
     console.log(`Deployer address is ${deployerAddress}`)
 
     dummyDiamondAddress = "0x93af348D9a809211D6dddC497DB1446959E36bd8" // TODO: Alter this !!! based on deployDummyDiamond.js
-    diamondCutFacet = await ethers.getContractAt('RideCut', dummyDiamondAddress, deployerAddress)
+    diamondCutFacet = await ethers.getContractAt('IRideCut', dummyDiamondAddress, deployerAddress)
     diamondLoupeFacet = await ethers.getContractAt('RideLoupe', dummyDiamondAddress, deployerAddress)
     ownershipFacet = await ethers.getContractAt('RideOwnership', dummyDiamondAddress, deployerAddress)
 

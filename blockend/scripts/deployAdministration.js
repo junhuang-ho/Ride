@@ -20,7 +20,7 @@ async function deployAdministration(deployerAddress, test = false, integration =
     const contractRideCut = await deploy(
         deployerAddress,
         chainId,
-        "RideCut",
+        "RideCutAccessControl",
         args = [],
         verify = true,
         test = test

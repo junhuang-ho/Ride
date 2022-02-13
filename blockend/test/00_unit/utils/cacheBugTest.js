@@ -55,7 +55,7 @@ if (parseInt(chainId) === 31337)
             ]
             accounts = await ethers.getSigners()
             let diamondAddress = await deployRideHub(accounts[0].address, true, false)
-            let diamondCutFacet = await ethers.getContractAt('RideCut', diamondAddress[0])
+            let diamondCutFacet = await ethers.getContractAt('IRideCut', diamondAddress[0])
             diamondLoupeFacet = await ethers.getContractAt('RideLoupe', diamondAddress[0])
             const Test1Facet = await ethers.getContractFactory('Test1')
             test1Facet = await Test1Facet.deploy()

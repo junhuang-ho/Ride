@@ -38,7 +38,7 @@ if (parseInt(chainId) === 31337)
         {
             accounts = await ethers.getSigners()
             diamondAddress = await deployRideHub(accounts[0].address, true, false)
-            diamondCutFacet = await ethers.getContractAt('RideCut', diamondAddress[0])
+            diamondCutFacet = await ethers.getContractAt('IRideCut', diamondAddress[0])
             diamondLoupeFacet = await ethers.getContractAt('RideLoupe', diamondAddress[0])
             ownershipFacet = await ethers.getContractAt('RideOwnership', diamondAddress[0])
         })
