@@ -37,6 +37,8 @@ note: dont really need store list of driver/passenger as passenger/driver dont r
 
 ## ::: Others :::
 
+- change unit test to be deployed from individual contracts instead of RideHub!
+
 - allow anyone to add any token pair if not addeed already?
 
 - rethink RideBadge
