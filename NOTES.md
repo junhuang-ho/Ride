@@ -1,3 +1,44 @@
+# Tokenomics
+ 1. What makes a token a security? - would be heavily regulated
+ - if a token features and markets the potential to make a profit (revenue share or price appreciation) in the future
+ - gains its value from external, tradable asset
+ 
+ 2. What makes a token a utility?
+ - issued by devs to fund the project where the token would be utilized
+ - buying into the future use of the service/product
+ - not designed as investment (hodl)
+ 
+ 3. Which category does RIDE fall under?
+ - Utility: used as trip fare, no hodl
+ - Utility: by its nature, buying the token to fund the project development
+ 
+ 4. All options to distribute token
+ - ICO (Initial Coin Offering) - risk of small number of holders with large amount each
+ - CEX (a portion of supply reserved for selling): Binance, KuCoin | supports Polygon?
+ - DEX (a portion of supply reserved to provide liquidity): Uniswap, Curve Finance | or Polygon support equivalent?
+ - Airdrop: if want to, how?
+ 
+ 1. dont start governance until RIDE token is fairly distributed?
+2. incentive for passengers to pay in RIDE for trips: subsidies passenger, they get discount on fares. so if fare cost USD 5 and 1 RIDE == 1 USD, then trip in RIDE costs 5 RIDE, but passenger pays 4 RIDE, driver receives 5 RIDE (1 RIDE coming from protocol - minted). Maybe dont need to subsidies if the non-fee in (3) is a strong enough incentive.
+3. incentive for drivers to accept RIDE for trips: protocol dont charge a fee.
+4. applicants that sign up to be drivers get certain RIDE token reward?
+5. from (2), say we cap max RIDE supply to 100, and initial mint is 40 where 20 goes to devs and 20 goes to public/exchange, and the remaining 60 use as subsidy for passengers that would be minted on the go.
+6. only can start voting once a certain level of fair distribution of RIDE tokens is reached.
+7. reward voters with RIDE tokens for participating in governance.
+8. burn? - Burning usually relates to operating fees, so that the more an asset is used, the faster its tokens are burned.
+9. does it require mass adoption (economies of scales) to function at its best?
+10. How to distribute tokens? X% dev team (broken down into few parts where token release linked to roadmap of project, can also do something like after roadmap complete only open governance - must be proper distributed), Y% public/exchanges, Z% reserved as reward over time for abc tasks/interation with dapp.
+
+### references
+https://101blockchains.com/tokenomics/
+https://medium.datadriveninvestor.com/tokenomics-1c79f2b796e4
+https://medium.com/@wmougayar/tokenomics-a-business-guide-to-token-usage-utility-and-value-b19242053416
+https://www.finextra.com/blogposting/20638/understanding-tokenomics-the-real-value-of-crypto
+https://dcxlearn.com/economics/tokenomics-a-guide-to-utility-business-and-value-2/
+https://www.vardhamaninfotech.com/blog/understanding-tokenomics-a-complete-guide/
+https://coinmarketcap.com/alexandria/article/what-is-tokenomics
+https://timesofindia.indiatimes.com/business/cryptocurrency/blockchain/tokenomics-demand-and-supply-of-cryptocurrencies/articleshow/87273549.cms?from=mdr
+
 # Interesting Chains
 
 0. Bitcoin (no smart contracts)
