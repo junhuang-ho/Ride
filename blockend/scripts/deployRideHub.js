@@ -4,7 +4,7 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { getSelectors, FacetCutAction } = require('./utilsDiamond.js')
 
-async function deployRideHub(deployerAddress, test = false, integration = false, waitBlocks = 10)
+async function deployRideHub(deployerAddress, test = false, integration = false, waitBlocks = 1)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
@@ -12,6 +12,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false,
     {
         waitBlocks = 1
     }
+    console.log("Blocks to Wait:", waitBlocks)
 
     if (deployerAddress === undefined || deployerAddress === null)
     {

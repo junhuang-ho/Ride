@@ -143,7 +143,7 @@ const verify_ = async (chainId, contractName, contractDeployed, args, skip = fal
     const contractFile = `${contractName}.sol`
     for (let i = 0; i < contractList.length; i++)
     {
-        if (contractList[i].endsWith(contractFile))
+        if (contractList[i].endsWith(contractFile) && !contractList[i].endsWith("I".concat(contractFile)))
         {
             contractPath = contractList[i]
             contractPath = contractPath.split("blockend/")[1]

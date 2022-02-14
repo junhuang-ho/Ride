@@ -7,7 +7,7 @@ const { deployTokenAndGovernor } = require("./deployTokenAndGovernor.js")
 const { deployAdministration } = require("./deployAdministration.js")
 const { deployRideHub } = require("./deployRideHub.js")
 
-async function deployEndToEnd(deployerAddress, test = false, integration = false, waitBlocks = 10)
+async function deployEndToEnd(deployerAddress, test = false, integration = false, waitBlocks = 1)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
@@ -15,6 +15,7 @@ async function deployEndToEnd(deployerAddress, test = false, integration = false
     {
         waitBlocks = 1
     }
+    console.log("Blocks to Wait:", waitBlocks)
 
     if (deployerAddress === undefined || deployerAddress === null)
     {
@@ -108,7 +109,14 @@ async function deployEndToEnd(deployerAddress, test = false, integration = false
     expect(await contractOwnership.owner()).to.equal(deployerAddress)
     var tx = await contractOwnership.transferOwnership(addressRideTimelock)
     var rcpt = tx.wait(waitBlocks)
+    console.log("Owner of RideHub:", await contractOwnership.owner())
     expect(await contractOwnership.owner()).to.equal(addressRideTimelock)
+
+    console.log(`Ride: ${addressRideToken}`)
+    console.log(`RideTimelock: ${addressRideTimelock}`)
+    console.log(`RideGovernor: ${addressRideGovernor}`)
+    console.log(`RideAdministration: ${addressRideAdministration}`)
+    console.log(`RideHub: ${addressRideHub}`)
 
     return [addressRideToken, addressRideTimelock, addressRideGovernor, addressRideHub]
 }

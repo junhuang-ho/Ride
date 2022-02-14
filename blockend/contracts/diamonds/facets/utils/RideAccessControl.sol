@@ -4,7 +4,7 @@ pragma solidity ^0.8.2;
 import "../../interfaces/utils/IRideAccessControl.sol";
 import "../../libraries/utils/RideLibAccessControl.sol";
 
-abstract contract RideAccessControl is IRideAccessControl {
+contract RideAccessControl is IRideAccessControl {
     function hasRole(bytes32 _role, address _account)
         external
         view
@@ -12,6 +12,10 @@ abstract contract RideAccessControl is IRideAccessControl {
         returns (bool)
     {
         return RideLibAccessControl._hasRole(_role, _account);
+    }
+
+    function getDefaultAdminRole() external pure override returns (bytes32) {
+        return RideLibAccessControl.DEFAULT_ADMIN_ROLE;
     }
 
     function getRoleAdmin(bytes32 _role)

@@ -20,6 +20,8 @@ interface IRideAccessControl {
         address indexed sender
     );
 
+    function getDefaultAdminRole() external pure returns (bytes32);
+
     function hasRole(bytes32 _role, address _account)
         external
         view
