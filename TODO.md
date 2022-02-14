@@ -3,8 +3,10 @@
 - Ensure states only exists in library solidity files. No where else.
 
 - add a passive value component? (user provide data in exchange for RIDE tokens)
-- 
+
 - split RIDE into dual purpose token? One for funding, another for utility? Like MAkerDAO's MKR & DAI?
+
+- freeze driver account?
 
 - do proper deploy scripts for diamond and with the features of hh-deploy + verification
 
