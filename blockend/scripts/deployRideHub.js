@@ -4,10 +4,14 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { getSelectors, FacetCutAction } = require('./utilsDiamond.js')
 
-async function deployRideHub(deployerAddress, test = false, integration = false)
+async function deployRideHub(deployerAddress, test = false, integration = false, waitBlocks = 10)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
+    if (test)
+    {
+        waitBlocks = 1
+    }
 
     if (deployerAddress === undefined || deployerAddress === null)
     {
@@ -301,7 +305,7 @@ async function deployRideHub(deployerAddress, test = false, integration = false)
     }
 
     console.log('tx: ', tx.hash)
-    const receipt = await tx.wait()
+    const receipt = await tx.wait(waitBlocks)
     if (!receipt.status)
     {
         throw Error(`RideHub Diamond Upgrade Failed: ${tx.hash}`)

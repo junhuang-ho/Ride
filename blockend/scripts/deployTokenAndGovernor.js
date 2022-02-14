@@ -3,10 +3,14 @@ const fs = require('fs')
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
-async function deployTokenAndGovernor(deployerAddress, test = false, integration = false)
+async function deployTokenAndGovernor(deployerAddress, test = false, integration = false, waitBlocks = 10)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
+    if (test)
+    {
+        waitBlocks = 1
+    }
 
     if (deployerAddress === undefined || deployerAddress === null)
     {
@@ -62,13 +66,13 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
     expect(await contractRideTimelock.hasRole(roleAdmin, deployerAddress)).to.equal(true)
 
     var tx = await contractRideTimelock.grantRole(roleProposer, contractRideGovernor.address)
-    var rcpt = await tx.wait()
+    var rcpt = await tx.wait(waitBlocks)
     var tx = await contractRideTimelock.grantRole(roleExecutor, ethers.constants.AddressZero) // anyone can execute
-    var rcpt = await tx.wait()
+    var rcpt = await tx.wait(waitBlocks)
     // var tx = await contractRideTimelock.revokeRole(roleAdmin, deployerAddress) // TODO: test same as renounceRole
-    // var rcpt = await tx.wait()
+    // var rcpt = await tx.wait(waitBlocks)
     var tx = await contractRideTimelock.renounceRole(roleAdmin, deployerAddress)
-    var rcpt = await tx.wait()
+    var rcpt = await tx.wait(waitBlocks)
 
     expect(await contractRideTimelock.hasRole(roleAdmin, contractRideTimelock.address)).to.equal(true)
     expect(await contractRideTimelock.hasRole(roleAdmin, deployerAddress)).to.equal(false)

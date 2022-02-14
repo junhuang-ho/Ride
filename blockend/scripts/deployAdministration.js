@@ -4,10 +4,14 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { getSelectors, FacetCutAction } = require('./utilsDiamond.js')
 
-async function deployAdministration(deployerAddress, test = false, integration = false)
+async function deployAdministration(deployerAddress, test = false, integration = false, waitBlocks = 10)
 {
     const chainId = hre.network.config.chainId // returns undefined if not local hh network
     const networkName = hre.network.name
+    if (test)
+    {
+        waitBlocks = 1
+    }
 
     if (deployerAddress === undefined || deployerAddress === null)
     {
@@ -66,7 +70,7 @@ async function deployAdministration(deployerAddress, test = false, integration =
     const rideCut = await ethers.getContractAt('IRideCut', contractAdministration.address)
     var tx = await rideCut.rideCut(cut, ethers.constants.AddressZero, "0x")
     console.log('tx: ', tx.hash)
-    const receipt = await tx.wait()
+    const receipt = await tx.wait(waitBlocks)
     if (!receipt.status)
     {
         throw Error(`RideAdministration Diamond Upgrade Failed: ${tx.hash}`)

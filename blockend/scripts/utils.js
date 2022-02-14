@@ -139,6 +139,21 @@ const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additi
 
 const verify_ = async (chainId, contractName, contractDeployed, args, skip = false, test = false) =>
 {
+    const contractList = getFiles((__dirname.substring(0, __dirname.lastIndexOf("/"))).concat("/contracts"))
+    const contractFile = `${contractName}.sol`
+    for (let i = 0; i < contractList.length; i++)
+    {
+        if (contractList[i].endsWith(contractFile))
+        {
+            contractPath = contractList[i]
+            contractPath = contractPath.split("blockend/")[1]
+        }
+    }
+    if (contractPath === undefined || contractPath === null)
+    {
+        throw new Error(`contract path that ends with ${contractFile} not found.`)
+    }
+
     if (parseInt(chainId) !== 31337)
     {
         try
@@ -153,6 +168,7 @@ const verify_ = async (chainId, contractName, contractDeployed, args, skip = fal
             await hre.run("verify:verify", { // https://hardhat.org/plugins/nomiclabs-hardhat-etherscan.html#using-programmatically
                 address: contractDeployed.address,
                 constructorArguments: args,
+                contract: `${contractPath}:${contractName}`,
             })
             if (!test)
             {
@@ -185,7 +201,6 @@ const deploy = async (deployer, chainId, contractName, args = [], verify = false
         {
             console.log(`Skipping\t| ${contractName} already deployed on ${networkConfig[chainId]["name"]}: ${deployedContractJSON.address}`)
         }
-
 
         const deployedContractMain = await ethers.getContractAt(contractName, deployedContractJSON.address)
 
@@ -226,6 +241,10 @@ const deploy = async (deployer, chainId, contractName, args = [], verify = false
                 {
                     contractArtifactsDir = contractArtifactList[i]
                 }
+            }
+            if (contractArtifactsDir === undefined || contractArtifactsDir === null)
+            {
+                throw new Error(`contract artifact path that ends with ${fileName} not found.`)
             }
             const contractArtifacts = fs.readFileSync(contractArtifactsDir)
             const contractArtifactsJSON = JSON.parse(contractArtifacts)
