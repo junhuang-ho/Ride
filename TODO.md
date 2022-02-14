@@ -2,6 +2,10 @@
 
 - Ensure states only exists in library solidity files. No where else.
 
+- add a passive value component? (user provide data in exchange for RIDE tokens)
+- 
+- split RIDE into dual purpose token? One for funding, another for utility? Like MAkerDAO's MKR & DAI?
+
 - do proper deploy scripts for diamond and with the features of hh-deploy + verification
 
 - look through all contracts replace those input params that is contract address, with the contract type itself (internally still read as address).
