@@ -6,6 +6,7 @@ part 'account.freezed.dart';
 @freezed
 class Account with _$Account {
   const factory Account({
+    required final bool isOwner,
     required final String publicKey,
     @JsonKey(ignore: true) EtherAmount? balance,
   }) = _Account;

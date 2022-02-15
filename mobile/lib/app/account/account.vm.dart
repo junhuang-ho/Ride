@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/models/account.dart';
 import 'package:ride/services/crypto.dart';
 import 'package:ride/services/repository.dart';
+import 'package:ride/services/ride/ride_ownership.dart';
 import 'package:ride/services/web3.dart';
 
 part 'account.vm.freezed.dart';
@@ -19,6 +20,7 @@ class AccountVM extends StateNotifier<AccountState> {
       : _crypto = read(cryptoProvider),
         _repository = read(repositoryProvider),
         _web3 = read(web3Provider),
+        _rideOwnershipService = read(rideOwnershipProvider),
         super(const AccountState.loading()) {
     init();
   }
@@ -26,6 +28,7 @@ class AccountVM extends StateNotifier<AccountState> {
   final Crypto _crypto;
   final Repository _repository;
   final Web3 _web3;
+  final RideOwnershipService _rideOwnershipService;
 
   Future<void> init() async {
     final privateKey = _repository.getPrivateKey();
@@ -35,7 +38,10 @@ class AccountVM extends StateNotifier<AccountState> {
     }
     final address = await _crypto.getPublicAddress(privateKey!);
     final ethBalance = await _web3.getEthBalance(address);
+    final ownerAddress = await _rideOwnershipService.getOwner();
+
     state = AccountState.data(Account(
+      isOwner: ownerAddress == address,
       publicKey: address.toString(),
       balance: ethBalance,
     ));

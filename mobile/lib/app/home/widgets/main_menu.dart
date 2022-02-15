@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
 import 'package:ride/app/account/account.vm.dart';
@@ -21,13 +22,13 @@ class MainMenu extends HookConsumerWidget {
     final account = ref.watch(accountProvider);
 
     return Container(
-      width: 250,
+      width: 300,
       child: Drawer(
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: <Widget>[
             Container(
-              height: 160,
+              height: 250,
               child: DrawerHeader(
                 child: account.when(
                   loading: () => const Center(
@@ -56,6 +57,13 @@ class MainMenu extends HookConsumerWidget {
                       Text(
                         '${EthAmountFormatter(accountData.balance!.getInWei).format()} MATIC',
                       ),
+                      if (accountData.isOwner)
+                        ListTile(
+                          title: const Text('Admin Panel'),
+                          subtitle: const Text('Ride Administration'),
+                          trailing: const Icon(Icons.admin_panel_settings),
+                          onTap: () => context.go('/admin'),
+                        ),
                     ],
                   ),
                 ),
