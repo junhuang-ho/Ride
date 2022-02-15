@@ -42,7 +42,14 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
     )
 
     const votingDelay = 1 // blocks // TODO
-    const votingPeriod = 10 // blocks // TODO
+    votingPeriod = 10 // blocks // TODO
+    if (parseInt(chainId) === 80001)
+    {
+        votingPeriod = 250
+    } else if (parseInt(chainId) === 4 || parseInt(chainId) === 42)
+    {
+        votingPeriod = 200
+    }
     const proposalThreshold = 0 // value in terms of voting power // TODO
     const quorumPercentage = 4
     const contractRideGovernor = await deploy(
@@ -77,7 +84,7 @@ async function deployTokenAndGovernor(deployerAddress, test = false, integration
 
     expect(await contractRideTimelock.hasRole(roleAdmin, contractRideTimelock.address)).to.equal(true)
     expect(await contractRideTimelock.hasRole(roleAdmin, deployerAddress)).to.equal(false)
-    // await expect(contractRideTimelock.grantRole(roleAdmin, deployerAddress)).to.revertedWith(`AccessControl: account ${deployerAddress} is missing role ${roleAdmin}`)
+    await expect(contractRideTimelock.grantRole(roleAdmin, deployerAddress)).to.be.reverted
 
     console.log(`Ride: ${contractRide.address}`)
     console.log(`RideTimelock: ${contractRideTimelock.address}`)

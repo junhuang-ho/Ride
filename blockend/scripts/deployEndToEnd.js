@@ -103,12 +103,13 @@ async function deployEndToEnd(deployerAddress, test = false, integration = false
     var tx = await contractCurrencyRegistry.registerCrypto(addressRideToken)
     var rcpt = await tx.wait(waitBlocks)
 
-    // 4. transfer RideHub ownership to governor
+    // 4. transfer RideHub ownership to timelock
     console.log("SETUP 4")
 
     expect(await contractOwnership.owner()).to.equal(deployerAddress)
     var tx = await contractOwnership.transferOwnership(addressRideTimelock)
-    var rcpt = tx.wait(waitBlocks)
+    console.log("Owner of RideHub:", await contractOwnership.owner())
+    var rcpt = tx.wait(6)
     console.log("Owner of RideHub:", await contractOwnership.owner())
     expect(await contractOwnership.owner()).to.equal(addressRideTimelock)
 
