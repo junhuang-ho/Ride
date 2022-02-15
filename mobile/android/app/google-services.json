@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "753391378700",
+    "project_id": "ride-e955b",
+    "storage_bucket": "ride-e955b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753391378700:android:62dbb98f5deff97be5a929",
+        "android_client_info": {
+          "package_name": "com.ride.rideapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753391378700-89es2ku11ums281d0dnr97h6fcdnspn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVNxJ3yx19d-BCI8g8jc6lstDC9xU2u08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753391378700-89es2ku11ums281d0dnr97h6fcdnspn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
