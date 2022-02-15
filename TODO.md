@@ -1,5 +1,3 @@
-- supply demo DApp to grant
-
 - Ensure states only exists in library solidity files. No where else.
 
 - add a passive value component? (user provide data in exchange for RIDE tokens)
