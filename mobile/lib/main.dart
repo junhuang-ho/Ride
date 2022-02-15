@@ -73,13 +73,15 @@ class RideApp extends ConsumerWidget {
           key: state.pageKey,
           child: const HomeView(),
         ),
-      ),
-      GoRoute(
-        path: '/admin',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const AdminView(),
-        ),
+        routes: [
+          GoRoute(
+            path: 'admin',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const AdminView(),
+            ),
+          ),
+        ],
       ),
     ],
   );

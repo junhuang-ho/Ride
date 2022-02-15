@@ -62,7 +62,7 @@ class MainMenu extends HookConsumerWidget {
                           title: const Text('Admin Panel'),
                           subtitle: const Text('Ride Administration'),
                           trailing: const Icon(Icons.admin_panel_settings),
-                          onTap: () => context.go('/admin'),
+                          onTap: () => context.go('/home/admin'),
                         ),
                     ],
                   ),
