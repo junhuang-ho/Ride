@@ -14,6 +14,8 @@
 
 - calling ERC20Permit deposit a second time in a row - having issues
 
+- whitepaper
+
 - RIDE minting strategy (refactor script & test accordingly)
 
 - RIDE deployment strategy (which chain, RideHub can be deployed on every chain, but RIDE token may not want that as to prevent simply increasing supply) (refactor script & test accordingly)

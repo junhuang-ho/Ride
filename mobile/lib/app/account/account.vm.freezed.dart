@@ -358,6 +358,8 @@ abstract class _$AccountDataCopyWith<$Res> {
           _AccountData value, $Res Function(_AccountData) then) =
       __$AccountDataCopyWithImpl<$Res>;
   $Res call({Account account});
+
+  $AccountCopyWith<$Res> get account;
 }
 
 /// @nodoc
@@ -380,6 +382,13 @@ class __$AccountDataCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
           : account // ignore: cast_nullable_to_non_nullable
               as Account,
     ));
+  }
+
+  @override
+  $AccountCopyWith<$Res> get account {
+    return $AccountCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
   }
 }
 
