@@ -28,22 +28,44 @@ async function testWait(deployerAddress, test = false, integration = false)
     // encoded_fn = iface.encodeFunctionData("setAdministrationAddress", ["0x35570FdCDB45292F1ee1D34816F1E24D040C7F4d"])
     // description_hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("set administration contract"))
 
-    address = "0xae922196FF086d5932cA68f7e5e7902cd2eb83B3"
-    contractBox = await ethers.getContractAt("Box", address)
+    // let abi = ["function registerFiat(string memory _code)"]
+    // let iface = new ethers.utils.Interface(abi)
+    // encoded_fn = iface.encodeFunctionData("registerFiat", ["USC"])
+    // description_hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test1"))
+
+    // address = "0x6a6F8Fb957538B5d4e7016cb331bE64788e53A83"
+    // contractBox = await ethers.getContractAt("Box3", address)
+    // selectorsBox = getSelectors(contractBox)
+    // abi = ["function rideCut((address facetAddress, uint8 action, bytes4[] functionSelectors)[] calldata _rideCut, address _init, bytes calldata _calldata)"]
+    // iface = new ethers.utils.Interface(abi)
+    // encoded_fn = iface.encodeFunctionData("rideCut",
+    //     [
+    //         [{
+    //             facetAddress: address,
+    //             action: FacetCutAction.Add,
+    //             functionSelectors: selectorsBox
+    //         }],
+    //         ethers.constants.AddressZero,
+    //         '0x',
+    //     ]) // , { gasLimit: 800000 }
+    // description_hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test box 222"))
+
+    address = "0x6a6F8Fb957538B5d4e7016cb331bE64788e53A83"
+    contractBox = await ethers.getContractAt("Box3", address)
     selectorsBox = getSelectors(contractBox)
     abi = ["function rideCut((address facetAddress, uint8 action, bytes4[] functionSelectors)[] calldata _rideCut, address _init, bytes calldata _calldata)"]
     iface = new ethers.utils.Interface(abi)
     encoded_fn = iface.encodeFunctionData("rideCut",
         [
             [{
-                facetAddress: address,
-                action: FacetCutAction.Add,
+                facetAddress: ethers.constants.AddressZero,
+                action: FacetCutAction.Remove,
                 functionSelectors: selectorsBox
             }],
             ethers.constants.AddressZero,
-            '0x'
-        ])
-    description_hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test box"))
+            '0x',
+        ]) // , { gasLimit: 800000 }
+    description_hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("test box 2222"))
 
     console.log("encoded fn:", encoded_fn)
     console.log("desc hash:", description_hash)

@@ -35,9 +35,9 @@ contract RideGovernor is
         GovernorTimelockControl(_timelock)
     {}
 
-    function getCurrentBlockNumber() external view returns (uint256) {
-        return block.number;
-    }
+    // function getCurrentBlockNumber() external view returns (uint256) {
+    //     return block.number;
+    // }
 
     // The following functions are overrides required by Solidity.
 
