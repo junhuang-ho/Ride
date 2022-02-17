@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/services/repository.dart';
+import 'package:ride/services/ride/ride_hub.dart';
 
 part 'auth.vm.freezed.dart';
 
@@ -14,9 +15,11 @@ class AuthState with _$AuthState {
 
 class AuthVM extends StateNotifier<AuthState> {
   final Repository _repo;
+  final RideHubService _rideHub;
 
   AuthVM(Reader read)
       : _repo = read(repositoryProvider),
+        _rideHub = read(rideHubProvider),
         super(const AuthState.loading()) {
     getAccount();
   }
@@ -26,6 +29,7 @@ class AuthVM extends StateNotifier<AuthState> {
     String? mnemonic = _repo.getMnemonic();
     String? privateKey = _repo.getPrivateKey();
     if (privateKey?.isNotEmpty ?? false) {
+      _rideHub.setCredentials(privateKey!);
       state = const AuthState.authenticated();
     } else {
       state = const AuthState.unAuthenticated();
