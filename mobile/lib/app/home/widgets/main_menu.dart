@@ -61,7 +61,7 @@ class MainMenu extends HookConsumerWidget {
                         ListTile(
                           title: const Text('Admin Panel'),
                           subtitle: const Text('Ride Administration'),
-                          trailing: const Icon(Icons.admin_panel_settings),
+                          leading: const Icon(Icons.admin_panel_settings),
                           onTap: () => context.go('/home/admin'),
                         ),
                     ],
@@ -73,17 +73,22 @@ class MainMenu extends HookConsumerWidget {
             ListTile(
               title: const Text('Private key'),
               subtitle: const Text('Reveal your private key'),
-              trailing: const Icon(Icons.vpn_key),
+              leading: const Icon(Icons.vpn_key),
               onTap: onRevealKey,
             ),
             ListTile(
               title: const Text('Reset wallet'),
               subtitle: const Text('Wipe all wallet data'),
-              trailing: const Icon(
+              leading: const Icon(
                 Icons.warning,
                 color: Colors.orange,
               ),
               onTap: onReset,
+            ),
+            ListTile(
+              title: const Text('Drive with Ride'),
+              leading: const Icon(Icons.drive_eta),
+              onTap: () => context.go('/home/driver'),
             ),
           ],
         ),
