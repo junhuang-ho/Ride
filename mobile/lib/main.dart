@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/admin/admin.view.dart';
+import 'package:ride/app/driver/driver.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ride/app/app.view.dart';
@@ -79,6 +80,13 @@ class RideApp extends ConsumerWidget {
             pageBuilder: (context, state) => MaterialPage<void>(
               key: state.pageKey,
               child: const AdminView(),
+            ),
+          ),
+          GoRoute(
+            path: 'driver',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const DriverView(),
             ),
           ),
         ],
