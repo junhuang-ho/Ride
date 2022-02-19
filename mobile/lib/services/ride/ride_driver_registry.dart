@@ -25,6 +25,12 @@ class RideDriverRegistryService {
         .approveApplicant(driverAddress, uri, credentials: _credentials);
     return transactionId;
   }
+
+  Future<String?> registerAsDriver(BigInt maxMetresPerTrip) async {
+    final transactionId = await _rideDriverRegistry
+        .registerAsDriver(maxMetresPerTrip, credentials: _credentials);
+    return transactionId;
+  }
 }
 
 final rideDriverRegistryProvider = Provider<RideDriverRegistryService>((ref) {
