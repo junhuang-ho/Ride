@@ -21,11 +21,17 @@ class _$AccountTearOff {
   _Account call(
       {required bool isOwner,
       required String publicKey,
-      @JsonKey(ignore: true) EtherAmount? balance}) {
+      @JsonKey(ignore: true) EtherAmount? balance,
+      required BigInt wETHBalance,
+      required BigInt holdingInFiat,
+      required BigInt holdingInCrypto}) {
     return _Account(
       isOwner: isOwner,
       publicKey: publicKey,
       balance: balance,
+      wETHBalance: wETHBalance,
+      holdingInFiat: holdingInFiat,
+      holdingInCrypto: holdingInCrypto,
     );
   }
 }
@@ -39,6 +45,9 @@ mixin _$Account {
   String get publicKey => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   EtherAmount? get balance => throw _privateConstructorUsedError;
+  BigInt get wETHBalance => throw _privateConstructorUsedError;
+  BigInt get holdingInFiat => throw _privateConstructorUsedError;
+  BigInt get holdingInCrypto => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AccountCopyWith<Account> get copyWith => throw _privateConstructorUsedError;
@@ -51,7 +60,10 @@ abstract class $AccountCopyWith<$Res> {
   $Res call(
       {bool isOwner,
       String publicKey,
-      @JsonKey(ignore: true) EtherAmount? balance});
+      @JsonKey(ignore: true) EtherAmount? balance,
+      BigInt wETHBalance,
+      BigInt holdingInFiat,
+      BigInt holdingInCrypto});
 }
 
 /// @nodoc
@@ -67,6 +79,9 @@ class _$AccountCopyWithImpl<$Res> implements $AccountCopyWith<$Res> {
     Object? isOwner = freezed,
     Object? publicKey = freezed,
     Object? balance = freezed,
+    Object? wETHBalance = freezed,
+    Object? holdingInFiat = freezed,
+    Object? holdingInCrypto = freezed,
   }) {
     return _then(_value.copyWith(
       isOwner: isOwner == freezed
@@ -81,6 +96,18 @@ class _$AccountCopyWithImpl<$Res> implements $AccountCopyWith<$Res> {
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as EtherAmount?,
+      wETHBalance: wETHBalance == freezed
+          ? _value.wETHBalance
+          : wETHBalance // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      holdingInFiat: holdingInFiat == freezed
+          ? _value.holdingInFiat
+          : holdingInFiat // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      holdingInCrypto: holdingInCrypto == freezed
+          ? _value.holdingInCrypto
+          : holdingInCrypto // ignore: cast_nullable_to_non_nullable
+              as BigInt,
     ));
   }
 }
@@ -93,7 +120,10 @@ abstract class _$AccountCopyWith<$Res> implements $AccountCopyWith<$Res> {
   $Res call(
       {bool isOwner,
       String publicKey,
-      @JsonKey(ignore: true) EtherAmount? balance});
+      @JsonKey(ignore: true) EtherAmount? balance,
+      BigInt wETHBalance,
+      BigInt holdingInFiat,
+      BigInt holdingInCrypto});
 }
 
 /// @nodoc
@@ -110,6 +140,9 @@ class __$AccountCopyWithImpl<$Res> extends _$AccountCopyWithImpl<$Res>
     Object? isOwner = freezed,
     Object? publicKey = freezed,
     Object? balance = freezed,
+    Object? wETHBalance = freezed,
+    Object? holdingInFiat = freezed,
+    Object? holdingInCrypto = freezed,
   }) {
     return _then(_Account(
       isOwner: isOwner == freezed
@@ -124,6 +157,18 @@ class __$AccountCopyWithImpl<$Res> extends _$AccountCopyWithImpl<$Res>
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as EtherAmount?,
+      wETHBalance: wETHBalance == freezed
+          ? _value.wETHBalance
+          : wETHBalance // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      holdingInFiat: holdingInFiat == freezed
+          ? _value.holdingInFiat
+          : holdingInFiat // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      holdingInCrypto: holdingInCrypto == freezed
+          ? _value.holdingInCrypto
+          : holdingInCrypto // ignore: cast_nullable_to_non_nullable
+              as BigInt,
     ));
   }
 }
@@ -134,7 +179,10 @@ class _$_Account implements _Account {
   const _$_Account(
       {required this.isOwner,
       required this.publicKey,
-      @JsonKey(ignore: true) this.balance});
+      @JsonKey(ignore: true) this.balance,
+      required this.wETHBalance,
+      required this.holdingInFiat,
+      required this.holdingInCrypto});
 
   @override
   final bool isOwner;
@@ -143,10 +191,16 @@ class _$_Account implements _Account {
   @override
   @JsonKey(ignore: true)
   final EtherAmount? balance;
+  @override
+  final BigInt wETHBalance;
+  @override
+  final BigInt holdingInFiat;
+  @override
+  final BigInt holdingInCrypto;
 
   @override
   String toString() {
-    return 'Account(isOwner: $isOwner, publicKey: $publicKey, balance: $balance)';
+    return 'Account(isOwner: $isOwner, publicKey: $publicKey, balance: $balance, wETHBalance: $wETHBalance, holdingInFiat: $holdingInFiat, holdingInCrypto: $holdingInCrypto)';
   }
 
   @override
@@ -156,7 +210,13 @@ class _$_Account implements _Account {
             other is _Account &&
             const DeepCollectionEquality().equals(other.isOwner, isOwner) &&
             const DeepCollectionEquality().equals(other.publicKey, publicKey) &&
-            const DeepCollectionEquality().equals(other.balance, balance));
+            const DeepCollectionEquality().equals(other.balance, balance) &&
+            const DeepCollectionEquality()
+                .equals(other.wETHBalance, wETHBalance) &&
+            const DeepCollectionEquality()
+                .equals(other.holdingInFiat, holdingInFiat) &&
+            const DeepCollectionEquality()
+                .equals(other.holdingInCrypto, holdingInCrypto));
   }
 
   @override
@@ -164,7 +224,10 @@ class _$_Account implements _Account {
       runtimeType,
       const DeepCollectionEquality().hash(isOwner),
       const DeepCollectionEquality().hash(publicKey),
-      const DeepCollectionEquality().hash(balance));
+      const DeepCollectionEquality().hash(balance),
+      const DeepCollectionEquality().hash(wETHBalance),
+      const DeepCollectionEquality().hash(holdingInFiat),
+      const DeepCollectionEquality().hash(holdingInCrypto));
 
   @JsonKey(ignore: true)
   @override
@@ -176,7 +239,10 @@ abstract class _Account implements Account {
   const factory _Account(
       {required bool isOwner,
       required String publicKey,
-      @JsonKey(ignore: true) EtherAmount? balance}) = _$_Account;
+      @JsonKey(ignore: true) EtherAmount? balance,
+      required BigInt wETHBalance,
+      required BigInt holdingInFiat,
+      required BigInt holdingInCrypto}) = _$_Account;
 
   @override
   bool get isOwner;
@@ -185,6 +251,12 @@ abstract class _Account implements Account {
   @override
   @JsonKey(ignore: true)
   EtherAmount? get balance;
+  @override
+  BigInt get wETHBalance;
+  @override
+  BigInt get holdingInFiat;
+  @override
+  BigInt get holdingInCrypto;
   @override
   @JsonKey(ignore: true)
   _$AccountCopyWith<_Account> get copyWith =>

@@ -9,5 +9,8 @@ class Account with _$Account {
     required final bool isOwner,
     required final String publicKey,
     @JsonKey(ignore: true) EtherAmount? balance,
+    required final BigInt wETHBalance,
+    required final BigInt holdingInFiat,
+    required final BigInt holdingInCrypto,
   }) = _Account;
 }

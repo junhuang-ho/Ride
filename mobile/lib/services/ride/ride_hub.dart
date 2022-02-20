@@ -6,7 +6,7 @@ import 'package:web3dart/contracts/erc20.dart';
 class RideHubService {
   late Credentials _credentials;
   late Client _httpClient;
-  late Web3Client _web3client;
+  late Web3Client _web3Client;
   late Erc20 _wethToken;
   final String rpcUrl = 'https://matic-mumbai.chainstacklabs.com/';
   final wethAddress =
@@ -15,12 +15,12 @@ class RideHubService {
       EthereumAddress.fromHex('0x2554FAc78F53b92d57999A635985518D7b3edb43');
 
   Credentials get credentials => _credentials;
-  Web3Client get web3Client => _web3client;
+  Web3Client get web3Client => _web3Client;
 
   RideHubService() {
     _httpClient = Client();
-    _web3client = Web3Client(rpcUrl, _httpClient);
-    _wethToken = Erc20(address: wethAddress, client: _web3client);
+    _web3Client = Web3Client(rpcUrl, _httpClient);
+    _wethToken = Erc20(address: wethAddress, client: _web3Client);
   }
 
   void setCredentials(String privateKey) async {
@@ -28,7 +28,26 @@ class RideHubService {
   }
 
   Future<EtherAmount> getEthBalance(EthereumAddress from) async {
-    return await web3Client.getBalance(from);
+    return await _web3Client.getBalance(from);
+  }
+
+  Future<BigInt> getWETHBalance(EthereumAddress from) async {
+    return await _wethToken.balanceOf(from);
+  }
+
+  Future<String?> sendWETH(
+    EthereumAddress to,
+    EtherAmount amount,
+  ) async {
+    final transactionId = await _wethToken.transfer(to, amount.getInWei,
+        credentials: credentials);
+    return transactionId;
+  }
+
+  Future<String> authorizeWETH(BigInt amount) async {
+    final transactionId = await _wethToken.approve(rideHubAddress, amount,
+        credentials: _credentials);
+    return transactionId;
   }
 }
 

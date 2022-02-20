@@ -27,7 +27,6 @@ class RegisterDriverVM extends StateNotifier<RegisterDriverState> {
       final parsedMaxMetresPerTrip = BigInt.parse(maxMetresPerTrip);
       final result = await _rideDriverRegistryService
           .registerAsDriver(parsedMaxMetresPerTrip);
-      print('result: $result');
       state = RegisterDriverState.success(result);
     } catch (ex) {
       state = RegisterDriverState.error(ex.toString());

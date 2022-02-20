@@ -40,7 +40,7 @@ class MainMenu extends HookConsumerWidget {
                   ),
                   data: (accountData) => Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
                         child: SvgPicture.string(
@@ -67,6 +67,38 @@ class MainMenu extends HookConsumerWidget {
                     ],
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                child: const Text(
+                  'View Account',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 15,
+                  ),
+                ),
+                onTap: () {
+                  context.go('/home/account');
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Container(
+              height: 75,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      child: const Text('Send'),
+                      onPressed: () => context.go('/send-account'),
+                    ),
+                  ),
+                ],
               ),
             ),
             const Divider(height: 1, color: Color(0xffe2e2e2), thickness: 1),
