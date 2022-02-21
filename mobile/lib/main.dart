@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/account/account.view.dart';
+import 'package:ride/app/account/deposit.account.view.dart';
+import 'package:ride/app/account/send.account.view.dart';
 import 'package:ride/app/admin/admin.view.dart';
 import 'package:ride/app/driver/driver.view.dart';
 import 'package:ride/app/driver/register.driver.view.dart';
+import 'package:ride/app/qrcode.reader.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ride/app/app.view.dart';
@@ -67,6 +71,22 @@ class RideApp extends ConsumerWidget {
               child: const ImportWalletView(),
             ),
           ),
+          GoRoute(
+            path: 'send-account',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const SendAccountView(),
+            ),
+          ),
+          GoRoute(
+            path: 'qrcode_reader',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: QRCodeReaderView(
+                onScanned: state.extra as OnScanned,
+              ),
+            ),
+          ),
         ],
       ),
       GoRoute(
@@ -76,6 +96,22 @@ class RideApp extends ConsumerWidget {
           child: const HomeView(),
         ),
         routes: [
+          GoRoute(
+            path: 'account',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const AccountView(),
+            ),
+            routes: [
+              GoRoute(
+                path: 'deposit',
+                pageBuilder: (context, state) => MaterialPage<void>(
+                  key: state.pageKey,
+                  child: const DepositAccountView(),
+                ),
+              ),
+            ],
+          ),
           GoRoute(
             path: 'admin',
             pageBuilder: (context, state) => MaterialPage<void>(
