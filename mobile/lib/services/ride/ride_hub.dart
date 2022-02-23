@@ -8,7 +8,7 @@ class RideHubService {
   late Client _httpClient;
   late Web3Client _web3Client;
   late Erc20 _wethToken;
-  final String rpcUrl = 'https://matic-mumbai.chainstacklabs.com/';
+  final String rpcUrl = 'https://rpc-mumbai.matic.today';
   final wethAddress =
       EthereumAddress.fromHex('0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa');
   final rideHubAddress =
