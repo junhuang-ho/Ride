@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:ride/app/wallet/setup.wallet.vm.dart';
+import 'package:ride/app/wallet/setup/setup.wallet.vm.dart';
 import 'package:ride/app/wallet/widgets/confirm_mnemonic.dart';
 import 'package:ride/app/wallet/widgets/display_mnemonic.dart';
 
@@ -20,6 +20,14 @@ class CreateWalletView extends HookConsumerWidget {
       body: setupWallet.whenOrNull(
         loading: () => const Center(
           child: CircularProgressIndicator(),
+        ),
+        init: () => Center(
+          child: ElevatedButton(
+            child: const Text('Start'),
+            onPressed: () {
+              ref.read(setupWalletProvider.notifier).generateMnemonic();
+            },
+          ),
         ),
         display: (mnemonic) => DisplayMnemonic(
           mnemonic: mnemonic,

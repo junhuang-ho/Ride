@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/account/deposit.account.vm.dart';
+import 'package:ride/app/wallet/deposit/deposit.wallet.vm.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_radio.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
 
-class DepositAccountView extends HookConsumerWidget {
-  const DepositAccountView({Key? key}) : super(key: key);
+class DepositWalletView extends HookConsumerWidget {
+  const DepositWalletView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final depositAccount = ref.watch(depositAccountProvider);
+    final depositWallet = ref.watch(depositWalletProvider);
     final depositKeyType = useState(DepositKeyType.crypto);
     final depositAmountController = useTextEditingController();
 
@@ -27,7 +27,7 @@ class DepositAccountView extends HookConsumerWidget {
             OutlinedButton(
               child: const Text('Deposit'),
               onPressed: () async {
-                await ref.read(depositAccountProvider.notifier).depositToken(
+                await ref.read(depositWalletProvider.notifier).depositToken(
                     depositKeyType.value, depositAmountController.text);
               },
             ),
@@ -51,10 +51,10 @@ class DepositAccountView extends HookConsumerWidget {
                 ),
               ],
             ),
-            depositAccount.when(
+            depositWallet.when(
               init: () => PaperInput(
                 labelText: "Deposit Amount",
-                hintText: 'Please enter deposit amount in wei',
+                hintText: 'Please enter deposit amount in Ether',
                 maxLines: 1,
                 controller: depositAmountController,
               ),

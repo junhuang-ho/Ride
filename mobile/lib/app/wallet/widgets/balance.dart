@@ -10,7 +10,6 @@ class Balance extends StatelessWidget {
     required this.address,
     required this.ethBalance,
     required this.tokenBalance,
-    required this.holdingInFiat,
     required this.holdingInCrypto,
     required this.symbol,
   }) : super(key: key);
@@ -18,7 +17,6 @@ class Balance extends StatelessWidget {
   final String? address;
   final BigInt? ethBalance;
   final BigInt? tokenBalance;
-  final BigInt? holdingInFiat;
   final BigInt? holdingInCrypto;
   final String? symbol;
 
@@ -54,12 +52,6 @@ class Balance extends StatelessWidget {
                 .textTheme
                 .bodyText2
                 ?.apply(color: Colors.blueGrey),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Holdings (Fiat): USD${EthAmountFormatter(holdingInFiat).format()}',
-            style:
-                Theme.of(context).textTheme.bodyText2?.apply(fontSizeDelta: 6),
           ),
           const SizedBox(height: 5),
           Text(

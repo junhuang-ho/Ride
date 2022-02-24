@@ -9,6 +9,7 @@ enum WalletImportType { mnemonic, privateKey }
 
 @freezed
 class SetupWalletState with _$SetupWalletState {
+  const factory SetupWalletState.init() = _SetupWalletInit;
   const factory SetupWalletState.loading() = _SetupWalletLoading;
   const factory SetupWalletState.error(String? message) = _SetupWalletError;
   const factory SetupWalletState.display({
@@ -23,7 +24,7 @@ class SetupWalletVM extends StateNotifier<SetupWalletState> {
   SetupWalletVM(Reader read)
       : _crypto = read(cryptoProvider),
         _authVM = read(authProvider.notifier),
-        super(const SetupWalletState.loading());
+        super(const SetupWalletState.init());
 
   final Crypto _crypto;
   final AuthVM _authVM;
@@ -74,6 +75,7 @@ class SetupWalletVM extends StateNotifier<SetupWalletState> {
 
   Future<bool> importFromPrivateKey(String privateKey) async {
     try {
+      state = const SetupWalletState.loading();
       await _crypto.setupFromPrivateKey(privateKey);
       await _authVM.getAccount();
       return true;
@@ -101,6 +103,6 @@ class SetupWalletVM extends StateNotifier<SetupWalletState> {
 }
 
 final setupWalletProvider =
-    StateNotifierProvider<SetupWalletVM, SetupWalletState>((ref) {
+    StateNotifierProvider.autoDispose<SetupWalletVM, SetupWalletState>((ref) {
   return SetupWalletVM(ref.read);
 });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ride/app/wallet/setup.wallet.vm.dart';
+import 'package:ride/app/wallet/setup/setup.wallet.vm.dart';
 import 'package:ride/app/wallet/widgets/import_wallet_form.dart';
 
 class ImportWalletView extends HookConsumerWidget {

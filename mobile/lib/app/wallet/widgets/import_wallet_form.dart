@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/wallet/setup.wallet.vm.dart';
+import 'package:ride/app/wallet/setup/setup.wallet.vm.dart';
 import 'package:ride/app/wallet/widgets/wallet_setup_field.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_radio.dart';
@@ -26,12 +26,21 @@ class ImportWalletForm extends HookConsumerWidget {
           child: PaperForm(
             padding: 30,
             actionButtons: <Widget>[
-              ElevatedButton(
-                child: const Text('Import'),
-                onPressed: onImport != null
-                    ? () =>
-                        onImport!(importType.value, inputController.value.text)
-                    : null,
+              Consumer(
+                builder: (context, ref, _) {
+                  final setupWallet = ref.watch(setupWalletProvider);
+
+                  return setupWallet.maybeWhen(
+                    loading: () => const CircularProgressIndicator(),
+                    orElse: () => ElevatedButton(
+                      child: const Text('Import'),
+                      onPressed: onImport != null
+                          ? () => onImport!(
+                              importType.value, inputController.value.text)
+                          : null,
+                    ),
+                  );
+                },
               )
             ],
             children: <Widget>[

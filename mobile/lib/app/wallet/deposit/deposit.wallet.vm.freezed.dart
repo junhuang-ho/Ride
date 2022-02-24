@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'deposit.account.vm.dart';
+part of 'deposit.wallet.vm.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,35 +15,35 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$DepositAccountStateTearOff {
-  const _$DepositAccountStateTearOff();
+class _$DepositWalletStateTearOff {
+  const _$DepositWalletStateTearOff();
 
-  _DepositAccountInit init() {
-    return const _DepositAccountInit();
+  _DepositWalletInit init() {
+    return const _DepositWalletInit();
   }
 
-  _DepositAccountLoading loading() {
-    return const _DepositAccountLoading();
+  _DepositWalletLoading loading() {
+    return const _DepositWalletLoading();
   }
 
-  _DepositAccountError error(String? message) {
-    return _DepositAccountError(
+  _DepositWalletError error(String? message) {
+    return _DepositWalletError(
       message,
     );
   }
 
-  _DepositAccountSuccess success(String? data) {
-    return _DepositAccountSuccess(
+  _DepositWalletSuccess success(String? data) {
+    return _DepositWalletSuccess(
       data,
     );
   }
 }
 
 /// @nodoc
-const $DepositAccountState = _$DepositAccountStateTearOff();
+const $DepositWalletState = _$DepositWalletStateTearOff();
 
 /// @nodoc
-mixin _$DepositAccountState {
+mixin _$DepositWalletState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
@@ -71,81 +71,81 @@ mixin _$DepositAccountState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DepositAccountInit value) init,
-    required TResult Function(_DepositAccountLoading value) loading,
-    required TResult Function(_DepositAccountError value) error,
-    required TResult Function(_DepositAccountSuccess value) success,
+    required TResult Function(_DepositWalletInit value) init,
+    required TResult Function(_DepositWalletLoading value) loading,
+    required TResult Function(_DepositWalletError value) error,
+    required TResult Function(_DepositWalletSuccess value) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DepositAccountStateCopyWith<$Res> {
-  factory $DepositAccountStateCopyWith(
-          DepositAccountState value, $Res Function(DepositAccountState) then) =
-      _$DepositAccountStateCopyWithImpl<$Res>;
+abstract class $DepositWalletStateCopyWith<$Res> {
+  factory $DepositWalletStateCopyWith(
+          DepositWalletState value, $Res Function(DepositWalletState) then) =
+      _$DepositWalletStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$DepositAccountStateCopyWithImpl<$Res>
-    implements $DepositAccountStateCopyWith<$Res> {
-  _$DepositAccountStateCopyWithImpl(this._value, this._then);
+class _$DepositWalletStateCopyWithImpl<$Res>
+    implements $DepositWalletStateCopyWith<$Res> {
+  _$DepositWalletStateCopyWithImpl(this._value, this._then);
 
-  final DepositAccountState _value;
+  final DepositWalletState _value;
   // ignore: unused_field
-  final $Res Function(DepositAccountState) _then;
+  final $Res Function(DepositWalletState) _then;
 }
 
 /// @nodoc
-abstract class _$DepositAccountInitCopyWith<$Res> {
-  factory _$DepositAccountInitCopyWith(
-          _DepositAccountInit value, $Res Function(_DepositAccountInit) then) =
-      __$DepositAccountInitCopyWithImpl<$Res>;
+abstract class _$DepositWalletInitCopyWith<$Res> {
+  factory _$DepositWalletInitCopyWith(
+          _DepositWalletInit value, $Res Function(_DepositWalletInit) then) =
+      __$DepositWalletInitCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$DepositAccountInitCopyWithImpl<$Res>
-    extends _$DepositAccountStateCopyWithImpl<$Res>
-    implements _$DepositAccountInitCopyWith<$Res> {
-  __$DepositAccountInitCopyWithImpl(
-      _DepositAccountInit _value, $Res Function(_DepositAccountInit) _then)
-      : super(_value, (v) => _then(v as _DepositAccountInit));
+class __$DepositWalletInitCopyWithImpl<$Res>
+    extends _$DepositWalletStateCopyWithImpl<$Res>
+    implements _$DepositWalletInitCopyWith<$Res> {
+  __$DepositWalletInitCopyWithImpl(
+      _DepositWalletInit _value, $Res Function(_DepositWalletInit) _then)
+      : super(_value, (v) => _then(v as _DepositWalletInit));
 
   @override
-  _DepositAccountInit get _value => super._value as _DepositAccountInit;
+  _DepositWalletInit get _value => super._value as _DepositWalletInit;
 }
 
 /// @nodoc
 
-class _$_DepositAccountInit implements _DepositAccountInit {
-  const _$_DepositAccountInit();
+class _$_DepositWalletInit implements _DepositWalletInit {
+  const _$_DepositWalletInit();
 
   @override
   String toString() {
-    return 'DepositAccountState.init()';
+    return 'DepositWalletState.init()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _DepositAccountInit);
+        (other.runtimeType == runtimeType && other is _DepositWalletInit);
   }
 
   @override
@@ -191,10 +191,10 @@ class _$_DepositAccountInit implements _DepositAccountInit {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DepositAccountInit value) init,
-    required TResult Function(_DepositAccountLoading value) loading,
-    required TResult Function(_DepositAccountError value) error,
-    required TResult Function(_DepositAccountSuccess value) success,
+    required TResult Function(_DepositWalletInit value) init,
+    required TResult Function(_DepositWalletLoading value) loading,
+    required TResult Function(_DepositWalletError value) error,
+    required TResult Function(_DepositWalletSuccess value) success,
   }) {
     return init(this);
   }
@@ -202,10 +202,10 @@ class _$_DepositAccountInit implements _DepositAccountInit {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
   }) {
     return init?.call(this);
   }
@@ -213,10 +213,10 @@ class _$_DepositAccountInit implements _DepositAccountInit {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -226,43 +226,43 @@ class _$_DepositAccountInit implements _DepositAccountInit {
   }
 }
 
-abstract class _DepositAccountInit implements DepositAccountState {
-  const factory _DepositAccountInit() = _$_DepositAccountInit;
+abstract class _DepositWalletInit implements DepositWalletState {
+  const factory _DepositWalletInit() = _$_DepositWalletInit;
 }
 
 /// @nodoc
-abstract class _$DepositAccountLoadingCopyWith<$Res> {
-  factory _$DepositAccountLoadingCopyWith(_DepositAccountLoading value,
-          $Res Function(_DepositAccountLoading) then) =
-      __$DepositAccountLoadingCopyWithImpl<$Res>;
+abstract class _$DepositWalletLoadingCopyWith<$Res> {
+  factory _$DepositWalletLoadingCopyWith(_DepositWalletLoading value,
+          $Res Function(_DepositWalletLoading) then) =
+      __$DepositWalletLoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$DepositAccountLoadingCopyWithImpl<$Res>
-    extends _$DepositAccountStateCopyWithImpl<$Res>
-    implements _$DepositAccountLoadingCopyWith<$Res> {
-  __$DepositAccountLoadingCopyWithImpl(_DepositAccountLoading _value,
-      $Res Function(_DepositAccountLoading) _then)
-      : super(_value, (v) => _then(v as _DepositAccountLoading));
+class __$DepositWalletLoadingCopyWithImpl<$Res>
+    extends _$DepositWalletStateCopyWithImpl<$Res>
+    implements _$DepositWalletLoadingCopyWith<$Res> {
+  __$DepositWalletLoadingCopyWithImpl(
+      _DepositWalletLoading _value, $Res Function(_DepositWalletLoading) _then)
+      : super(_value, (v) => _then(v as _DepositWalletLoading));
 
   @override
-  _DepositAccountLoading get _value => super._value as _DepositAccountLoading;
+  _DepositWalletLoading get _value => super._value as _DepositWalletLoading;
 }
 
 /// @nodoc
 
-class _$_DepositAccountLoading implements _DepositAccountLoading {
-  const _$_DepositAccountLoading();
+class _$_DepositWalletLoading implements _DepositWalletLoading {
+  const _$_DepositWalletLoading();
 
   @override
   String toString() {
-    return 'DepositAccountState.loading()';
+    return 'DepositWalletState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _DepositAccountLoading);
+        (other.runtimeType == runtimeType && other is _DepositWalletLoading);
   }
 
   @override
@@ -308,10 +308,10 @@ class _$_DepositAccountLoading implements _DepositAccountLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DepositAccountInit value) init,
-    required TResult Function(_DepositAccountLoading value) loading,
-    required TResult Function(_DepositAccountError value) error,
-    required TResult Function(_DepositAccountSuccess value) success,
+    required TResult Function(_DepositWalletInit value) init,
+    required TResult Function(_DepositWalletLoading value) loading,
+    required TResult Function(_DepositWalletError value) error,
+    required TResult Function(_DepositWalletSuccess value) success,
   }) {
     return loading(this);
   }
@@ -319,10 +319,10 @@ class _$_DepositAccountLoading implements _DepositAccountLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
   }) {
     return loading?.call(this);
   }
@@ -330,10 +330,10 @@ class _$_DepositAccountLoading implements _DepositAccountLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -343,34 +343,34 @@ class _$_DepositAccountLoading implements _DepositAccountLoading {
   }
 }
 
-abstract class _DepositAccountLoading implements DepositAccountState {
-  const factory _DepositAccountLoading() = _$_DepositAccountLoading;
+abstract class _DepositWalletLoading implements DepositWalletState {
+  const factory _DepositWalletLoading() = _$_DepositWalletLoading;
 }
 
 /// @nodoc
-abstract class _$DepositAccountErrorCopyWith<$Res> {
-  factory _$DepositAccountErrorCopyWith(_DepositAccountError value,
-          $Res Function(_DepositAccountError) then) =
-      __$DepositAccountErrorCopyWithImpl<$Res>;
+abstract class _$DepositWalletErrorCopyWith<$Res> {
+  factory _$DepositWalletErrorCopyWith(
+          _DepositWalletError value, $Res Function(_DepositWalletError) then) =
+      __$DepositWalletErrorCopyWithImpl<$Res>;
   $Res call({String? message});
 }
 
 /// @nodoc
-class __$DepositAccountErrorCopyWithImpl<$Res>
-    extends _$DepositAccountStateCopyWithImpl<$Res>
-    implements _$DepositAccountErrorCopyWith<$Res> {
-  __$DepositAccountErrorCopyWithImpl(
-      _DepositAccountError _value, $Res Function(_DepositAccountError) _then)
-      : super(_value, (v) => _then(v as _DepositAccountError));
+class __$DepositWalletErrorCopyWithImpl<$Res>
+    extends _$DepositWalletStateCopyWithImpl<$Res>
+    implements _$DepositWalletErrorCopyWith<$Res> {
+  __$DepositWalletErrorCopyWithImpl(
+      _DepositWalletError _value, $Res Function(_DepositWalletError) _then)
+      : super(_value, (v) => _then(v as _DepositWalletError));
 
   @override
-  _DepositAccountError get _value => super._value as _DepositAccountError;
+  _DepositWalletError get _value => super._value as _DepositWalletError;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_DepositAccountError(
+    return _then(_DepositWalletError(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -381,22 +381,22 @@ class __$DepositAccountErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DepositAccountError implements _DepositAccountError {
-  const _$_DepositAccountError(this.message);
+class _$_DepositWalletError implements _DepositWalletError {
+  const _$_DepositWalletError(this.message);
 
   @override
   final String? message;
 
   @override
   String toString() {
-    return 'DepositAccountState.error(message: $message)';
+    return 'DepositWalletState.error(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DepositAccountError &&
+            other is _DepositWalletError &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -406,9 +406,8 @@ class _$_DepositAccountError implements _DepositAccountError {
 
   @JsonKey(ignore: true)
   @override
-  _$DepositAccountErrorCopyWith<_DepositAccountError> get copyWith =>
-      __$DepositAccountErrorCopyWithImpl<_DepositAccountError>(
-          this, _$identity);
+  _$DepositWalletErrorCopyWith<_DepositWalletError> get copyWith =>
+      __$DepositWalletErrorCopyWithImpl<_DepositWalletError>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -450,10 +449,10 @@ class _$_DepositAccountError implements _DepositAccountError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DepositAccountInit value) init,
-    required TResult Function(_DepositAccountLoading value) loading,
-    required TResult Function(_DepositAccountError value) error,
-    required TResult Function(_DepositAccountSuccess value) success,
+    required TResult Function(_DepositWalletInit value) init,
+    required TResult Function(_DepositWalletLoading value) loading,
+    required TResult Function(_DepositWalletError value) error,
+    required TResult Function(_DepositWalletSuccess value) success,
   }) {
     return error(this);
   }
@@ -461,10 +460,10 @@ class _$_DepositAccountError implements _DepositAccountError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
   }) {
     return error?.call(this);
   }
@@ -472,10 +471,10 @@ class _$_DepositAccountError implements _DepositAccountError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -485,39 +484,39 @@ class _$_DepositAccountError implements _DepositAccountError {
   }
 }
 
-abstract class _DepositAccountError implements DepositAccountState {
-  const factory _DepositAccountError(String? message) = _$_DepositAccountError;
+abstract class _DepositWalletError implements DepositWalletState {
+  const factory _DepositWalletError(String? message) = _$_DepositWalletError;
 
   String? get message;
   @JsonKey(ignore: true)
-  _$DepositAccountErrorCopyWith<_DepositAccountError> get copyWith =>
+  _$DepositWalletErrorCopyWith<_DepositWalletError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$DepositAccountSuccessCopyWith<$Res> {
-  factory _$DepositAccountSuccessCopyWith(_DepositAccountSuccess value,
-          $Res Function(_DepositAccountSuccess) then) =
-      __$DepositAccountSuccessCopyWithImpl<$Res>;
+abstract class _$DepositWalletSuccessCopyWith<$Res> {
+  factory _$DepositWalletSuccessCopyWith(_DepositWalletSuccess value,
+          $Res Function(_DepositWalletSuccess) then) =
+      __$DepositWalletSuccessCopyWithImpl<$Res>;
   $Res call({String? data});
 }
 
 /// @nodoc
-class __$DepositAccountSuccessCopyWithImpl<$Res>
-    extends _$DepositAccountStateCopyWithImpl<$Res>
-    implements _$DepositAccountSuccessCopyWith<$Res> {
-  __$DepositAccountSuccessCopyWithImpl(_DepositAccountSuccess _value,
-      $Res Function(_DepositAccountSuccess) _then)
-      : super(_value, (v) => _then(v as _DepositAccountSuccess));
+class __$DepositWalletSuccessCopyWithImpl<$Res>
+    extends _$DepositWalletStateCopyWithImpl<$Res>
+    implements _$DepositWalletSuccessCopyWith<$Res> {
+  __$DepositWalletSuccessCopyWithImpl(
+      _DepositWalletSuccess _value, $Res Function(_DepositWalletSuccess) _then)
+      : super(_value, (v) => _then(v as _DepositWalletSuccess));
 
   @override
-  _DepositAccountSuccess get _value => super._value as _DepositAccountSuccess;
+  _DepositWalletSuccess get _value => super._value as _DepositWalletSuccess;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_DepositAccountSuccess(
+    return _then(_DepositWalletSuccess(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -528,22 +527,22 @@ class __$DepositAccountSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DepositAccountSuccess implements _DepositAccountSuccess {
-  const _$_DepositAccountSuccess(this.data);
+class _$_DepositWalletSuccess implements _DepositWalletSuccess {
+  const _$_DepositWalletSuccess(this.data);
 
   @override
   final String? data;
 
   @override
   String toString() {
-    return 'DepositAccountState.success(data: $data)';
+    return 'DepositWalletState.success(data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DepositAccountSuccess &&
+            other is _DepositWalletSuccess &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -553,8 +552,8 @@ class _$_DepositAccountSuccess implements _DepositAccountSuccess {
 
   @JsonKey(ignore: true)
   @override
-  _$DepositAccountSuccessCopyWith<_DepositAccountSuccess> get copyWith =>
-      __$DepositAccountSuccessCopyWithImpl<_DepositAccountSuccess>(
+  _$DepositWalletSuccessCopyWith<_DepositWalletSuccess> get copyWith =>
+      __$DepositWalletSuccessCopyWithImpl<_DepositWalletSuccess>(
           this, _$identity);
 
   @override
@@ -597,10 +596,10 @@ class _$_DepositAccountSuccess implements _DepositAccountSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DepositAccountInit value) init,
-    required TResult Function(_DepositAccountLoading value) loading,
-    required TResult Function(_DepositAccountError value) error,
-    required TResult Function(_DepositAccountSuccess value) success,
+    required TResult Function(_DepositWalletInit value) init,
+    required TResult Function(_DepositWalletLoading value) loading,
+    required TResult Function(_DepositWalletError value) error,
+    required TResult Function(_DepositWalletSuccess value) success,
   }) {
     return success(this);
   }
@@ -608,10 +607,10 @@ class _$_DepositAccountSuccess implements _DepositAccountSuccess {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
   }) {
     return success?.call(this);
   }
@@ -619,10 +618,10 @@ class _$_DepositAccountSuccess implements _DepositAccountSuccess {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DepositAccountInit value)? init,
-    TResult Function(_DepositAccountLoading value)? loading,
-    TResult Function(_DepositAccountError value)? error,
-    TResult Function(_DepositAccountSuccess value)? success,
+    TResult Function(_DepositWalletInit value)? init,
+    TResult Function(_DepositWalletLoading value)? loading,
+    TResult Function(_DepositWalletError value)? error,
+    TResult Function(_DepositWalletSuccess value)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -632,11 +631,11 @@ class _$_DepositAccountSuccess implements _DepositAccountSuccess {
   }
 }
 
-abstract class _DepositAccountSuccess implements DepositAccountState {
-  const factory _DepositAccountSuccess(String? data) = _$_DepositAccountSuccess;
+abstract class _DepositWalletSuccess implements DepositWalletState {
+  const factory _DepositWalletSuccess(String? data) = _$_DepositWalletSuccess;
 
   String? get data;
   @JsonKey(ignore: true)
-  _$DepositAccountSuccessCopyWith<_DepositAccountSuccess> get copyWith =>
+  _$DepositWalletSuccessCopyWith<_DepositWalletSuccess> get copyWith =>
       throw _privateConstructorUsedError;
 }

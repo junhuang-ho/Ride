@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/wallet/setup.wallet.vm.dart';
+import 'package:ride/app/wallet/setup/setup.wallet.vm.dart';
 import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
 

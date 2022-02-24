@@ -18,6 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SetupWalletStateTearOff {
   const _$SetupWalletStateTearOff();
 
+  _SetupWalletInit init() {
+    return const _SetupWalletInit();
+  }
+
   _SetupWalletLoading loading() {
     return const _SetupWalletLoading();
   }
@@ -48,6 +52,7 @@ const $SetupWalletState = _$SetupWalletStateTearOff();
 mixin _$SetupWalletState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(String mnemonic) display,
@@ -56,6 +61,7 @@ mixin _$SetupWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -64,6 +70,7 @@ mixin _$SetupWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -73,6 +80,7 @@ mixin _$SetupWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
     required TResult Function(_SetupWalletLoading value) loading,
     required TResult Function(_SetupWalletError value) error,
     required TResult Function(_SetupWalletDisplay value) display,
@@ -81,6 +89,7 @@ mixin _$SetupWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -89,6 +98,7 @@ mixin _$SetupWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -113,6 +123,129 @@ class _$SetupWalletStateCopyWithImpl<$Res>
   final SetupWalletState _value;
   // ignore: unused_field
   final $Res Function(SetupWalletState) _then;
+}
+
+/// @nodoc
+abstract class _$SetupWalletInitCopyWith<$Res> {
+  factory _$SetupWalletInitCopyWith(
+          _SetupWalletInit value, $Res Function(_SetupWalletInit) then) =
+      __$SetupWalletInitCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$SetupWalletInitCopyWithImpl<$Res>
+    extends _$SetupWalletStateCopyWithImpl<$Res>
+    implements _$SetupWalletInitCopyWith<$Res> {
+  __$SetupWalletInitCopyWithImpl(
+      _SetupWalletInit _value, $Res Function(_SetupWalletInit) _then)
+      : super(_value, (v) => _then(v as _SetupWalletInit));
+
+  @override
+  _SetupWalletInit get _value => super._value as _SetupWalletInit;
+}
+
+/// @nodoc
+
+class _$_SetupWalletInit implements _SetupWalletInit {
+  const _$_SetupWalletInit();
+
+  @override
+  String toString() {
+    return 'SetupWalletState.init()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _SetupWalletInit);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(String mnemonic) display,
+    required TResult Function(String generatedMnemonic) confirm,
+  }) {
+    return init();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(String mnemonic)? display,
+    TResult Function(String generatedMnemonic)? confirm,
+  }) {
+    return init?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(String mnemonic)? display,
+    TResult Function(String generatedMnemonic)? confirm,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
+    required TResult Function(_SetupWalletLoading value) loading,
+    required TResult Function(_SetupWalletError value) error,
+    required TResult Function(_SetupWalletDisplay value) display,
+    required TResult Function(_SetupWalletConfirm value) confirm,
+  }) {
+    return init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
+    TResult Function(_SetupWalletLoading value)? loading,
+    TResult Function(_SetupWalletError value)? error,
+    TResult Function(_SetupWalletDisplay value)? display,
+    TResult Function(_SetupWalletConfirm value)? confirm,
+  }) {
+    return init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
+    TResult Function(_SetupWalletLoading value)? loading,
+    TResult Function(_SetupWalletError value)? error,
+    TResult Function(_SetupWalletDisplay value)? display,
+    TResult Function(_SetupWalletConfirm value)? confirm,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SetupWalletInit implements SetupWalletState {
+  const factory _SetupWalletInit() = _$_SetupWalletInit;
 }
 
 /// @nodoc
@@ -156,6 +289,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(String mnemonic) display,
@@ -167,6 +301,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -178,6 +313,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -193,6 +329,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
     required TResult Function(_SetupWalletLoading value) loading,
     required TResult Function(_SetupWalletError value) error,
     required TResult Function(_SetupWalletDisplay value) display,
@@ -204,6 +341,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -215,6 +353,7 @@ class _$_SetupWalletLoading implements _SetupWalletLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -297,6 +436,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(String mnemonic) display,
@@ -308,6 +448,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -319,6 +460,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -334,6 +476,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
     required TResult Function(_SetupWalletLoading value) loading,
     required TResult Function(_SetupWalletError value) error,
     required TResult Function(_SetupWalletDisplay value) display,
@@ -345,6 +488,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -356,6 +500,7 @@ class _$_SetupWalletError implements _SetupWalletError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -443,6 +588,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(String mnemonic) display,
@@ -454,6 +600,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -465,6 +612,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -480,6 +628,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
     required TResult Function(_SetupWalletLoading value) loading,
     required TResult Function(_SetupWalletError value) error,
     required TResult Function(_SetupWalletDisplay value) display,
@@ -491,6 +640,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -502,6 +652,7 @@ class _$_SetupWalletDisplay implements _SetupWalletDisplay {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -591,6 +742,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(String mnemonic) display,
@@ -602,6 +754,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -613,6 +766,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function(String mnemonic)? display,
@@ -628,6 +782,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_SetupWalletInit value) init,
     required TResult Function(_SetupWalletLoading value) loading,
     required TResult Function(_SetupWalletError value) error,
     required TResult Function(_SetupWalletDisplay value) display,
@@ -639,6 +794,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,
@@ -650,6 +806,7 @@ class _$_SetupWalletConfirm implements _SetupWalletConfirm {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SetupWalletInit value)? init,
     TResult Function(_SetupWalletLoading value)? loading,
     TResult Function(_SetupWalletError value)? error,
     TResult Function(_SetupWalletDisplay value)? display,

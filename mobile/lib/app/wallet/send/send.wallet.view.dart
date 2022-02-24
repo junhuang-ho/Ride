@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/account/send.account.vm.dart';
+import 'package:ride/app/wallet/send/send.wallet.vm.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
 
-class SendAccountView extends HookConsumerWidget {
-  const SendAccountView({Key? key}) : super(key: key);
+class SendWalletView extends HookConsumerWidget {
+  const SendWalletView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sendAccount = ref.watch(sendAccountProvider);
+    final sendWallet = ref.watch(sendWalletProvider);
 
     final qrcodeAddress = useState('');
 
@@ -24,7 +24,7 @@ class SendAccountView extends HookConsumerWidget {
           if (!kIsWeb)
             IconButton(
               icon: const Icon(Icons.camera_alt),
-              onPressed: sendAccount.maybeWhen(
+              onPressed: sendWallet.maybeWhen(
                 loading: null,
                 orElse: () => () {
                   context.push(
@@ -38,7 +38,7 @@ class SendAccountView extends HookConsumerWidget {
             ),
         ],
       ),
-      body: sendAccount.maybeWhen(
+      body: sendWallet.maybeWhen(
         loading: () => const Center(child: CircularProgressIndicator()),
         orElse: () => SendForm(
           address: qrcodeAddress.value,
@@ -61,7 +61,7 @@ class SendForm extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sendAccount = ref.watch(sendAccountProvider);
+    final sendWallet = ref.watch(sendWalletProvider);
     final receiverController = useTextEditingController();
     final amountController = useTextEditingController();
 
@@ -79,13 +79,13 @@ class SendForm extends HookConsumerWidget {
             child: const Text('Send now'),
             onPressed: () async {
               await ref
-                  .read(sendAccountProvider.notifier)
+                  .read(sendWalletProvider.notifier)
                   .sendWETHTo(receiverController.text, amountController.text);
             },
           ),
         ],
         children: <Widget>[
-          sendAccount.when(
+          sendWallet.when(
             init: () => Column(
               children: [
                 PaperInput(
@@ -96,7 +96,7 @@ class SendForm extends HookConsumerWidget {
                 ),
                 PaperInput(
                   labelText: "Amount",
-                  hintText: 'Please enter the amount',
+                  hintText: 'Please enter the amount in ether',
                   maxLines: 1,
                   controller: amountController,
                 ),

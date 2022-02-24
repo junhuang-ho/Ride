@@ -1,16 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:web3dart/web3dart.dart';
 
 part 'account.freezed.dart';
+
+enum AccountType { driver, passenger, admin }
 
 @freezed
 class Account with _$Account {
   const factory Account({
-    required final bool isOwner,
+    required final AccountType accountType,
     required final String publicKey,
-    @JsonKey(ignore: true) EtherAmount? balance,
-    required final BigInt wETHBalance,
-    required final BigInt holdingInFiat,
-    required final BigInt holdingInCrypto,
   }) = _Account;
 }
