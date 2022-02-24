@@ -8,21 +8,21 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
-import 'package:ride/app/home/widgets/alert.dart';
-import 'package:ride/app/home/widgets/main_menu.dart';
-import 'package:ride/app/home/widgets/menu_button.dart';
-import 'package:ride/app/home/widgets/search_sheet.dart';
+import 'package:ride/app/passenger/widgets/alert.dart';
+import 'package:ride/app/passenger/widgets/main_menu.dart';
+import 'package:ride/app/passenger/widgets/menu_button.dart';
+import 'package:ride/app/passenger/widgets/search_sheet.dart';
 import 'package:ride/utils/constants.dart';
 import 'package:ride/utils/permission_helper.dart';
 
-class HomeView extends StatefulHookConsumerWidget {
-  const HomeView({Key? key}) : super(key: key);
+class PassengerHomeView extends StatefulHookConsumerWidget {
+  const PassengerHomeView({Key? key}) : super(key: key);
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _PassengerHomeViewState createState() => _PassengerHomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> {
+class _PassengerHomeViewState extends ConsumerState<PassengerHomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late GoogleMapController mapController;
   late Position currentPosition;
@@ -125,9 +125,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
           SearchSheet(
             searchSheetHeight: searchSheetHeight.value,
-            // onSearchBarTap: () async {
-            //   context.go('/home/search');
-            // },
+            onSearchBarTap: () async {
+              // context.go('/passenger/search');
+              // showDetailSheet();
+            },
           ),
         ],
       ),

@@ -42,40 +42,24 @@ class SearchSheet extends HookConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const <Widget>[
-                SizedBox(height: 15),
-                Text(
-                  'Stay Tuned',
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontFamily: 'Brand-Bold',
-                  ),
+              children: <Widget>[
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: onSearchBarTap,
+                  child: const SearchBar(),
                 ),
-                SizedBox(height: 15),
-                Text(
-                  'Coming Soon...',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Brand-Bold',
-                  ),
+                const SizedBox(height: 22),
+                const AddFavouriteLocation(
+                  iconData: Icons.home,
+                  location: 'Home',
+                  locationDesc: 'Your residential address',
                 ),
-                //   const SizedBox(height: 20),
-                //   GestureDetector(
-                //     onTap: onSearchBarTap,
-                //     child: const SearchBar(),
-                //   ),
-                //   const SizedBox(height: 22),
-                //   const AddFavouriteLocation(
-                //     iconData: Icons.home,
-                //     location: 'Home',
-                //     locationDesc: 'Your residential address',
-                //   ),
-                //   const SizedBox(height: 16),
-                //   const AddFavouriteLocation(
-                //     iconData: Icons.work,
-                //     location: 'Work',
-                //     locationDesc: 'Your office address',
-                //   ),
+                const SizedBox(height: 16),
+                const AddFavouriteLocation(
+                  iconData: Icons.work,
+                  location: 'Work',
+                  locationDesc: 'Your office address',
+                ),
               ],
             ),
           ),

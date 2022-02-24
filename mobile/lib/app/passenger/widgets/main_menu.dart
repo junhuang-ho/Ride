@@ -3,8 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
-import 'package:ride/app/account/account.vm.dart';
-import 'package:ride/utils/eth_amount_formatter.dart';
+import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/widgets/empty_content.dart';
 
 class MainMenu extends HookConsumerWidget {
@@ -19,69 +18,26 @@ class MainMenu extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final account = ref.watch(accountProvider);
-
-    return Container(
+    return SizedBox(
       width: 300,
       child: Drawer(
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: <Widget>[
-            Container(
-              height: 250,
-              child: DrawerHeader(
-                child: account.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (errorMsg) => EmptyContent(
-                    title: 'Something went wrong',
-                    message: errorMsg ?? '',
-                  ),
-                  data: (accountData) => Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        child: SvgPicture.string(
-                          Jdenticon.toSvg(accountData.publicKey),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        accountData.publicKey,
-                        style: const TextStyle(
-                            fontSize: 12, fontFamily: 'Brand-Bold'),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${EthAmountFormatter(accountData.balance!.getInWei).format()} MATIC',
-                      ),
-                      if (accountData.isOwner)
-                        ListTile(
-                          title: const Text('Admin Panel'),
-                          subtitle: const Text('Ride Administration'),
-                          leading: const Icon(Icons.admin_panel_settings),
-                          onTap: () => context.go('/home/admin'),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            const HeaderSection(),
             const SizedBox(width: 5),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 child: const Text(
-                  'View Account',
+                  'Wallet',
                   style: TextStyle(
                     color: Colors.blue,
                     fontSize: 15,
                   ),
                 ),
                 onTap: () {
-                  context.go('/home/account');
+                  context.go('/passenger/wallet');
                 },
               ),
             ),
@@ -95,7 +51,7 @@ class MainMenu extends HookConsumerWidget {
                   Expanded(
                     child: OutlinedButton(
                       child: const Text('Send'),
-                      onPressed: () => context.go('/send-account'),
+                      onPressed: () => context.go('/passenger/wallet/send'),
                     ),
                   ),
                 ],
@@ -120,9 +76,60 @@ class MainMenu extends HookConsumerWidget {
             ListTile(
               title: const Text('Drive with Ride'),
               leading: const Icon(Icons.drive_eta),
-              onTap: () => context.go('/home/driver'),
+              onTap: () => context.go('/driver/register'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class HeaderSection extends HookConsumerWidget {
+  const HeaderSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authProvider);
+
+    return SizedBox(
+      height: 250,
+      child: DrawerHeader(
+        child: auth.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (errorMsg) => EmptyContent(
+            title: 'Something went wrong',
+            message: errorMsg ?? '',
+          ),
+          unAuthenticated: () => const EmptyContent(
+            title: 'Sorry, you\'ve been logged out',
+            message: '',
+          ),
+          authenticated: (accountData) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                child: SvgPicture.string(
+                  Jdenticon.toSvg(accountData.publicKey),
+                ),
+              ),
+              const SizedBox(width: 15),
+              Text(
+                accountData.publicKey,
+                style: const TextStyle(fontSize: 12, fontFamily: 'Brand-Bold'),
+              ),
+              // if (accountData.accountType == AccountType.admin)
+              //   ListTile(
+              //     title: const Text('Admin Panel'),
+              //     subtitle: const Text('Ride Administration'),
+              //     leading: const Icon(Icons.admin_panel_settings),
+              //     onTap: () => context.go('/admin'),
+              //   ),
+            ],
+          ),
         ),
       ),
     );
