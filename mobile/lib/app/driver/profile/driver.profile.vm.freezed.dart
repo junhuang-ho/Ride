@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'driver.vm.dart';
+part of 'driver.profile.vm.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,31 +15,31 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$DriverStateTearOff {
-  const _$DriverStateTearOff();
+class _$DriverProfileStateTearOff {
+  const _$DriverProfileStateTearOff();
 
-  _DriverLoading loading() {
-    return const _DriverLoading();
+  _DriverProfileLoading loading() {
+    return const _DriverProfileLoading();
   }
 
-  _DriverError error(String? message) {
-    return _DriverError(
+  _DriverProfileError error(String? message) {
+    return _DriverProfileError(
       message,
     );
   }
 
-  _DriverData data(DriverReputation driverReputation) {
-    return _DriverData(
+  _DriverProfileData data(DriverReputation driverReputation) {
+    return _DriverProfileData(
       driverReputation,
     );
   }
 }
 
 /// @nodoc
-const $DriverState = _$DriverStateTearOff();
+const $DriverProfileState = _$DriverProfileStateTearOff();
 
 /// @nodoc
-mixin _$DriverState {
+mixin _$DriverProfileState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -64,76 +64,78 @@ mixin _$DriverState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DriverLoading value) loading,
-    required TResult Function(_DriverError value) error,
-    required TResult Function(_DriverData value) data,
+    required TResult Function(_DriverProfileLoading value) loading,
+    required TResult Function(_DriverProfileError value) error,
+    required TResult Function(_DriverProfileData value) data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DriverStateCopyWith<$Res> {
-  factory $DriverStateCopyWith(
-          DriverState value, $Res Function(DriverState) then) =
-      _$DriverStateCopyWithImpl<$Res>;
+abstract class $DriverProfileStateCopyWith<$Res> {
+  factory $DriverProfileStateCopyWith(
+          DriverProfileState value, $Res Function(DriverProfileState) then) =
+      _$DriverProfileStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$DriverStateCopyWithImpl<$Res> implements $DriverStateCopyWith<$Res> {
-  _$DriverStateCopyWithImpl(this._value, this._then);
+class _$DriverProfileStateCopyWithImpl<$Res>
+    implements $DriverProfileStateCopyWith<$Res> {
+  _$DriverProfileStateCopyWithImpl(this._value, this._then);
 
-  final DriverState _value;
+  final DriverProfileState _value;
   // ignore: unused_field
-  final $Res Function(DriverState) _then;
+  final $Res Function(DriverProfileState) _then;
 }
 
 /// @nodoc
-abstract class _$DriverLoadingCopyWith<$Res> {
-  factory _$DriverLoadingCopyWith(
-          _DriverLoading value, $Res Function(_DriverLoading) then) =
-      __$DriverLoadingCopyWithImpl<$Res>;
+abstract class _$DriverProfileLoadingCopyWith<$Res> {
+  factory _$DriverProfileLoadingCopyWith(_DriverProfileLoading value,
+          $Res Function(_DriverProfileLoading) then) =
+      __$DriverProfileLoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$DriverLoadingCopyWithImpl<$Res> extends _$DriverStateCopyWithImpl<$Res>
-    implements _$DriverLoadingCopyWith<$Res> {
-  __$DriverLoadingCopyWithImpl(
-      _DriverLoading _value, $Res Function(_DriverLoading) _then)
-      : super(_value, (v) => _then(v as _DriverLoading));
+class __$DriverProfileLoadingCopyWithImpl<$Res>
+    extends _$DriverProfileStateCopyWithImpl<$Res>
+    implements _$DriverProfileLoadingCopyWith<$Res> {
+  __$DriverProfileLoadingCopyWithImpl(
+      _DriverProfileLoading _value, $Res Function(_DriverProfileLoading) _then)
+      : super(_value, (v) => _then(v as _DriverProfileLoading));
 
   @override
-  _DriverLoading get _value => super._value as _DriverLoading;
+  _DriverProfileLoading get _value => super._value as _DriverProfileLoading;
 }
 
 /// @nodoc
 
-class _$_DriverLoading implements _DriverLoading {
-  const _$_DriverLoading();
+class _$_DriverProfileLoading implements _DriverProfileLoading {
+  const _$_DriverProfileLoading();
 
   @override
   String toString() {
-    return 'DriverState.loading()';
+    return 'DriverProfileState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _DriverLoading);
+        (other.runtimeType == runtimeType && other is _DriverProfileLoading);
   }
 
   @override
@@ -176,9 +178,9 @@ class _$_DriverLoading implements _DriverLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DriverLoading value) loading,
-    required TResult Function(_DriverError value) error,
-    required TResult Function(_DriverData value) data,
+    required TResult Function(_DriverProfileLoading value) loading,
+    required TResult Function(_DriverProfileError value) error,
+    required TResult Function(_DriverProfileData value) data,
   }) {
     return loading(this);
   }
@@ -186,9 +188,9 @@ class _$_DriverLoading implements _DriverLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
   }) {
     return loading?.call(this);
   }
@@ -196,9 +198,9 @@ class _$_DriverLoading implements _DriverLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -208,33 +210,34 @@ class _$_DriverLoading implements _DriverLoading {
   }
 }
 
-abstract class _DriverLoading implements DriverState {
-  const factory _DriverLoading() = _$_DriverLoading;
+abstract class _DriverProfileLoading implements DriverProfileState {
+  const factory _DriverProfileLoading() = _$_DriverProfileLoading;
 }
 
 /// @nodoc
-abstract class _$DriverErrorCopyWith<$Res> {
-  factory _$DriverErrorCopyWith(
-          _DriverError value, $Res Function(_DriverError) then) =
-      __$DriverErrorCopyWithImpl<$Res>;
+abstract class _$DriverProfileErrorCopyWith<$Res> {
+  factory _$DriverProfileErrorCopyWith(
+          _DriverProfileError value, $Res Function(_DriverProfileError) then) =
+      __$DriverProfileErrorCopyWithImpl<$Res>;
   $Res call({String? message});
 }
 
 /// @nodoc
-class __$DriverErrorCopyWithImpl<$Res> extends _$DriverStateCopyWithImpl<$Res>
-    implements _$DriverErrorCopyWith<$Res> {
-  __$DriverErrorCopyWithImpl(
-      _DriverError _value, $Res Function(_DriverError) _then)
-      : super(_value, (v) => _then(v as _DriverError));
+class __$DriverProfileErrorCopyWithImpl<$Res>
+    extends _$DriverProfileStateCopyWithImpl<$Res>
+    implements _$DriverProfileErrorCopyWith<$Res> {
+  __$DriverProfileErrorCopyWithImpl(
+      _DriverProfileError _value, $Res Function(_DriverProfileError) _then)
+      : super(_value, (v) => _then(v as _DriverProfileError));
 
   @override
-  _DriverError get _value => super._value as _DriverError;
+  _DriverProfileError get _value => super._value as _DriverProfileError;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_DriverError(
+    return _then(_DriverProfileError(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -245,22 +248,22 @@ class __$DriverErrorCopyWithImpl<$Res> extends _$DriverStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DriverError implements _DriverError {
-  const _$_DriverError(this.message);
+class _$_DriverProfileError implements _DriverProfileError {
+  const _$_DriverProfileError(this.message);
 
   @override
   final String? message;
 
   @override
   String toString() {
-    return 'DriverState.error(message: $message)';
+    return 'DriverProfileState.error(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DriverError &&
+            other is _DriverProfileError &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -270,8 +273,8 @@ class _$_DriverError implements _DriverError {
 
   @JsonKey(ignore: true)
   @override
-  _$DriverErrorCopyWith<_DriverError> get copyWith =>
-      __$DriverErrorCopyWithImpl<_DriverError>(this, _$identity);
+  _$DriverProfileErrorCopyWith<_DriverProfileError> get copyWith =>
+      __$DriverProfileErrorCopyWithImpl<_DriverProfileError>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -310,9 +313,9 @@ class _$_DriverError implements _DriverError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DriverLoading value) loading,
-    required TResult Function(_DriverError value) error,
-    required TResult Function(_DriverData value) data,
+    required TResult Function(_DriverProfileLoading value) loading,
+    required TResult Function(_DriverProfileError value) error,
+    required TResult Function(_DriverProfileData value) data,
   }) {
     return error(this);
   }
@@ -320,9 +323,9 @@ class _$_DriverError implements _DriverError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
   }) {
     return error?.call(this);
   }
@@ -330,9 +333,9 @@ class _$_DriverError implements _DriverError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -342,40 +345,41 @@ class _$_DriverError implements _DriverError {
   }
 }
 
-abstract class _DriverError implements DriverState {
-  const factory _DriverError(String? message) = _$_DriverError;
+abstract class _DriverProfileError implements DriverProfileState {
+  const factory _DriverProfileError(String? message) = _$_DriverProfileError;
 
   String? get message;
   @JsonKey(ignore: true)
-  _$DriverErrorCopyWith<_DriverError> get copyWith =>
+  _$DriverProfileErrorCopyWith<_DriverProfileError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$DriverDataCopyWith<$Res> {
-  factory _$DriverDataCopyWith(
-          _DriverData value, $Res Function(_DriverData) then) =
-      __$DriverDataCopyWithImpl<$Res>;
+abstract class _$DriverProfileDataCopyWith<$Res> {
+  factory _$DriverProfileDataCopyWith(
+          _DriverProfileData value, $Res Function(_DriverProfileData) then) =
+      __$DriverProfileDataCopyWithImpl<$Res>;
   $Res call({DriverReputation driverReputation});
 
   $DriverReputationCopyWith<$Res> get driverReputation;
 }
 
 /// @nodoc
-class __$DriverDataCopyWithImpl<$Res> extends _$DriverStateCopyWithImpl<$Res>
-    implements _$DriverDataCopyWith<$Res> {
-  __$DriverDataCopyWithImpl(
-      _DriverData _value, $Res Function(_DriverData) _then)
-      : super(_value, (v) => _then(v as _DriverData));
+class __$DriverProfileDataCopyWithImpl<$Res>
+    extends _$DriverProfileStateCopyWithImpl<$Res>
+    implements _$DriverProfileDataCopyWith<$Res> {
+  __$DriverProfileDataCopyWithImpl(
+      _DriverProfileData _value, $Res Function(_DriverProfileData) _then)
+      : super(_value, (v) => _then(v as _DriverProfileData));
 
   @override
-  _DriverData get _value => super._value as _DriverData;
+  _DriverProfileData get _value => super._value as _DriverProfileData;
 
   @override
   $Res call({
     Object? driverReputation = freezed,
   }) {
-    return _then(_DriverData(
+    return _then(_DriverProfileData(
       driverReputation == freezed
           ? _value.driverReputation
           : driverReputation // ignore: cast_nullable_to_non_nullable
@@ -393,22 +397,22 @@ class __$DriverDataCopyWithImpl<$Res> extends _$DriverStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DriverData implements _DriverData {
-  const _$_DriverData(this.driverReputation);
+class _$_DriverProfileData implements _DriverProfileData {
+  const _$_DriverProfileData(this.driverReputation);
 
   @override
   final DriverReputation driverReputation;
 
   @override
   String toString() {
-    return 'DriverState.data(driverReputation: $driverReputation)';
+    return 'DriverProfileState.data(driverReputation: $driverReputation)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DriverData &&
+            other is _DriverProfileData &&
             const DeepCollectionEquality()
                 .equals(other.driverReputation, driverReputation));
   }
@@ -419,8 +423,8 @@ class _$_DriverData implements _DriverData {
 
   @JsonKey(ignore: true)
   @override
-  _$DriverDataCopyWith<_DriverData> get copyWith =>
-      __$DriverDataCopyWithImpl<_DriverData>(this, _$identity);
+  _$DriverProfileDataCopyWith<_DriverProfileData> get copyWith =>
+      __$DriverProfileDataCopyWithImpl<_DriverProfileData>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -459,9 +463,9 @@ class _$_DriverData implements _DriverData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_DriverLoading value) loading,
-    required TResult Function(_DriverError value) error,
-    required TResult Function(_DriverData value) data,
+    required TResult Function(_DriverProfileLoading value) loading,
+    required TResult Function(_DriverProfileError value) error,
+    required TResult Function(_DriverProfileData value) data,
   }) {
     return data(this);
   }
@@ -469,9 +473,9 @@ class _$_DriverData implements _DriverData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
   }) {
     return data?.call(this);
   }
@@ -479,9 +483,9 @@ class _$_DriverData implements _DriverData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DriverLoading value)? loading,
-    TResult Function(_DriverError value)? error,
-    TResult Function(_DriverData value)? data,
+    TResult Function(_DriverProfileLoading value)? loading,
+    TResult Function(_DriverProfileError value)? error,
+    TResult Function(_DriverProfileData value)? data,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -491,11 +495,12 @@ class _$_DriverData implements _DriverData {
   }
 }
 
-abstract class _DriverData implements DriverState {
-  const factory _DriverData(DriverReputation driverReputation) = _$_DriverData;
+abstract class _DriverProfileData implements DriverProfileState {
+  const factory _DriverProfileData(DriverReputation driverReputation) =
+      _$_DriverProfileData;
 
   DriverReputation get driverReputation;
   @JsonKey(ignore: true)
-  _$DriverDataCopyWith<_DriverData> get copyWith =>
+  _$DriverProfileDataCopyWith<_DriverProfileData> get copyWith =>
       throw _privateConstructorUsedError;
 }

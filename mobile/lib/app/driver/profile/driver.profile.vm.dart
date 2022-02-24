@@ -5,22 +5,22 @@ import 'package:ride/services/crypto.dart';
 import 'package:ride/services/repository.dart';
 import 'package:ride/services/ride/ride_badge.dart';
 
-part 'driver.vm.freezed.dart';
+part 'driver.profile.vm.freezed.dart';
 
 @freezed
-class DriverState with _$DriverState {
-  const factory DriverState.loading() = _DriverLoading;
-  const factory DriverState.error(String? message) = _DriverError;
-  const factory DriverState.data(DriverReputation driverReputation) =
-      _DriverData;
+class DriverProfileState with _$DriverProfileState {
+  const factory DriverProfileState.loading() = _DriverProfileLoading;
+  const factory DriverProfileState.error(String? message) = _DriverProfileError;
+  const factory DriverProfileState.data(DriverReputation driverReputation) =
+      _DriverProfileData;
 }
 
-class DriverVM extends StateNotifier<DriverState> {
-  DriverVM(Reader read)
+class DriverProfileVM extends StateNotifier<DriverProfileState> {
+  DriverProfileVM(Reader read)
       : _crypto = read(cryptoProvider),
         _repository = read(repositoryProvider),
         _rideBadgeService = read(rideBadgeProvider),
-        super(const DriverState.loading()) {
+        super(const DriverProfileState.loading()) {
     getDriverReputation();
   }
 
@@ -30,19 +30,19 @@ class DriverVM extends StateNotifier<DriverState> {
 
   Future<void> getDriverReputation() async {
     try {
-      state = const DriverState.loading();
+      state = const DriverProfileState.loading();
       final credentials = _repository.getPrivateKey();
       final driverAddress = await _crypto.getPublicAddress(credentials!);
       final driverReputation =
           await _rideBadgeService.getDriverReputation(driverAddress);
-      state = DriverState.data(driverReputation);
+      state = DriverProfileState.data(driverReputation);
     } catch (ex) {
-      state = DriverState.error(ex.toString());
+      state = DriverProfileState.error(ex.toString());
     }
   }
 }
 
-final driverProvider =
-    StateNotifierProvider.autoDispose<DriverVM, DriverState>((ref) {
-  return DriverVM(ref.read);
+final driverProfileProvider =
+    StateNotifierProvider<DriverProfileVM, DriverProfileState>((ref) {
+  return DriverProfileVM(ref.read);
 });
