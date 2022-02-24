@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ride/app/wallet/setup.wallet.vm.dart';
 
 class AuthView extends HookConsumerWidget {
   const AuthView({Key? key}) : super(key: key);
@@ -40,11 +39,9 @@ class AuthView extends HookConsumerWidget {
             ),
             const SizedBox(height: 60),
             ElevatedButton(
-                child: const Text('Create new wallet'),
-                onPressed: () {
-                  ref.read(setupWalletProvider.notifier).generateMnemonic();
-                  context.go('/create-wallet');
-                }),
+              child: const Text('Create new wallet'),
+              onPressed: () => context.go('/create-wallet'),
+            ),
             Container(
               padding: const EdgeInsets.all(10),
               child: OutlinedButton(

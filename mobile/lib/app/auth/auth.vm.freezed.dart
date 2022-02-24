@@ -22,12 +22,16 @@ class _$AuthStateTearOff {
     return const _AuthLoading();
   }
 
-  _AuthError error() {
-    return const _AuthError();
+  _AuthError error(String? message) {
+    return _AuthError(
+      message,
+    );
   }
 
-  _Authenticated authenticated() {
-    return const _Authenticated();
+  _Authenticated authenticated(Account account) {
+    return _Authenticated(
+      account,
+    );
   }
 
   _UnAuthenticated unAuthenticated() {
@@ -43,24 +47,24 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
-    required TResult Function() authenticated,
+    required TResult Function(String? message) error,
+    required TResult Function(Account account) authenticated,
     required TResult Function() unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) =>
@@ -148,8 +152,8 @@ class _$_AuthLoading implements _AuthLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
-    required TResult Function() authenticated,
+    required TResult Function(String? message) error,
+    required TResult Function(Account account) authenticated,
     required TResult Function() unAuthenticated,
   }) {
     return loading();
@@ -159,8 +163,8 @@ class _$_AuthLoading implements _AuthLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
   }) {
     return loading?.call();
@@ -170,8 +174,8 @@ class _$_AuthLoading implements _AuthLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
@@ -228,6 +232,7 @@ abstract class _$AuthErrorCopyWith<$Res> {
   factory _$AuthErrorCopyWith(
           _AuthError value, $Res Function(_AuthError) then) =
       __$AuthErrorCopyWithImpl<$Res>;
+  $Res call({String? message});
 }
 
 /// @nodoc
@@ -238,60 +243,83 @@ class __$AuthErrorCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
 
   @override
   _AuthError get _value => super._value as _AuthError;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_AuthError(
+      message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_AuthError implements _AuthError {
-  const _$_AuthError();
+  const _$_AuthError(this.message);
+
+  @override
+  final String? message;
 
   @override
   String toString() {
-    return 'AuthState.error()';
+    return 'AuthState.error(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _AuthError);
+        (other.runtimeType == runtimeType &&
+            other is _AuthError &&
+            const DeepCollectionEquality().equals(other.message, message));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  _$AuthErrorCopyWith<_AuthError> get copyWith =>
+      __$AuthErrorCopyWithImpl<_AuthError>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
-    required TResult Function() authenticated,
+    required TResult Function(String? message) error,
+    required TResult Function(Account account) authenticated,
     required TResult Function() unAuthenticated,
   }) {
-    return error();
+    return error(message);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
   }) {
-    return error?.call();
+    return error?.call(message);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error();
+      return error(message);
     }
     return orElse();
   }
@@ -335,7 +363,12 @@ class _$_AuthError implements _AuthError {
 }
 
 abstract class _AuthError implements AuthState {
-  const factory _AuthError() = _$_AuthError;
+  const factory _AuthError(String? message) = _$_AuthError;
+
+  String? get message;
+  @JsonKey(ignore: true)
+  _$AuthErrorCopyWith<_AuthError> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -343,6 +376,9 @@ abstract class _$AuthenticatedCopyWith<$Res> {
   factory _$AuthenticatedCopyWith(
           _Authenticated value, $Res Function(_Authenticated) then) =
       __$AuthenticatedCopyWithImpl<$Res>;
+  $Res call({Account account});
+
+  $AccountCopyWith<$Res> get account;
 }
 
 /// @nodoc
@@ -354,60 +390,90 @@ class __$AuthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
 
   @override
   _Authenticated get _value => super._value as _Authenticated;
+
+  @override
+  $Res call({
+    Object? account = freezed,
+  }) {
+    return _then(_Authenticated(
+      account == freezed
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as Account,
+    ));
+  }
+
+  @override
+  $AccountCopyWith<$Res> get account {
+    return $AccountCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$_Authenticated implements _Authenticated {
-  const _$_Authenticated();
+  const _$_Authenticated(this.account);
+
+  @override
+  final Account account;
 
   @override
   String toString() {
-    return 'AuthState.authenticated()';
+    return 'AuthState.authenticated(account: $account)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Authenticated);
+        (other.runtimeType == runtimeType &&
+            other is _Authenticated &&
+            const DeepCollectionEquality().equals(other.account, account));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(account));
+
+  @JsonKey(ignore: true)
+  @override
+  _$AuthenticatedCopyWith<_Authenticated> get copyWith =>
+      __$AuthenticatedCopyWithImpl<_Authenticated>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
-    required TResult Function() authenticated,
+    required TResult Function(String? message) error,
+    required TResult Function(Account account) authenticated,
     required TResult Function() unAuthenticated,
   }) {
-    return authenticated();
+    return authenticated(account);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
   }) {
-    return authenticated?.call();
+    return authenticated?.call(account);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated();
+      return authenticated(account);
     }
     return orElse();
   }
@@ -451,7 +517,12 @@ class _$_Authenticated implements _Authenticated {
 }
 
 abstract class _Authenticated implements AuthState {
-  const factory _Authenticated() = _$_Authenticated;
+  const factory _Authenticated(Account account) = _$_Authenticated;
+
+  Account get account;
+  @JsonKey(ignore: true)
+  _$AuthenticatedCopyWith<_Authenticated> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -495,8 +566,8 @@ class _$_UnAuthenticated implements _UnAuthenticated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
-    required TResult Function() authenticated,
+    required TResult Function(String? message) error,
+    required TResult Function(Account account) authenticated,
     required TResult Function() unAuthenticated,
   }) {
     return unAuthenticated();
@@ -506,8 +577,8 @@ class _$_UnAuthenticated implements _UnAuthenticated {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
   }) {
     return unAuthenticated?.call();
@@ -517,8 +588,8 @@ class _$_UnAuthenticated implements _UnAuthenticated {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
-    TResult Function()? authenticated,
+    TResult Function(String? message)? error,
+    TResult Function(Account account)? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {

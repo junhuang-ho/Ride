@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/admin/admin.view.dart';
 import 'package:ride/app/auth/auth.view.dart';
 import 'package:ride/app/auth/auth.vm.dart';
-import 'package:ride/app/home/home.view.dart';
+import 'package:ride/app/driver/driver.view.dart';
+import 'package:ride/app/passenger/home/passenger.home.view.dart';
+import 'package:ride/models/account.dart';
 import 'package:ride/widgets/empty_content.dart';
 
 class AppView extends HookConsumerWidget {
@@ -12,20 +15,28 @@ class AppView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authProvider);
 
-    return auth.map(
-      loading: (_) => const Scaffold(
+    return auth.when(
+      loading: () => const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (_) => const Scaffold(
+      error: (errorMsg) => Scaffold(
         body: EmptyContent(
           title: 'Something went wrong',
-          message: 'Can\'t load data right now.',
+          message: errorMsg ?? 'Can\'t load data right now.',
         ),
       ),
-      authenticated: (_) => const HomeView(),
-      unAuthenticated: (_) => const AuthView(),
+      authenticated: (accountData) {
+        if (accountData.accountType == AccountType.admin) {
+          return const AdminView();
+        } else if (accountData.accountType == AccountType.driver) {
+          return const DriverView();
+        } else {
+          return const PassengerHomeView();
+        }
+      },
+      unAuthenticated: () => const AuthView(),
     );
   }
 }
