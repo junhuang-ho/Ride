@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/contracts/erc20.dart';
+import 'package:web_socket_channel/io.dart';
 
 class RideHubService {
   late Credentials _credentials;
@@ -9,6 +10,8 @@ class RideHubService {
   late Web3Client _web3Client;
   late Erc20 _wethToken;
   final String rpcUrl = 'https://rpc-mumbai.matic.today';
+  final String wsAddress = 'wss://ws-mumbai.matic.today';
+
   final wethAddress =
       EthereumAddress.fromHex('0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa');
   final rideHubAddress =
@@ -19,7 +22,13 @@ class RideHubService {
 
   RideHubService() {
     _httpClient = Client();
-    _web3Client = Web3Client(rpcUrl, _httpClient);
+    _web3Client = Web3Client(
+      rpcUrl,
+      _httpClient,
+      socketConnector: () {
+        return IOWebSocketChannel.connect(wsAddress).cast<String>();
+      },
+    );
     _wethToken = Erc20(address: wethAddress, client: _web3Client);
   }
 
