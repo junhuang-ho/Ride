@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/account/account.view.dart';
-import 'package:ride/app/account/deposit.account.view.dart';
-import 'package:ride/app/account/send.account.view.dart';
 import 'package:ride/app/admin/admin.view.dart';
 import 'package:ride/app/driver/driver.view.dart';
 import 'package:ride/app/driver/register.driver.view.dart';
+import 'package:ride/app/passenger/home/passenger.home.view.dart';
 import 'package:ride/app/qrcode.reader.view.dart';
+import 'package:ride/app/ride/ride.view.dart';
+import 'package:ride/app/wallet/deposit/deposit.wallet.view.dart';
+import 'package:ride/app/wallet/send/send.wallet.view.dart';
+import 'package:ride/app/wallet/setup/create.wallet.view.dart';
+import 'package:ride/app/wallet/setup/import.wallet.view.dart';
+import 'package:ride/app/wallet/wallet.view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ride/app/app.view.dart';
-import 'package:ride/app/home/home.view.dart';
-import 'package:ride/app/wallet/import.wallet.view.dart';
-import 'package:ride/app/wallet/create.wallet.view.dart';
 import 'package:ride/services/repository.dart';
 
 Future<void> main() async {
@@ -72,13 +73,6 @@ class RideApp extends ConsumerWidget {
             ),
           ),
           GoRoute(
-            path: 'send-account',
-            pageBuilder: (context, state) => MaterialPage<void>(
-              key: state.pageKey,
-              child: const SendAccountView(),
-            ),
-          ),
-          GoRoute(
             path: 'qrcode_reader',
             pageBuilder: (context, state) => MaterialPage<void>(
               key: state.pageKey,
@@ -90,50 +84,64 @@ class RideApp extends ConsumerWidget {
         ],
       ),
       GoRoute(
-        path: '/home',
+        path: '/admin',
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
-          child: const HomeView(),
+          child: const AdminView(),
+        ),
+      ),
+      GoRoute(
+        path: '/driver',
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: const DriverView(),
         ),
         routes: [
           GoRoute(
-            path: 'account',
+            path: 'register',
             pageBuilder: (context, state) => MaterialPage<void>(
               key: state.pageKey,
-              child: const AccountView(),
+              child: const RegisterDriverView(),
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/passenger',
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: const PassengerHomeView(),
+        ),
+        routes: [
+          GoRoute(
+            path: 'wallet',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const WalletView(),
             ),
             routes: [
+              GoRoute(
+                path: 'send',
+                pageBuilder: (context, state) => MaterialPage<void>(
+                  key: state.pageKey,
+                  child: const SendWalletView(),
+                ),
+              ),
               GoRoute(
                 path: 'deposit',
                 pageBuilder: (context, state) => MaterialPage<void>(
                   key: state.pageKey,
-                  child: const DepositAccountView(),
+                  child: const DepositWalletView(),
                 ),
               ),
             ],
           ),
           GoRoute(
-            path: 'admin',
+            path: 'ride',
             pageBuilder: (context, state) => MaterialPage<void>(
               key: state.pageKey,
-              child: const AdminView(),
+              child: const RideView(),
             ),
-          ),
-          GoRoute(
-            path: 'driver',
-            pageBuilder: (context, state) => MaterialPage<void>(
-              key: state.pageKey,
-              child: const DriverView(),
-            ),
-            routes: [
-              GoRoute(
-                path: 'register',
-                pageBuilder: (context, state) => MaterialPage<void>(
-                  key: state.pageKey,
-                  child: const RegisterDriverView(),
-                ),
-              ),
-            ],
           ),
         ],
       ),
