@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "../../interfaces/utils/IRideLoupe.sol";
-import "../../interfaces/utils/IERC165.sol";
 import "../../libraries/utils/RideLibCutAndLoupe.sol";
 
-contract RideLoupe is IRideLoupe, IERC165 {
+contract RideLoupe {
+    struct Facet {
+        address facetAddress;
+        bytes4[] functionSelectors;
+    }
+
     // Diamond Loupe Functions
     ////////////////////////////////////////////////////////////////////
     /// These functions are expected to be called frequently by tools.
@@ -16,7 +19,7 @@ contract RideLoupe is IRideLoupe, IERC165 {
     // }
     /// @notice Gets all facets and their selectors.
     /// @return facets_ Facet
-    function facets() external view override returns (Facet[] memory facets_) {
+    function facets() external view returns (Facet[] memory facets_) {
         RideLibCutAndLoupe.StorageCutAndLoupe storage s1 = RideLibCutAndLoupe
             ._storageCutAndLoupe();
         facets_ = new Facet[](s1.selectorCount);
@@ -83,7 +86,6 @@ contract RideLoupe is IRideLoupe, IERC165 {
     function facetFunctionSelectors(address _facet)
         external
         view
-        override
         returns (bytes4[] memory _facetFunctionSelectors)
     {
         RideLibCutAndLoupe.StorageCutAndLoupe storage s1 = RideLibCutAndLoupe
@@ -122,7 +124,6 @@ contract RideLoupe is IRideLoupe, IERC165 {
     function facetAddresses()
         external
         view
-        override
         returns (address[] memory facetAddresses_)
     {
         RideLibCutAndLoupe.StorageCutAndLoupe storage s1 = RideLibCutAndLoupe
@@ -172,7 +173,6 @@ contract RideLoupe is IRideLoupe, IERC165 {
     function facetAddress(bytes4 _functionSelector)
         external
         view
-        override
         returns (address facetAddress_)
     {
         facetAddress_ = address(
@@ -182,18 +182,5 @@ contract RideLoupe is IRideLoupe, IERC165 {
                 ]
             )
         );
-    }
-
-    // This implements ERC-165.
-    function supportsInterface(bytes4 _interfaceId)
-        external
-        view
-        override
-        returns (bool)
-    {
-        return
-            RideLibCutAndLoupe._storageCutAndLoupe().supportedInterfaces[
-                _interfaceId
-            ];
     }
 }

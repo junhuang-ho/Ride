@@ -1,25 +1,16 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibAccessControl.sol";
 import "../../libraries/core/RideLibCurrencyRegistry.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-import "hardhat/console.sol";
-
 library RideLibExchange {
-    using Counters for Counters.Counter;
-
     bytes32 constant STORAGE_POSITION_EXCHANGE = keccak256("ds.exchange");
 
-    struct DerivedPriceFeed {
-        bytes32 keyX;
-        bytes32 keyY;
-    }
-
     struct DerivedPriceFeedDetails {
+        bytes32 keyShared;
         address numerator;
         address denominator;
         bool numeratorInverse;
@@ -27,14 +18,12 @@ library RideLibExchange {
     }
 
     struct StorageExchange {
-        Counters.Counter _derivePriceFeedCounter;
-        mapping(bytes32 => mapping(bytes32 => address)) xToYToXPerYPriceFeed;
+        mapping(bytes32 => mapping(bytes32 => address)) xToYToXAddedPerYPriceFeed;
         mapping(bytes32 => mapping(bytes32 => bool)) xToYToXPerYInverse;
         mapping(bytes32 => mapping(bytes32 => DerivedPriceFeedDetails)) xToYToXPerYDerivedPriceFeedDetails;
         mapping(bytes32 => mapping(bytes32 => bool)) xToYToXPerYInverseDerived; // note: don't share with original inverse mapping as in future if added as base case, it would override derived case
         // useful for removal
-        mapping(bytes32 => mapping(bytes32 => uint256[])) xToYToReferenceIds; // example: X => Shared => uint256[]
-        mapping(uint256 => DerivedPriceFeed) referenceIdToDerivedPriceFeed;
+        mapping(bytes32 => mapping(bytes32 => uint256)) xToYToBaseKeyCount; // example: X => Shared => count
     }
 
     function _storageExchange()
@@ -48,13 +37,14 @@ library RideLibExchange {
         }
     }
 
-    function _requireXPerYPriceFeedSupported(bytes32 _keyX, bytes32 _keyY)
+    function _requireAddedXPerYPriceFeedSupported(bytes32 _keyX, bytes32 _keyY)
         internal
         view
     {
         require(
-            _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY] != address(0),
-            "price feed not supported"
+            _storageExchange().xToYToXAddedPerYPriceFeed[_keyX][_keyY] !=
+                address(0),
+            "RideLibExchange: Price feed not supported"
         );
     }
 
@@ -66,7 +56,7 @@ library RideLibExchange {
             _storageExchange()
             .xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY].numerator !=
                 address(0),
-            "derived price feed not supported"
+            "RideLibExchange: Derived price feed not supported"
         ); // one check enough
     }
 
@@ -86,18 +76,23 @@ library RideLibExchange {
         bytes32 _keyY,
         address _priceFeed
     ) internal {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         RideLibCurrencyRegistry._requireCurrencySupported(_keyX);
         RideLibCurrencyRegistry._requireCurrencySupported(_keyY);
 
-        require(_priceFeed != address(0), "zero price feed address");
+        require(
+            _priceFeed != address(0),
+            "RideLibExchange: Zero price feed address"
+        );
         StorageExchange storage s1 = _storageExchange();
         require(
-            s1.xToYToXPerYPriceFeed[_keyX][_keyY] == address(0),
-            "price feed already supported"
+            s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY] == address(0),
+            "RideLibExchange: Price feed already supported"
         );
-        s1.xToYToXPerYPriceFeed[_keyX][_keyY] = _priceFeed;
-        s1.xToYToXPerYPriceFeed[_keyY][_keyX] = _priceFeed; // reverse pairing
+        s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY] = _priceFeed;
+        s1.xToYToXAddedPerYPriceFeed[_keyY][_keyX] = _priceFeed; // reverse pairing
         s1.xToYToXPerYInverse[_keyY][_keyX] = true;
 
         emit PriceFeedAdded(msg.sender, _keyX, _keyY, _priceFeed);
@@ -121,28 +116,39 @@ library RideLibExchange {
         bytes32 _keyY,
         bytes32 _keyShared
     ) internal {
-        RideLibOwnership._requireIsOwner();
-        require(_keyX != _keyY, "underlying currency key cannot be identical");
-        _requireXPerYPriceFeedSupported(_keyX, _keyShared);
-        _requireXPerYPriceFeedSupported(_keyY, _keyShared);
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
+        require(
+            _keyX != _keyY,
+            "RideLibExchange: Underlying currency key cannot be identical"
+        );
+        _requireAddedXPerYPriceFeedSupported(_keyX, _keyShared);
+        _requireAddedXPerYPriceFeedSupported(_keyY, _keyShared);
 
         StorageExchange storage s1 = _storageExchange();
         require(
             s1.xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY].numerator ==
                 address(0),
-            "derived price feed already supported"
+            "RideLibExchange: Derived price feed already supported"
         );
 
         s1.xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY].numerator = s1
-            .xToYToXPerYPriceFeed[_keyX][_keyShared]; // numerator
+            .xToYToXAddedPerYPriceFeed[_keyX][_keyShared];
         s1.xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY].denominator = s1
-            .xToYToXPerYPriceFeed[_keyY][_keyShared]; // denominator
+            .xToYToXAddedPerYPriceFeed[_keyY][_keyShared];
+        s1
+        .xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY]
+            .keyShared = _keyShared;
 
         // set inverse
         s1.xToYToXPerYDerivedPriceFeedDetails[_keyY][_keyX].numerator = s1
-            .xToYToXPerYPriceFeed[_keyX][_keyShared]; // numerator
+            .xToYToXAddedPerYPriceFeed[_keyX][_keyShared];
         s1.xToYToXPerYDerivedPriceFeedDetails[_keyY][_keyX].denominator = s1
-            .xToYToXPerYPriceFeed[_keyY][_keyShared]; // denominator
+            .xToYToXAddedPerYPriceFeed[_keyY][_keyShared];
+        s1
+        .xToYToXPerYDerivedPriceFeedDetails[_keyY][_keyX]
+            .keyShared = _keyShared;
 
         s1.xToYToXPerYInverseDerived[_keyY][_keyX] = true;
 
@@ -164,75 +170,45 @@ library RideLibExchange {
                 .denominatorInverse = true;
         }
 
-        // for removal
-        uint256 id = s1._derivePriceFeedCounter.current();
-        s1.xToYToReferenceIds[_keyX][_keyShared].push(id);
-        s1.xToYToReferenceIds[_keyY][_keyShared].push(id); // TODO: save the inverse as well?: eg s1.xToYToReferenceIds[_keyShared][_keyX].push(count);
-        s1.referenceIdToDerivedPriceFeed[id] = DerivedPriceFeed({
-            keyX: _keyX,
-            keyY: _keyY
-        });
-        s1._derivePriceFeedCounter.increment();
+        s1.xToYToBaseKeyCount[_keyX][_keyShared] += 1;
+        s1.xToYToBaseKeyCount[_keyY][_keyShared] += 1;
 
         emit PriceFeedDerived(msg.sender, _keyX, _keyY, _keyShared);
     }
 
-    event PriceFeedRemoved(
-        address indexed sender,
-        address priceFeed,
-        bytes32[] derivedPriceFeedKeyXs,
-        bytes32[] derivedPriceFeedKeyYs
-    );
+    event AddedPriceFeedRemoved(address indexed sender, address priceFeed);
 
-    function _removeXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) internal {
-        RideLibOwnership._requireIsOwner();
-        _requireXPerYPriceFeedSupported(_keyX, _keyY);
+    function _removeAddedXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY) internal {
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
+        _requireAddedXPerYPriceFeedSupported(_keyX, _keyY);
 
         StorageExchange storage s1 = _storageExchange();
 
-        address priceFeed = s1.xToYToXPerYPriceFeed[_keyX][_keyY];
+        require(
+            s1.xToYToBaseKeyCount[_keyX][_keyY] == 0,
+            "RideLibExchange: Base key being used"
+        );
 
-        delete s1.xToYToXPerYPriceFeed[_keyX][_keyY];
-        delete s1.xToYToXPerYPriceFeed[_keyY][_keyX]; // reverse pairing
+        address priceFeed = s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY];
+
+        delete s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY];
+        delete s1.xToYToXAddedPerYPriceFeed[_keyY][_keyX]; // reverse pairing
+        delete s1.xToYToXPerYInverse[_keyX][_keyY];
         delete s1.xToYToXPerYInverse[_keyY][_keyX];
 
-        uint256 idCount = s1.xToYToReferenceIds[_keyX][_keyY].length;
-        bytes32[] memory derivedPriceFeedKeyXs = new bytes32[](idCount);
-        bytes32[] memory derivedPriceFeedKeyYs = new bytes32[](idCount);
-
-        for (uint256 i = 0; i < idCount; i++) {
-            uint256 id = s1.xToYToReferenceIds[_keyX][_keyY][i];
-            bytes32 keyX = s1.referenceIdToDerivedPriceFeed[id].keyX;
-            bytes32 keyY = s1.referenceIdToDerivedPriceFeed[id].keyY;
-
-            derivedPriceFeedKeyXs[i] = keyX;
-            derivedPriceFeedKeyYs[i] = keyY;
-
-            // delete s1.xToYToXPerYDerivedPriceFeedDetails[keyX][keyY];
-            // delete s1.xToYToXPerYDerivedPriceFeedDetails[keyY][keyX]; // reverse pairing
-            // delete s1.xToYToXPerYInverseDerived[keyY][keyX];
-            _removeDerivedXPerYPriceFeed(keyX, keyY);
-
-            delete s1.referenceIdToDerivedPriceFeed[id];
-        }
-        delete s1.xToYToReferenceIds[_keyX][_keyY];
-
         // require(
-        //     s1.xToYToXPerYPriceFeed[_keyX][_keyY] == address(0),
+        //     s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY] == address(0),
         //     "price feed not removed 1"
         // );
         // require(
-        //     s1.xToYToXPerYPriceFeed[_keyY][_keyX] == address(0),
+        //     s1.xToYToXAddedPerYPriceFeed[_keyY][_keyX] == address(0),
         //     "price feed not removed 2"
         // ); // reverse pairing
         // require(!s1.xToYToXPerYInverse[_keyY][_keyX], "reverse not removed");
 
-        emit PriceFeedRemoved(
-            msg.sender,
-            priceFeed,
-            derivedPriceFeedKeyXs,
-            derivedPriceFeedKeyYs
-        );
+        emit AddedPriceFeedRemoved(msg.sender, priceFeed);
 
         // TODO: remove price feed derived !!!! expand this fn or new fn ?????
     }
@@ -246,33 +222,41 @@ library RideLibExchange {
     function _removeDerivedXPerYPriceFeed(bytes32 _keyX, bytes32 _keyY)
         internal
     {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         _requireDerivedXPerYPriceFeedSupported(_keyX, _keyY);
 
         StorageExchange storage s1 = _storageExchange();
 
+        bytes32 baseKeyShared = s1
+        .xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY].keyShared;
+
+        s1.xToYToBaseKeyCount[_keyX][baseKeyShared] -= 1;
+        s1.xToYToBaseKeyCount[_keyY][baseKeyShared] -= 1;
+
         delete s1.xToYToXPerYDerivedPriceFeedDetails[_keyX][_keyY];
         delete s1.xToYToXPerYDerivedPriceFeedDetails[_keyY][_keyX]; // reverse pairing
+        delete s1.xToYToXPerYInverseDerived[_keyX][_keyY];
         delete s1.xToYToXPerYInverseDerived[_keyY][_keyX];
-
-        // note: don't remove xToYToReferenceIds & referenceIdToDerivedPriceFeed as still required for _removeXPerYPriceFeed
 
         emit DerivedPriceFeedRemoved(msg.sender, _keyX, _keyY);
     }
 
+    // _amountX in wei /** _keyY == target to convert amount into */
     function _convertCurrency(
         bytes32 _keyX,
         bytes32 _keyY,
-        uint256 _amountX /** in wei */
+        uint256 _amountX
     ) internal view returns (uint256) {
         StorageExchange storage s1 = _storageExchange();
 
         uint256 xPerYWei;
 
-        if (s1.xToYToXPerYPriceFeed[_keyX][_keyY] != address(0)) {
-            xPerYWei = _getXPerYInWei(_keyX, _keyY);
+        if (s1.xToYToXAddedPerYPriceFeed[_keyX][_keyY] != address(0)) {
+            xPerYWei = _getAddedXPerYInWei(_keyX, _keyY);
         } else {
-            xPerYWei = _deriveXPerYInWei(_keyX, _keyY);
+            xPerYWei = _getDerivedXPerYInWei(_keyX, _keyY);
         }
 
         if (
@@ -301,21 +285,21 @@ library RideLibExchange {
         return (_amountX * _xPerYWei) / 10**18; // note: no rounding occurs as value is converted into wei
     }
 
-    function _getXPerYInWei(bytes32 _keyX, bytes32 _keyY)
+    function _getAddedXPerYInWei(bytes32 _keyX, bytes32 _keyY)
         internal
         view
         returns (uint256)
     {
-        _requireXPerYPriceFeedSupported(_keyX, _keyY);
+        _requireAddedXPerYPriceFeedSupported(_keyX, _keyY);
         AggregatorV3Interface priceFeed = AggregatorV3Interface(
-            _storageExchange().xToYToXPerYPriceFeed[_keyX][_keyY]
+            _storageExchange().xToYToXAddedPerYPriceFeed[_keyX][_keyY]
         );
         (, int256 xPerY, , , ) = priceFeed.latestRoundData();
         uint256 decimals = priceFeed.decimals();
         return uint256(uint256(xPerY) * 10**(18 - decimals)); // convert to wei
     }
 
-    function _deriveXPerYInWei(bytes32 _keyX, bytes32 _keyY)
+    function _getDerivedXPerYInWei(bytes32 _keyX, bytes32 _keyY)
         internal
         view
         returns (uint256)
@@ -358,18 +342,18 @@ library RideLibExchange {
         } else if (!isNumeratorInversed && isDenominatorInversed) {
             xPerYWei =
                 (priceFeedNumeratorWei * (10**18)) /
-                ((10**18) / priceFeedDenominatorWei);
+                ((((10**18) * (10**18)) / priceFeedDenominatorWei));
         } else if (isNumeratorInversed && !isDenominatorInversed) {
             xPerYWei =
-                (((10**18) / priceFeedNumeratorWei) * (10**18)) /
+                ((((10**18) * (10**18)) / priceFeedNumeratorWei) * (10**18)) /
                 priceFeedDenominatorWei;
         } else if (isNumeratorInversed && isDenominatorInversed) {
             xPerYWei =
-                (10**18) /
+                ((10**18) * (10**18)) /
                 ((priceFeedNumeratorWei * (10**18)) / priceFeedDenominatorWei);
         } else {
             revert(
-                "this revert should not ever be run - something seriously wrong with code"
+                "RideLibExchange: This revert should not ever be run - something seriously wrong with code"
             );
         }
 

@@ -5,7 +5,8 @@
 5. ~$ npx hardhat (follow through)
 6. ~$ touch .env
 
-// hardhat-deploy-ethers
+python
 
-1. ~$ npx create-react-app frontend
-2. ~$ cd frontend
+1. ~$ brownie init
+2. touch .env
+3. touch brownie-config.yaml

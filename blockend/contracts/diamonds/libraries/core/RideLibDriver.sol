@@ -9,7 +9,7 @@ library RideLibDriver {
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
         require(
             _driver == s1.tixIdToTicket[s1.userToTixId[msg.sender]].driver,
-            "drv not match tix drv"
+            "RideLibDriver: Driver not match ticket driver"
         );
     }
 
@@ -19,7 +19,7 @@ library RideLibDriver {
                 ._storageBadge()
                 .driverToDriverReputation[msg.sender]
                 .id != 0,
-            "caller not driver"
+            "RideLibDriver: Caller not driver"
         );
     }
 
@@ -29,7 +29,7 @@ library RideLibDriver {
                 ._storageBadge()
                 .driverToDriverReputation[msg.sender]
                 .id == 0,
-            "caller is driver"
+            "RideLibDriver: Caller is driver"
         );
     }
 }

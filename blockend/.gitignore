@@ -1,19 +1,7 @@
-node_modules
+__pycache__
 .env
-coverage
-coverage.json
-typechain
-
-#Hardhat files
-cache
-artifacts
-deploy_
-deploy_w_mock_example
-contracts_old1
-contracts_old2
-contracts_old3
-test_old1
-test_old2
-deployments_old
-deployments_old2
-deployments_old3
+.history
+.hypothesis/
+build/
+reports/
+.env.old

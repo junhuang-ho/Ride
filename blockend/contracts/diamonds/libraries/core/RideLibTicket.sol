@@ -48,7 +48,7 @@ library RideLibTicket {
     function _requireNotActive() internal view {
         require(
             _storageTicket().userToTixId[msg.sender] == 0,
-            "caller is active"
+            "RideLibTicket: Caller is active"
         );
     }
 

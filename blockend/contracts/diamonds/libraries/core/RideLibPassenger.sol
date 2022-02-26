@@ -9,7 +9,7 @@ library RideLibPassenger {
         require(
             msg.sender ==
                 s1.tixIdToTicket[s1.userToTixId[msg.sender]].passenger,
-            "pax not match tix pax"
+            "RideLibPassenger: Passenger not match tix passenger"
         );
     }
 
@@ -17,7 +17,7 @@ library RideLibPassenger {
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
         require(
             !s1.tixIdToTicket[s1.userToTixId[msg.sender]].tripStart,
-            "trip already started"
+            "RideLibPassenger: Trip already started"
         );
     }
 
@@ -25,7 +25,7 @@ library RideLibPassenger {
         RideLibTicket.StorageTicket storage s1 = RideLibTicket._storageTicket();
         require(
             s1.tixIdToTicket[s1.userToTixId[msg.sender]].tripStart,
-            "trip not started"
+            "RideLibPassenger: Trip not started"
         );
     }
 
@@ -34,7 +34,7 @@ library RideLibPassenger {
         require(
             block.timestamp >
                 s1.tixIdToTicket[s1.userToTixId[msg.sender]].forceEndTimestamp,
-            "too early"
+            "RideLibPassenger: Too early"
         );
     }
 }

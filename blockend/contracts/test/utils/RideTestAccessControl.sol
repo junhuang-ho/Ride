@@ -57,10 +57,6 @@ contract RideTestAccessControl is RideAccessControl {
         return RideLibAccessControl._getRoleAdmin(_role);
     }
 
-    function setupRole_(bytes32 _role, address _account) external {
-        RideLibAccessControl._setupRole(_role, _account);
-    }
-
     function setRoleAdmin_(bytes32 _role, bytes32 _adminRole) external {
         RideLibAccessControl._setRoleAdmin(_role, _adminRole);
     }
@@ -71,5 +67,9 @@ contract RideTestAccessControl is RideAccessControl {
 
     function revokeRole_(bytes32 _role, address _account) external {
         RideLibAccessControl._revokeRole(_role, _account);
+    }
+
+    function setupRole_(bytes32 _role, address _account) external {
+        RideLibAccessControl._setupRole(_role, _account);
     }
 }

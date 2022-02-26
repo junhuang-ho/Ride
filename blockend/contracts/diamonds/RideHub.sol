@@ -1,21 +1,37 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "./interfaces/utils/IRideCut.sol";
-import "./libraries/utils/RideLibOwnership.sol";
+import "./libraries/utils/RideLibAccessControl.sol";
 import "./libraries/utils/RideLibCutAndLoupe.sol";
+
+import "./facets/utils/RideCut.sol";
 
 contract RideHub {
     constructor(address _owner, address _rideCutFacet) payable {
-        RideLibOwnership._setOwner(_owner);
+        RideLibAccessControl._setupRole(
+            RideLibAccessControl.DEFAULT_ADMIN_ROLE,
+            _owner
+        );
+        RideLibAccessControl._setupRole(
+            RideLibAccessControl.MAINTAINER_ROLE,
+            _owner
+        );
+        RideLibAccessControl._setupRole(
+            RideLibAccessControl.STRATEGIST_ROLE,
+            _owner
+        );
+        RideLibAccessControl._setupRole(
+            RideLibAccessControl.REVIEWER_ROLE,
+            _owner
+        );
 
         // Add the rideCut external function from the RideCut.sol
-        IRideCut.FacetCut[] memory cut = new IRideCut.FacetCut[](1);
+        RideCut.FacetCut[] memory cut = new RideCut.FacetCut[](1);
         bytes4[] memory functionSelectors = new bytes4[](1);
-        functionSelectors[0] = IRideCut.rideCut.selector;
-        cut[0] = IRideCut.FacetCut({
+        functionSelectors[0] = RideCut.rideCut.selector;
+        cut[0] = RideCut.FacetCut({
             facetAddress: _rideCutFacet,
-            action: IRideCut.FacetCutAction.Add,
+            action: RideCut.FacetCutAction.Add,
             functionSelectors: functionSelectors
         });
         RideLibCutAndLoupe.rideCut(cut, address(0), "");

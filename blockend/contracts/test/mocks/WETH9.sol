@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.4.18;
+// pragma solidity ^0.4.18;
+pragma solidity ^0.8.2;
 
 contract WETH9 {
     string public name = "Wrapped Ether";
@@ -29,7 +30,7 @@ contract WETH9 {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    function() public payable {
+    receive() external payable {
         deposit();
     }
 
@@ -41,7 +42,9 @@ contract WETH9 {
     function withdraw(uint256 wad) public {
         require(balanceOf[msg.sender] >= wad);
         balanceOf[msg.sender] -= wad;
-        msg.sender.transfer(wad);
+        // msg.sender.transfer(wad);
+        (bool sent, bytes memory data) = msg.sender.call{value: wad}("");
+        require(sent, "Failed to send Ether");
         emit Withdrawal(msg.sender, wad);
     }
 
@@ -66,7 +69,7 @@ contract WETH9 {
     ) public returns (bool) {
         require(balanceOf[src] >= wad);
 
-        if (src != msg.sender && allowance[src][msg.sender] != uint256(-1)) {
+        if (src != msg.sender && allowance[src][msg.sender] != uint256(1)) {
             require(allowance[src][msg.sender] >= wad);
             allowance[src][msg.sender] -= wad;
         }

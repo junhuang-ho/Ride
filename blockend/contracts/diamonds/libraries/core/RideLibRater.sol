@@ -2,7 +2,7 @@
 pragma solidity ^0.8.2;
 
 import "../../libraries/core/RideLibBadge.sol";
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibAccessControl.sol";
 
 library RideLibRater {
     bytes32 constant STORAGE_POSITION_RATER = keccak256("ds.rater");
@@ -28,9 +28,14 @@ library RideLibRater {
      * @param _max | unitless integer
      */
     function _setRatingBounds(uint256 _min, uint256 _max) internal {
-        RideLibOwnership._requireIsOwner();
-        require(_min > 0, "cannot have zero rating bound");
-        require(_max > _min, "maximum rating must be more than minimum rating");
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
+        require(_min > 0, "RideLibRater: Cannot have zero rating bound");
+        require(
+            _max > _min,
+            "RideLibRater: Maximum rating must be more than minimum rating"
+        );
         StorageRater storage s1 = _storageRater();
         s1.ratingMin = _min;
         s1.ratingMax = _max;
@@ -55,7 +60,7 @@ library RideLibRater {
         // but make sure _setRatingBounds called at init
         require(
             _rating >= s2.ratingMin && _rating <= s2.ratingMax,
-            "rating must be within min and max ratings (inclusive)"
+            "RideLibRater: Rating must be within min and max ratings (inclusive)"
         );
 
         s1.driverToDriverReputation[_driver].totalRating += _rating;

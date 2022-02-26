@@ -2,7 +2,7 @@
 pragma solidity ^0.8.2;
 
 import "../../libraries/core/RideLibBadge.sol";
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibAccessControl.sol";
 import "../../libraries/core/RideLibCurrencyRegistry.sol";
 
 library RideLibFee {
@@ -33,7 +33,9 @@ library RideLibFee {
     function _setCancellationFee(bytes32 _key, uint256 _cancellationFee)
         internal
     {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToCancellationFee[_key] = _cancellationFee; // input format: token in Wei
 
@@ -49,7 +51,9 @@ library RideLibFee {
      * @param _baseFee | unit in Wei
      */
     function _setBaseFee(bytes32 _key, uint256 _baseFee) internal {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToBaseFee[_key] = _baseFee; // input format: token in Wei
 
@@ -65,7 +69,9 @@ library RideLibFee {
      * @param _costPerMinute | unit in Wei
      */
     function _setCostPerMinute(bytes32 _key, uint256 _costPerMinute) internal {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         _storageFee().currencyKeyToCostPerMinute[_key] = _costPerMinute; // input format: token in Wei
 
@@ -83,11 +89,13 @@ library RideLibFee {
     function _setCostPerMetre(bytes32 _key, uint256[] memory _costPerMetre)
         internal
     {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         require(
             _costPerMetre.length == RideLibBadge._getBadgesCount(),
-            "_costPerMetre.length must be equal Badges"
+            "RideLibFee: Input length must be equal RideBadge.Badges"
         );
         for (uint256 i = 0; i < _costPerMetre.length; i++) {
             _storageFee().currencyKeyToBadgeToCostPerMetre[_key][

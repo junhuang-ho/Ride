@@ -13,13 +13,14 @@ contract Box3 {
         emit ValueChanged(newValue);
     }
 
+    // Stores a new value in the contract
+    function store32(uint256 newValue) public {
+        value = newValue;
+        emit ValueChanged(newValue);
+    }
+
     // Reads the last stored value
     function retrieve3() public view returns (uint256) {
         return value;
     }
-
-    // // Reads the last stored value
-    // function retrieve3() public view returns (uint256) {
-    //     return 5;
-    // }
 }

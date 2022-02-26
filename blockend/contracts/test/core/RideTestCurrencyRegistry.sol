@@ -61,6 +61,14 @@ contract RideTestCurrencyRegistry is RideCurrencyRegistry {
         RideLibCurrencyRegistry._register(_key);
     }
 
+    function encode_code_(string memory _code) external pure returns (bytes32) {
+        return RideLibCurrencyRegistry._encode_code(_code);
+    }
+
+    function encode_token_(address _token) external pure returns (bytes32) {
+        return RideLibCurrencyRegistry._encode_token(_token);
+    }
+
     function removeCurrency_(bytes32 _key) external {
         RideLibCurrencyRegistry._removeCurrency(_key);
     }

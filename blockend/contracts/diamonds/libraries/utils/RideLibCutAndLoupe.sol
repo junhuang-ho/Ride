@@ -1,9 +1,15 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../interfaces/utils/IRideCut.sol";
+import "../../facets/utils/RideCut.sol";
+import "./RideLibAccessControl.sol";
 
 library RideLibCutAndLoupe {
+    // TODO
+    // there is a bug where if import "./RideLibAccessControl.sol"; is excluded from RideLibCutAndLoupe.sol,
+    // but RideLibCutAndLoupe.sol uses its functions, both brownie and hardhat compilers would NOT detect this error
+    // and verification would fail
+
     bytes32 constant STORAGE_POSITION_CUTANDLOUPE = keccak256("ds.cutandloupe");
 
     struct StorageCutAndLoupe {
@@ -18,7 +24,7 @@ library RideLibCutAndLoupe {
         uint16 selectorCount;
         // Used to query if a contract implements an interface.
         // Used to implement ERC-165.
-        mapping(bytes4 => bool) supportedInterfaces;
+        // mapping(bytes4 => bool) supportedInterfaces;
     }
 
     function _storageCutAndLoupe()
@@ -32,7 +38,7 @@ library RideLibCutAndLoupe {
         }
     }
 
-    event RideCut(IRideCut.FacetCut[] _rideCut, address _init, bytes _calldata);
+    event Cut(RideCut.FacetCut[] _rideCut, address _init, bytes _calldata);
 
     bytes32 constant CLEAR_ADDRESS_MASK =
         bytes32(uint256(0xffffffffffffffffffffffff));
@@ -45,10 +51,14 @@ library RideLibCutAndLoupe {
     // The code is duplicated to prevent copying calldata to memory which
     // causes an error for a two dimensional array.
     function rideCut(
-        IRideCut.FacetCut[] memory _rideCut,
+        RideCut.FacetCut[] memory _rideCut,
         address _init,
         bytes memory _calldata
     ) internal {
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.MAINTAINER_ROLE
+        );
+
         StorageCutAndLoupe storage s1 = _storageCutAndLoupe();
         uint256 originalSelectorCount = s1.selectorCount;
         uint256 selectorCount = originalSelectorCount;
@@ -79,7 +89,7 @@ library RideLibCutAndLoupe {
             // "selectorSlot >> 3" is a gas efficient division by 8 "selectorSlot / 8"
             s1.selectorSlots[selectorCount >> 3] = selectorSlot;
         }
-        emit RideCut(_rideCut, _init, _calldata);
+        emit Cut(_rideCut, _init, _calldata);
         _initializeRideCut(_init, _calldata);
     }
 
@@ -87,7 +97,7 @@ library RideLibCutAndLoupe {
         uint256 _selectorCount,
         bytes32 _selectorSlot,
         address _newFacetAddress,
-        IRideCut.FacetCutAction _action,
+        RideCut.FacetCutAction _action,
         bytes4[] memory _selectors
     ) internal returns (uint256, bytes32) {
         StorageCutAndLoupe storage s1 = _storageCutAndLoupe();
@@ -95,7 +105,7 @@ library RideLibCutAndLoupe {
             _selectors.length > 0,
             "RideLibCutAndLoupe: No selectors in facet to cut"
         );
-        if (_action == IRideCut.FacetCutAction.Add) {
+        if (_action == RideCut.FacetCutAction.Add) {
             _requireHasContractCode(
                 _newFacetAddress,
                 "RideLibCutAndLoupe: Add facet has no code"
@@ -130,7 +140,7 @@ library RideLibCutAndLoupe {
                 }
                 _selectorCount++;
             }
-        } else if (_action == IRideCut.FacetCutAction.Replace) {
+        } else if (_action == RideCut.FacetCutAction.Replace) {
             _requireHasContractCode(
                 _newFacetAddress,
                 "RideLibCutAndLoupe: Replace facet has no code"
@@ -161,7 +171,7 @@ library RideLibCutAndLoupe {
                     (oldFacet & CLEAR_ADDRESS_MASK) |
                     bytes20(_newFacetAddress);
             }
-        } else if (_action == IRideCut.FacetCutAction.Remove) {
+        } else if (_action == RideCut.FacetCutAction.Remove) {
             require(
                 _newFacetAddress == address(0),
                 "RideLibCutAndLoupe: Remove facet address must be address(0)"

@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "../../facets/core/RideBadge.sol";
 import "../../libraries/core/RideLibRater.sol";
-import "../../libraries/utils/RideLibOwnership.sol";
+import "../../libraries/utils/RideLibAccessControl.sol";
 
 library RideLibBadge {
     bytes32 constant STORAGE_POSITION_BADGE = keccak256("ds.badge");
@@ -13,7 +13,7 @@ library RideLibBadge {
      */
     struct DriverReputation {
         uint256 id;
-        // string uri;
+        string uri;
         uint256 maxMetresPerTrip; // TODO: necessary? when ticket showed to driver, he can see destination and metres and choose to accept or not!!
         uint256 metresTravelled;
         uint256 countStart;
@@ -50,10 +50,12 @@ library RideLibBadge {
      * @param _badgesMaxScores Score that defines a specific badge rank
      */
     function _setBadgesMaxScores(uint256[] memory _badgesMaxScores) internal {
-        RideLibOwnership._requireIsOwner();
+        RideLibAccessControl._requireOnlyRole(
+            RideLibAccessControl.STRATEGIST_ROLE
+        );
         require(
             _badgesMaxScores.length == _getBadgesCount() - 1,
-            "_badgesMaxScores.length must be 1 less than Badges"
+            "RideLibBadge: Input array length must be one less than RideBadge.Badges"
         );
         StorageBadge storage s1 = _storageBadge();
         for (uint256 i = 0; i < _badgesMaxScores.length; i++) {
@@ -92,7 +94,7 @@ library RideLibBadge {
                 s1.badgeToBadgeMaxScore[s1._badges[i]] > 0,
                 "zero badge score bounds"
             );
-        }
+        } // TODO: if max score corrently set using _setBadgesMaxScores, dont need this revert fn
 
         if (_score <= s1.badgeToBadgeMaxScore[0]) {
             return uint256(RideBadge.Badges.Newbie);

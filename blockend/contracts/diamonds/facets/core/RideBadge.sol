@@ -1,11 +1,10 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../interfaces/core/IRideBadge.sol";
 import "../../libraries/core/RideLibBadge.sol";
 
 /// @title Badge rank for drivers
-contract RideBadge is IRideBadge {
+contract RideBadge {
     enum Badges {
         Newbie,
         Bronze,
@@ -26,10 +25,7 @@ contract RideBadge is IRideBadge {
      *
      * @param _badgesMaxScores Score that defines a specific badge rank
      */
-    function setBadgesMaxScores(uint256[] memory _badgesMaxScores)
-        external
-        override
-    {
+    function setBadgesMaxScores(uint256[] memory _badgesMaxScores) external {
         RideLibBadge._setBadgesMaxScores(_badgesMaxScores);
     }
 
@@ -42,7 +38,6 @@ contract RideBadge is IRideBadge {
     function getBadgeToBadgeMaxScore(uint256 _badge)
         external
         view
-        override
         returns (uint256)
     {
         return RideLibBadge._storageBadge().badgeToBadgeMaxScore[_badge];
@@ -51,7 +46,6 @@ contract RideBadge is IRideBadge {
     function getDriverToDriverReputation(address _driver)
         external
         view
-        override
         returns (RideLibBadge.DriverReputation memory)
     {
         return RideLibBadge._storageBadge().driverToDriverReputation[_driver];

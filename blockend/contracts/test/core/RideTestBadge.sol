@@ -24,7 +24,7 @@ contract RideTestBadge is RideBadge {
     function ssDriverToDriverReputation_(
         address _driver,
         uint256 _id,
-        // string memory _uri,
+        string memory _uri,
         uint256 _maxMetresPerTrip,
         uint256 _metresTravelled,
         uint256 _countStart,
@@ -34,7 +34,7 @@ contract RideTestBadge is RideBadge {
     ) external {
         RideLibBadge.StorageBadge storage s1 = RideLibBadge._storageBadge();
         s1.driverToDriverReputation[_driver].id = _id;
-        // s1.driverToDriverReputation[_driver].uri = _uri;
+        s1.driverToDriverReputation[_driver].uri = _uri;
         s1
             .driverToDriverReputation[_driver]
             .maxMetresPerTrip = _maxMetresPerTrip;

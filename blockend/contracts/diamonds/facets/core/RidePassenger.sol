@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../interfaces/core/IRidePassenger.sol";
 import "../../libraries/core/RideLibPassenger.sol";
 import "../../libraries/core/RideLibFee.sol";
 import "../../libraries/core/RideLibRater.sol";
@@ -12,7 +11,21 @@ import "../../libraries/core/RideLibPenalty.sol";
 import "../../libraries/core/RideLibHolding.sol";
 import "../../libraries/core/RideLibExchange.sol";
 
-contract RidePassenger is IRidePassenger {
+contract RidePassenger {
+    event RequestTicket(
+        address indexed sender,
+        bytes32 indexed tixId,
+        uint256 fare
+    );
+    event RequestCancelled(address indexed sender, bytes32 indexed tixId);
+    event TripStarted(
+        address indexed passenger,
+        bytes32 indexed tixId,
+        address driver
+    );
+    event TripEndedPax(address indexed sender, bytes32 indexed tixId);
+    event ForceEndPax(address indexed sender, bytes32 indexed tixId);
+
     /**
      * requestTicket allows passenger to request for ride
      *
@@ -30,7 +43,7 @@ contract RidePassenger is IRidePassenger {
         bool _strict,
         uint256 _minutes,
         uint256 _metres
-    ) external override {
+    ) external {
         RideLibDriver._requireNotDriver();
         RideLibTicket._requireNotActive();
         RideLibPenalty._requireNotBanned();
@@ -75,7 +88,7 @@ contract RidePassenger is IRidePassenger {
             .userToCurrencyKeyToHolding[msg.sender][_keyPay];
         require(
             (holdingAmount > cancellationFeePay) && (holdingAmount > farePay),
-            "passenger's holding < cancellationFee or fare"
+            "RidePassenger: Passenger's holding < cancellationFee or fare"
         );
 
         bytes32 tixId = keccak256(abi.encode(msg.sender, block.timestamp)); // encode gas seems less? but diff very small
@@ -99,7 +112,7 @@ contract RidePassenger is IRidePassenger {
      *
      * @custom:event RequestCancelled
      */
-    function cancelRequest() external override {
+    function cancelRequest() external {
         RideLibPassenger._requirePaxMatchTixPax();
         RideLibPassenger._requireTripNotStart();
 
@@ -131,7 +144,7 @@ contract RidePassenger is IRidePassenger {
      *
      * @custom:event TripStarted
      */
-    function startTrip(address _driver) external override {
+    function startTrip(address _driver) external {
         RideLibPassenger._requirePaxMatchTixPax();
         RideLibDriver._requireDrvMatchTixDrv(_driver);
         RideLibPassenger._requireTripNotStart();
@@ -164,7 +177,7 @@ contract RidePassenger is IRidePassenger {
      * No matter what, passenger needs to pay fare, so incentive to passenger to be kind so driver
      * get passenger to destination. This prevents passenger abuse.
      */
-    function endTripPax(bool _agree, uint256 _rating) external override {
+    function endTripPax(bool _agree, uint256 _rating) external {
         RideLibPassenger._requirePaxMatchTixPax();
         RideLibPassenger._requireTripInProgress();
 
@@ -173,10 +186,10 @@ contract RidePassenger is IRidePassenger {
 
         bytes32 tixId = s2.userToTixId[msg.sender];
         address driver = s2.tixIdToDriverEnd[tixId].driver;
-        require(driver != address(0), "driver must end trip");
+        require(driver != address(0), "RidePassenger: Driver must end trip");
         require(
             _agree,
-            "pax must agree destination reached or not - indicated by driver"
+            "RidePassenger: Passenger must agree destination reached or not - indicated by driver"
         );
 
         RideLibHolding._transferCurrency(
@@ -208,7 +221,7 @@ contract RidePassenger is IRidePassenger {
      *
      * no fare is paid, but driver is temporarily banned for banDuration
      */
-    function forceEndPax() external override {
+    function forceEndPax() external {
         RideLibPassenger._requirePaxMatchTixPax();
         RideLibPassenger._requireTripInProgress(); /** means both parties still active */
         RideLibPassenger._requireForceEndAllowed();
@@ -218,7 +231,7 @@ contract RidePassenger is IRidePassenger {
         bytes32 tixId = s1.userToTixId[msg.sender];
         require(
             s1.tixIdToDriverEnd[tixId].driver == address(0),
-            "driver ended trip"
+            "RidePassenger: Driver ended trip"
         ); // TODO: test
         address driver = s1.tixIdToTicket[tixId].driver;
 

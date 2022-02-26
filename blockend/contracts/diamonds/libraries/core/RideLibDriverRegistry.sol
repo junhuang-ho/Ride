@@ -44,7 +44,10 @@ library RideLibDriverRegistry {
      */
     function _burnFirstDriverId() internal {
         StorageDriverRegistry storage s1 = _storageDriverRegistry();
-        require(s1._driverIdCounter.current() == 0, "must be zero");
+        require(
+            s1._driverIdCounter.current() == 0,
+            "RideLibDriverRegistry: Must be zero"
+        );
         s1._driverIdCounter.increment();
     }
 }

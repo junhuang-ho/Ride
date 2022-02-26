@@ -8,6 +8,10 @@ library RideLibAccessControl {
         keccak256("ds.accesscontrol");
 
     bytes32 constant DEFAULT_ADMIN_ROLE = 0x00;
+    bytes32 constant MAINTAINER_ROLE = keccak256(abi.encode("MAINTAINER_ROLE"));
+    bytes32 constant STRATEGIST_ROLE = keccak256(abi.encode("STRATEGIST_ROLE"));
+    bytes32 constant GOVERNOR_ROLE = keccak256(abi.encode("GOVERNOR_ROLE"));
+    bytes32 constant REVIEWER_ROLE = keccak256(abi.encode("REVIEWER_ROLE"));
 
     struct RoleData {
         mapping(address => bool) members;
@@ -64,10 +68,6 @@ library RideLibAccessControl {
         return _storageAccessControl().roles[_role].adminRole;
     }
 
-    function _setupRole(bytes32 _role, address _account) internal {
-        _grantRole(_role, _account);
-    }
-
     event RoleAdminChanged(
         bytes32 indexed role,
         bytes32 indexed previousAdminRole,
@@ -100,10 +100,13 @@ library RideLibAccessControl {
     );
 
     function _revokeRole(bytes32 _role, address _account) internal {
-        _requireOnlyRole(_role);
         if (_hasRole(_role, _account)) {
             _storageAccessControl().roles[_role].members[_account] = false;
             emit RoleRevoked(_role, _account, msg.sender);
         }
+    }
+
+    function _setupRole(bytes32 _role, address _account) internal {
+        _grantRole(_role, _account);
     }
 }

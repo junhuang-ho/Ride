@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../interfaces/core/IRideHolding.sol";
 import "../../libraries/core/RideLibHolding.sol";
 import "../../libraries/core/RideLibTicket.sol";
 import "../../libraries/core/RideLibCurrencyRegistry.sol";
@@ -12,8 +11,11 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 
 // TODO: keep an eye out for SafeERC20Permit
 
-contract RideHolding is IRideHolding, ReentrancyGuard {
+contract RideHolding is ReentrancyGuard {
     using SafeERC20 for IERC20;
+
+    event TokensDeposited(address indexed sender, uint256 amount);
+    event TokensRemoved(address indexed sender, uint256 amount);
 
     /**
      * placeDeposit allows users to deposit token into RideHub contract
@@ -24,10 +26,10 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
      *
      * @custom:event TokensDeposited
      */
-    function depositTokens(bytes32 _key, uint256 _amount) external override {
+    function depositTokens(bytes32 _key, uint256 _amount) external {
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         RideLibCurrencyRegistry._requireIsCrypto(_key);
-        require(_amount > 0, "zero amount");
+        require(_amount > 0, "RideHolding: Zero amount");
         address token = address(bytes20(_key)); // convert to address
         // require(token != address(0), "zero token address"); // checked at currency registration
 
@@ -58,10 +60,10 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
         uint8 _v,
         bytes32 _r,
         bytes32 _s
-    ) external override {
+    ) external {
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         RideLibCurrencyRegistry._requireIsCrypto(_key);
-        require(_amount > 0, "zero amount");
+        require(_amount > 0, "RideHolding: Zero amount");
         address token = address(bytes20(_key)); // convert to address
 
         IERC20Permit(token).permit(
@@ -89,13 +91,12 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
      */
     function withdrawTokens(bytes32 _key, uint256 _amount)
         external
-        override
         nonReentrant
     {
         RideLibTicket._requireNotActive();
         RideLibCurrencyRegistry._requireCurrencySupported(_key);
         RideLibCurrencyRegistry._requireIsCrypto(_key);
-        require(_amount > 0, "zero amount");
+        require(_amount > 0, "RideHolding: Zero amount");
         address token = address(bytes20(_key)); // convert to address
         // require(token != address(0), "zero token address"); // checked at currency registration
 
@@ -103,7 +104,7 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
             ._storageHolding();
         require(
             s1.userToCurrencyKeyToHolding[msg.sender][_key] >= _amount,
-            "insufficient holdings"
+            "RideHolding: Insufficient holdings"
         );
         // require(
         //     IERC20(token).balanceOf(address(this)) >= _amount,
@@ -122,7 +123,6 @@ contract RideHolding is IRideHolding, ReentrancyGuard {
     function getHolding(address _user, bytes32 _key)
         external
         view
-        override
         returns (uint256)
     {
         RideLibCurrencyRegistry._requireCurrencySupported(_key);

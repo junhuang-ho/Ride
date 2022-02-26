@@ -5,13 +5,13 @@ import "../../diamonds/facets/core/RideExchange.sol";
 import "../../diamonds/libraries/core/RideLibExchange.sol";
 
 contract RideTestExchange is RideExchange {
-    function sXToYToXPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY)
+    function sXToYToXAddedPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY)
         external
         view
         returns (address)
     {
         return
-            RideLibExchange._storageExchange().xToYToXPerYPriceFeed[_keyX][
+            RideLibExchange._storageExchange().xToYToXAddedPerYPriceFeed[_keyX][
                 _keyY
             ];
     }
@@ -47,32 +47,21 @@ contract RideTestExchange is RideExchange {
             ];
     }
 
-    function sXToYToReferenceIds_(bytes32 _keyX, bytes32 _keyY)
+    function sXToYToBaseKeyCount_(bytes32 _keyX, bytes32 _keyY)
         external
         view
-        returns (uint256[] memory)
+        returns (uint256)
     {
         return
-            RideLibExchange._storageExchange().xToYToReferenceIds[_keyX][_keyY];
+            RideLibExchange._storageExchange().xToYToBaseKeyCount[_keyX][_keyY];
     }
 
-    function sReferenceIdToDerivedPriceFeed_(uint256 _id)
-        external
-        view
-        returns (RideLibExchange.DerivedPriceFeed memory)
-    {
-        return
-            RideLibExchange._storageExchange().referenceIdToDerivedPriceFeed[
-                _id
-            ];
-    }
-
-    function ssXToYToXPerYPriceFeed_(
+    function ssXToYToXPerYAddedPriceFeed_(
         bytes32 _keyX,
         bytes32 _keyY,
         address _priceFeed
     ) external {
-        RideLibExchange._storageExchange().xToYToXPerYPriceFeed[_keyX][
+        RideLibExchange._storageExchange().xToYToXAddedPerYPriceFeed[_keyX][
                 _keyY
             ] = _priceFeed;
     }
@@ -90,6 +79,7 @@ contract RideTestExchange is RideExchange {
     function ssXToYToXPerYDerivedPriceFeedDetails_(
         bytes32 _keyX,
         bytes32 _keyY,
+        bytes32 _keyShared,
         address _numerator,
         address _denominator,
         bool _numeratorInverse,
@@ -98,6 +88,7 @@ contract RideTestExchange is RideExchange {
         RideLibExchange._storageExchange().xToYToXPerYDerivedPriceFeedDetails[
             _keyX
         ][_keyY] = RideLibExchange.DerivedPriceFeedDetails({
+            keyShared: _keyShared,
             numerator: _numerator,
             denominator: _denominator,
             numeratorInverse: _numeratorInverse,
@@ -115,32 +106,12 @@ contract RideTestExchange is RideExchange {
             ] = _inverse;
     }
 
-    function ssXToYToReferenceIds_(
-        bytes32 _keyX,
-        bytes32 _keyY,
-        uint256[] memory _ids
-    ) external {
-        RideLibExchange._storageExchange().xToYToReferenceIds[_keyX][
-            _keyY
-        ] = _ids;
-    }
-
-    function ssReferenceIdToDerivedPriceFeed_(
-        uint256 _id,
-        bytes32 _keyX,
-        bytes32 _keyY
-    ) external {
-        RideLibExchange._storageExchange().referenceIdToDerivedPriceFeed[
-                _id
-            ] = RideLibExchange.DerivedPriceFeed({keyX: _keyX, keyY: _keyY});
-    }
-
     function requireXPerYPriceFeedSupported_(bytes32 _keyX, bytes32 _keyY)
         external
         view
         returns (bool)
     {
-        RideLibExchange._requireXPerYPriceFeedSupported(_keyX, _keyY);
+        RideLibExchange._requireAddedXPerYPriceFeedSupported(_keyX, _keyY);
         return true;
     }
 
@@ -168,8 +139,14 @@ contract RideTestExchange is RideExchange {
         RideLibExchange._deriveXPerYPriceFeed(_keyX, _keyY, _keyShared);
     }
 
-    function removeXPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY) external {
-        RideLibExchange._removeXPerYPriceFeed(_keyX, _keyY);
+    function removeAddedXPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY) external {
+        RideLibExchange._removeAddedXPerYPriceFeed(_keyX, _keyY);
+    }
+
+    function removeDerivedXPerYPriceFeed_(bytes32 _keyX, bytes32 _keyY)
+        external
+    {
+        RideLibExchange._removeDerivedXPerYPriceFeed(_keyX, _keyY);
     }
 
     function convertCurrency_(
@@ -196,19 +173,19 @@ contract RideTestExchange is RideExchange {
         return RideLibExchange._convertInverse(_xPerYWei, _amountX);
     }
 
-    function getXPerYInWei_(bytes32 _keyX, bytes32 _keyY)
+    function getAddedXPerYInWei_(bytes32 _keyX, bytes32 _keyY)
         external
         view
         returns (uint256)
     {
-        return RideLibExchange._getXPerYInWei(_keyX, _keyY);
+        return RideLibExchange._getAddedXPerYInWei(_keyX, _keyY);
     }
 
-    function deriveXPerYInWei_(bytes32 _keyX, bytes32 _keyY)
+    function getDerivedXPerYInWei_(bytes32 _keyX, bytes32 _keyY)
         external
         view
         returns (uint256)
     {
-        return RideLibExchange._deriveXPerYInWei(_keyX, _keyY);
+        return RideLibExchange._getDerivedXPerYInWei(_keyX, _keyY);
     }
 }

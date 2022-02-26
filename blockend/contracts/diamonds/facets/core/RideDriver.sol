@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.2;
 
-import "../../interfaces/core/IRideDriver.sol";
 import "../../libraries/core/RideLibDriver.sol";
 import "../../libraries/core/RideLibFee.sol";
 import "../../libraries/core/RideLibBadge.sol";
@@ -11,7 +10,16 @@ import "../../libraries/core/RideLibHolding.sol";
 import "../../libraries/core/RideLibExchange.sol";
 import "../../libraries/core/RideLibPassenger.sol";
 
-contract RideDriver is IRideDriver {
+contract RideDriver {
+    event AcceptedTicket(address indexed sender, bytes32 indexed tixId);
+    event DriverCancelled(address indexed sender, bytes32 indexed tixId);
+    event TripEndedDrv(
+        address indexed sender,
+        bytes32 indexed tixId,
+        bool reached
+    );
+    event ForceEndDrv(address indexed sender, bytes32 indexed tixId);
+
     /**
      * acceptTicket allows driver to accept passenger's ticket request
      *
@@ -31,30 +39,36 @@ contract RideDriver is IRideDriver {
         bytes32 _keyAccept,
         bytes32 _tixId,
         uint256 _useBadge
-    ) external override {
+    ) external {
         RideLibDriver._requireIsDriver();
         RideLibTicket._requireNotActive();
         RideLibPenalty._requireNotBanned();
-        RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyAccept);
+        RideLibExchange._requireAddedXPerYPriceFeedSupported(
+            _keyLocal,
+            _keyAccept
+        );
 
         RideLibTicket.StorageTicket storage s2 = RideLibTicket._storageTicket();
 
         require(
             s2.tixIdToTicket[_tixId].passenger != address(0),
-            "ticket not exists"
+            "RideDriver: Ticket not exists"
         );
         require(
             s2.tixIdToTicket[_tixId].keyLocal == _keyLocal,
-            "local currency key not match"
+            "RideDriver: Local currency key not match"
         );
         require(
             s2.tixIdToTicket[_tixId].keyPay == _keyAccept,
-            "payment currency key not match"
+            "RideDriver: Payment currency key not match"
         );
 
         uint256 driverScore = RideLibBadge._calculateScore();
         uint256 driverBadge = RideLibBadge._getBadge(driverScore);
-        require(_useBadge <= driverBadge, "badge rank not achieved");
+        require(
+            _useBadge <= driverBadge,
+            "RideDriver: Badge rank not achieved"
+        );
 
         uint256 holdingAmount = RideLibHolding
             ._storageHolding()
@@ -62,7 +76,7 @@ contract RideDriver is IRideDriver {
         require(
             (holdingAmount > s2.tixIdToTicket[_tixId].cancellationFee) &&
                 (holdingAmount > s2.tixIdToTicket[_tixId].fare),
-            "driver's holding < cancellationFee or fare"
+            "RideDriver: Driver's holding < cancellationFee or fare"
         );
 
         require(
@@ -71,17 +85,17 @@ contract RideDriver is IRideDriver {
                     ._storageBadge()
                     .driverToDriverReputation[msg.sender]
                     .maxMetresPerTrip,
-            "trip too long"
+            "RideDriver: Trip too long"
         );
         if (s2.tixIdToTicket[_tixId].strict) {
             require(
                 _useBadge == s2.tixIdToTicket[_tixId].badge,
-                "driver not meet badge - strict"
+                "RideDriver: Driver not meet badge - strict"
             );
         } else {
             require(
                 _useBadge >= s2.tixIdToTicket[_tixId].badge,
-                "driver not meet badge"
+                "RideDriver: Driver not meet badge"
             );
         }
 
@@ -96,7 +110,7 @@ contract RideDriver is IRideDriver {
      *
      * @custom:event DriverCancelled
      */
-    function cancelPickUp() external override {
+    function cancelPickUp() external {
         RideLibDriver._requireDrvMatchTixDrv(msg.sender);
         RideLibPassenger._requireTripNotStart();
 
@@ -126,7 +140,7 @@ contract RideDriver is IRideDriver {
      * @custom:event TripEndedDrv
      */
     // TODO: test that this fn can be recalled immediately after first call so that driver can change _reached status if needed. Test in remix first.
-    function endTripDrv(bool _reached) external override {
+    function endTripDrv(bool _reached) external {
         RideLibDriver._requireDrvMatchTixDrv(msg.sender);
         RideLibPassenger._requireTripInProgress();
 
@@ -148,7 +162,7 @@ contract RideDriver is IRideDriver {
      *
      * no fare is paid, but passenger is temporarily banned for banDuration
      */
-    function forceEndDrv() external override {
+    function forceEndDrv() external {
         RideLibDriver._requireDrvMatchTixDrv(msg.sender);
         RideLibPassenger._requireTripInProgress(); /** means both parties still active */
         RideLibPassenger._requireForceEndAllowed();
@@ -158,7 +172,7 @@ contract RideDriver is IRideDriver {
         bytes32 tixId = s1.userToTixId[msg.sender];
         require(
             s1.tixIdToDriverEnd[tixId].driver != address(0),
-            "driver must end trip"
+            "RideDriver: Driver must end trip"
         ); // TODO: test
         address passenger = s1.tixIdToTicket[tixId].passenger;
 
