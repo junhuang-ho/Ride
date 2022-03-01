@@ -6,6 +6,8 @@
     - encryption of data using receiver's public key (note some are hashing algo which is not the same as encryption): https://pub.dev/packages/webcrypto   OR    https://pub.dev/packages/encrypt
     - decryption of data on receiver's side and signature verification using same libraries.
 
+# Wallet Standard
+- EIP712
 
 # Ride - Decentralized Ride-Hailing Platform
 
