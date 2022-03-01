@@ -9,9 +9,7 @@
 # Wallet Standard
 - EIP712 Message Signing Standard
 
-# Ride - Decentralized Ride-Hailing Platform
-
-### RIDE - Right Implementation of Decentralized e-Hailing
+# Ride - Decentralized Ride-Sharing Platform
 
 
 concepts: https://drive.google.com/file/d/1X_cKidSHa8rusZzfMmBAWRBCW4Max90r/view?usp=sharing
