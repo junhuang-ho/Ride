@@ -7,7 +7,7 @@
     - decryption of data on receiver's side and signature verification using same libraries.
 
 # Wallet Standard
-- EIP712
+- EIP712 Message Signing Standard
 
 # Ride - Decentralized Ride-Hailing Platform
 
