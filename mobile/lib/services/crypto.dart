@@ -31,6 +31,13 @@ class Crypto {
     return address;
   }
 
+  Future<EthereumAddress> getUserPublicAddress() async {
+    final privateKey = _repo.getPrivateKey();
+    final ethPrivateKey = EthPrivateKey.fromHex(privateKey!);
+    final address = await ethPrivateKey.extractAddress();
+    return address;
+  }
+
   Future<void> setupFromMnemonic(String mnemonic) async {
     final cryptMnemonic = bip39.mnemonicToEntropy(mnemonic);
     final privateKey = await getPrivateKey(mnemonic);
