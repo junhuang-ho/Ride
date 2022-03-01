@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,7 @@ import 'package:ride/app/admin/admin.view.dart';
 import 'package:ride/app/driver/driver.view.dart';
 import 'package:ride/app/driver/register.driver.view.dart';
 import 'package:ride/app/passenger/home/passenger.home.view.dart';
+import 'package:ride/app/passenger/search/passenger.search.view.dart';
 import 'package:ride/app/qrcode.reader.view.dart';
 import 'package:ride/app/ride/ride.view.dart';
 import 'package:ride/app/wallet/deposit/deposit.wallet.view.dart';
@@ -13,6 +16,7 @@ import 'package:ride/app/wallet/send/send.wallet.view.dart';
 import 'package:ride/app/wallet/setup/create.wallet.view.dart';
 import 'package:ride/app/wallet/setup/import.wallet.view.dart';
 import 'package:ride/app/wallet/wallet.view.dart';
+import 'package:ride/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:ride/app/app.view.dart';
@@ -21,6 +25,16 @@ import 'package:ride/services/repository.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(
+    name: 'Ride',
+    options: const FirebaseOptions(
+      apiKey: kMapKey,
+      appId: '1:753391378700:android:62dbb98f5deff97be5a929',
+      messagingSenderId: '753391378700',
+      projectId: 'ride-e955b',
+    ),
+  );
+
   runApp(
     ProviderScope(
       overrides: [
@@ -110,7 +124,7 @@ class RideApp extends ConsumerWidget {
         path: '/passenger',
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
-          child: const PassengerHomeView(),
+          child: PassengerHomeView(),
         ),
         routes: [
           GoRoute(
@@ -135,6 +149,13 @@ class RideApp extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+          GoRoute(
+            path: 'search',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const PassengerSearchView(),
+            ),
           ),
           GoRoute(
             path: 'ride',
