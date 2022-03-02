@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/passenger/widgets/common_sheet.dart';
 
 class SearchSheet extends HookConsumerWidget {
   const SearchSheet({
@@ -13,56 +14,30 @@ class SearchSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Container(
-        height: searchSheetHeight,
-        decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 15,
-              spreadRadius: 0.5,
-              offset: Offset(0.7, 0.7),
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 18.0,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: onSearchBarTap,
-                  child: const SearchBar(),
-                ),
-                const SizedBox(height: 22),
-                const AddFavouriteLocation(
-                  iconData: Icons.home,
-                  location: 'Home',
-                  locationDesc: 'Your residential address',
-                ),
-                const SizedBox(height: 16),
-                const AddFavouriteLocation(
-                  iconData: Icons.work,
-                  location: 'Work',
-                  locationDesc: 'Your office address',
-                ),
-              ],
+    return CommonSheet(
+      sheetHeight: searchSheetHeight,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: onSearchBarTap,
+              child: const SearchBar(),
             ),
-          ),
+            //   const SizedBox(height: 22),
+            //   const AddFavouriteLocation(
+            //     iconData: Icons.home,
+            //     location: 'Home',
+            //     locationDesc: 'Your residential address',
+            //   ),
+            //   const SizedBox(height: 16),
+            //   const AddFavouriteLocation(
+            //     iconData: Icons.work,
+            //     location: 'Work',
+            //     locationDesc: 'Your office address',
+            //   ),
+          ],
         ),
       ),
     );
