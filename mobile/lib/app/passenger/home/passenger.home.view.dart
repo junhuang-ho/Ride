@@ -7,10 +7,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/passenger/home/passenger.home.vm.dart';
+import 'package:ride/app/passenger/home/passenger.ride.vm.dart';
 import 'package:ride/app/passenger/widgets/alert.dart';
+import 'package:ride/app/passenger/widgets/details_sheet.dart';
 import 'package:ride/app/passenger/widgets/main_menu.dart';
 import 'package:ride/app/passenger/widgets/menu_button.dart';
+import 'package:ride/app/passenger/widgets/requesting_sheet.dart';
 import 'package:ride/app/passenger/widgets/search_sheet.dart';
+import 'package:ride/app/ride/request.ticket.vm.dart';
 import 'package:ride/utils/constants.dart';
 
 class PassengerHomeView extends HookConsumerWidget {
@@ -36,8 +40,6 @@ class PassengerHomeView extends HookConsumerWidget {
     );
     Set<Circle> circles = passengerHome.maybeWhen(
         init: (mapState) => mapState.circles, orElse: () => {});
-    double searchSheetHeight =
-        passengerHome.maybeWhen(orElse: () => Platform.isIOS ? 200 : 175);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -110,11 +112,38 @@ class PassengerHomeView extends HookConsumerWidget {
               }
             },
           ),
-          SearchSheet(
-            searchSheetHeight: searchSheetHeight,
-            onSearchBarTap: () async {
-              // context.go('/passenger/search');
-              // showDetailSheet();
+          Consumer(
+            builder: (context, ref, _) {
+              final passengerRide = ref.watch(passengerRideProvider);
+              double searchSheetHeight = passengerRide.maybeWhen(
+                  init: () => Platform.isIOS ? 200 : 175, orElse: () => 0.0);
+              return SearchSheet(
+                searchSheetHeight: searchSheetHeight,
+                onSearchBarTap: () async {
+                  context.go('/passenger/search');
+                },
+              );
+            },
+          ),
+          Consumer(
+            builder: (context, ref, _) {
+              final passengerRide = ref.watch(passengerRideProvider);
+              double detailsSheetHeight = passengerRide.maybeWhen(
+                  direction: (_) => (Platform.isIOS) ? 300 : 275,
+                  orElse: () => 0.0);
+              return DetailsSheet(detailSheetHeight: detailsSheetHeight);
+            },
+          ),
+          Consumer(
+            builder: (context, ref, _) {
+              final passengerRide = ref.watch(passengerRideProvider);
+              double requestingSheetHeight = passengerRide.maybeWhen(
+                  requesting: (_) => (Platform.isIOS) ? 220 : 195,
+                  orElse: () => 0.0);
+              return RequestingSheet(
+                requestingSheetHeight: requestingSheetHeight,
+                tixId: passengerRide.whenOrNull(requesting: (tixId) => tixId),
+              );
             },
           ),
         ],
