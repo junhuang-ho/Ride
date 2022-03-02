@@ -2,54 +2,42 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
+import 'package:ride/app/passenger/home/passenger.home.vm.dart';
 import 'package:ride/app/passenger/widgets/alert.dart';
 import 'package:ride/app/passenger/widgets/main_menu.dart';
 import 'package:ride/app/passenger/widgets/menu_button.dart';
 import 'package:ride/app/passenger/widgets/search_sheet.dart';
 import 'package:ride/utils/constants.dart';
-import 'package:ride/utils/permission_helper.dart';
 
-class PassengerHomeView extends StatefulHookConsumerWidget {
-  const PassengerHomeView({Key? key}) : super(key: key);
+class PassengerHomeView extends HookConsumerWidget {
+  PassengerHomeView({Key? key}) : super(key: key);
 
-  @override
-  _PassengerHomeViewState createState() => _PassengerHomeViewState();
-}
-
-class _PassengerHomeViewState extends ConsumerState<PassengerHomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late GoogleMapController mapController;
-  late Position currentPosition;
-
-  void setupPositionLocator() async {
-    if (!await PermissionHelper.requestLocationWhenInUsePermission()) return;
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.bestForNavigation);
-    currentPosition = position;
-    LatLng mapPosition = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition =
-        CameraPosition(target: mapPosition, zoom: 16);
-    mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  }
 
   @override
-  Widget build(BuildContext context) {
-    final drawerCanOpen = useState<bool>(true);
-    final mapBottomPadding = useState<double>(0.0);
-    final polylines = useState<Set<Polyline>>({});
-    final markers = useState<Set<Marker>>({});
-    final circles = useState<Set<Circle>>({});
-    final searchSheetHeight = useState<double>(Platform.isIOS ? 200 : 175);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final passengerHome = ref.watch(passengerHomeProvider);
+    final passengerHomeVM = ref.read(passengerHomeProvider.notifier);
 
-    void resetApp() {
-      drawerCanOpen.value = true;
-    }
+    bool drawerCanOpen = passengerHome.maybeWhen(
+        init: (mapState) => mapState.drawerCanOpen, orElse: () => true);
+    double mapBottomPadding = passengerHome.maybeWhen(
+        init: (mapState) => mapState.mapBottomPadding, orElse: () => 0.0);
+    Set<Polyline> polylines = passengerHome.maybeWhen(
+        init: (mapState) => mapState.polylines, orElse: () => {});
+    Set<Marker> markers = passengerHome.maybeWhen(
+      init: (mapState) => mapState.markers,
+      updateDriversOnMap: (newMarkers) => newMarkers,
+      orElse: () => {},
+    );
+    Set<Circle> circles = passengerHome.maybeWhen(
+        init: (mapState) => mapState.circles, orElse: () => {});
+    double searchSheetHeight =
+        passengerHome.maybeWhen(orElse: () => Platform.isIOS ? 200 : 175);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -97,34 +85,33 @@ class _PassengerHomeViewState extends ConsumerState<PassengerHomeView> {
       body: Stack(
         children: <Widget>[
           GoogleMap(
-            padding: EdgeInsets.only(bottom: mapBottomPadding.value),
+            padding: EdgeInsets.only(bottom: mapBottomPadding),
             mapType: MapType.normal,
             initialCameraPosition: kGooglePlex,
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: false,
-            polylines: polylines.value,
-            markers: markers.value,
-            circles: circles.value,
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-              mapBottomPadding.value = (Platform.isAndroid) ? 180 : 170;
-              setupPositionLocator();
+            polylines: polylines,
+            markers: markers,
+            circles: circles,
+            onMapCreated: (GoogleMapController controller) async {
+              mapBottomPadding = (Platform.isAndroid) ? 180 : 170;
+              await passengerHomeVM.setupPositionLocator(controller);
             },
           ),
           MenuButton(
-            iconData: (drawerCanOpen.value) ? Icons.menu : Icons.arrow_back,
+            iconData: (drawerCanOpen) ? Icons.menu : Icons.arrow_back,
             onTap: () {
-              if (drawerCanOpen.value) {
+              if (drawerCanOpen) {
                 _scaffoldKey.currentState!.openDrawer();
               } else {
-                resetApp();
+                passengerHomeVM.resetApp();
               }
             },
           ),
           SearchSheet(
-            searchSheetHeight: searchSheetHeight.value,
+            searchSheetHeight: searchSheetHeight,
             onSearchBarTap: () async {
               // context.go('/passenger/search');
               // showDetailSheet();

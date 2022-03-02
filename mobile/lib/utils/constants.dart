@@ -1,6 +1,6 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-String kMapKey = 'AIzaSyASn6t6FKYVTl35hLQ-XpKoSy5naC0ulgA';
+const String kMapKey = 'AIzaSyAVNxJ3yx19d-BCI8g8jc6lstDC9xU2u08';
 
 const CameraPosition kGooglePlex = CameraPosition(
   target: LatLng(37.42796133580664, -122.085749655962),

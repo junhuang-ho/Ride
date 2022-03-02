@@ -1,6 +1,15 @@
-# Ride - Decentralized Ride-Hailing Platform
+# Encrypt data before send to blockchain
 
-### RIDE - Right Implementation of Decentralized e-Hailing
+1. Good tutorial explaining the steps to encrypt data (in JS): https://github.com/pubkey/eth-crypto/blob/master/tutorials/encrypted-message.md
+2. Flutter equivalent libraries for the main steps in above tutorial (please double confirm these are the libraries)
+    - sign data with sender's private key, similar to web3dart ? : https://pub.dev/packages/web3dart
+    - encryption of data using receiver's public key (note some are hashing algo which is not the same as encryption): https://pub.dev/packages/webcrypto   OR    https://pub.dev/packages/encrypt
+    - decryption of data on receiver's side and signature verification using same libraries.
+
+# Wallet Standard
+- EIP712 Message Signing Standard
+
+# Ride - Decentralized Ride-Sharing Platform
 
 
 concepts: https://drive.google.com/file/d/1X_cKidSHa8rusZzfMmBAWRBCW4Max90r/view?usp=sharing

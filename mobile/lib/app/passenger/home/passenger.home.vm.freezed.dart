@@ -18,6 +18,19 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$PassengerHomeStateTearOff {
   const _$PassengerHomeStateTearOff();
 
+  _PassengerHomeStateInit init(MapState mapState) {
+    return _PassengerHomeStateInit(
+      mapState,
+    );
+  }
+
+  _PassengerHomeStateUpdateDriversOnMap updateDriversOnMap(
+      Set<Marker> markers) {
+    return _PassengerHomeStateUpdateDriversOnMap(
+      markers,
+    );
+  }
+
   _PassengerHomeLoading loading() {
     return const _PassengerHomeLoading();
   }
@@ -28,9 +41,9 @@ class _$PassengerHomeStateTearOff {
     );
   }
 
-  _PassengerHomeData data(Account account) {
+  _PassengerHomeData data(Address address) {
     return _PassengerHomeData(
-      account,
+      address,
     );
   }
 }
@@ -42,28 +55,37 @@ const $PassengerHomeState = _$PassengerHomeStateTearOff();
 mixin _$PassengerHomeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(Account account) data,
+    required TResult Function(Address address) data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
     required TResult Function(_PassengerHomeLoading value) loading,
     required TResult Function(_PassengerHomeError value) error,
     required TResult Function(_PassengerHomeData value) data,
@@ -71,6 +93,9 @@ mixin _$PassengerHomeState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -78,6 +103,9 @@ mixin _$PassengerHomeState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -101,6 +129,327 @@ class _$PassengerHomeStateCopyWithImpl<$Res>
   final PassengerHomeState _value;
   // ignore: unused_field
   final $Res Function(PassengerHomeState) _then;
+}
+
+/// @nodoc
+abstract class _$PassengerHomeStateInitCopyWith<$Res> {
+  factory _$PassengerHomeStateInitCopyWith(_PassengerHomeStateInit value,
+          $Res Function(_PassengerHomeStateInit) then) =
+      __$PassengerHomeStateInitCopyWithImpl<$Res>;
+  $Res call({MapState mapState});
+}
+
+/// @nodoc
+class __$PassengerHomeStateInitCopyWithImpl<$Res>
+    extends _$PassengerHomeStateCopyWithImpl<$Res>
+    implements _$PassengerHomeStateInitCopyWith<$Res> {
+  __$PassengerHomeStateInitCopyWithImpl(_PassengerHomeStateInit _value,
+      $Res Function(_PassengerHomeStateInit) _then)
+      : super(_value, (v) => _then(v as _PassengerHomeStateInit));
+
+  @override
+  _PassengerHomeStateInit get _value => super._value as _PassengerHomeStateInit;
+
+  @override
+  $Res call({
+    Object? mapState = freezed,
+  }) {
+    return _then(_PassengerHomeStateInit(
+      mapState == freezed
+          ? _value.mapState
+          : mapState // ignore: cast_nullable_to_non_nullable
+              as MapState,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_PassengerHomeStateInit implements _PassengerHomeStateInit {
+  const _$_PassengerHomeStateInit(this.mapState);
+
+  @override
+  final MapState mapState;
+
+  @override
+  String toString() {
+    return 'PassengerHomeState.init(mapState: $mapState)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerHomeStateInit &&
+            const DeepCollectionEquality().equals(other.mapState, mapState));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(mapState));
+
+  @JsonKey(ignore: true)
+  @override
+  _$PassengerHomeStateInitCopyWith<_PassengerHomeStateInit> get copyWith =>
+      __$PassengerHomeStateInitCopyWithImpl<_PassengerHomeStateInit>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(Address address) data,
+  }) {
+    return init(mapState);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(Address address)? data,
+  }) {
+    return init?.call(mapState);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(Address address)? data,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(mapState);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
+    required TResult Function(_PassengerHomeLoading value) loading,
+    required TResult Function(_PassengerHomeError value) error,
+    required TResult Function(_PassengerHomeData value) data,
+  }) {
+    return init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
+    TResult Function(_PassengerHomeLoading value)? loading,
+    TResult Function(_PassengerHomeError value)? error,
+    TResult Function(_PassengerHomeData value)? data,
+  }) {
+    return init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
+    TResult Function(_PassengerHomeLoading value)? loading,
+    TResult Function(_PassengerHomeError value)? error,
+    TResult Function(_PassengerHomeData value)? data,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerHomeStateInit implements PassengerHomeState {
+  const factory _PassengerHomeStateInit(MapState mapState) =
+      _$_PassengerHomeStateInit;
+
+  MapState get mapState;
+  @JsonKey(ignore: true)
+  _$PassengerHomeStateInitCopyWith<_PassengerHomeStateInit> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$PassengerHomeStateUpdateDriversOnMapCopyWith<$Res> {
+  factory _$PassengerHomeStateUpdateDriversOnMapCopyWith(
+          _PassengerHomeStateUpdateDriversOnMap value,
+          $Res Function(_PassengerHomeStateUpdateDriversOnMap) then) =
+      __$PassengerHomeStateUpdateDriversOnMapCopyWithImpl<$Res>;
+  $Res call({Set<Marker> markers});
+}
+
+/// @nodoc
+class __$PassengerHomeStateUpdateDriversOnMapCopyWithImpl<$Res>
+    extends _$PassengerHomeStateCopyWithImpl<$Res>
+    implements _$PassengerHomeStateUpdateDriversOnMapCopyWith<$Res> {
+  __$PassengerHomeStateUpdateDriversOnMapCopyWithImpl(
+      _PassengerHomeStateUpdateDriversOnMap _value,
+      $Res Function(_PassengerHomeStateUpdateDriversOnMap) _then)
+      : super(_value, (v) => _then(v as _PassengerHomeStateUpdateDriversOnMap));
+
+  @override
+  _PassengerHomeStateUpdateDriversOnMap get _value =>
+      super._value as _PassengerHomeStateUpdateDriversOnMap;
+
+  @override
+  $Res call({
+    Object? markers = freezed,
+  }) {
+    return _then(_PassengerHomeStateUpdateDriversOnMap(
+      markers == freezed
+          ? _value.markers
+          : markers // ignore: cast_nullable_to_non_nullable
+              as Set<Marker>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_PassengerHomeStateUpdateDriversOnMap
+    implements _PassengerHomeStateUpdateDriversOnMap {
+  const _$_PassengerHomeStateUpdateDriversOnMap(this.markers);
+
+  @override
+  final Set<Marker> markers;
+
+  @override
+  String toString() {
+    return 'PassengerHomeState.updateDriversOnMap(markers: $markers)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerHomeStateUpdateDriversOnMap &&
+            const DeepCollectionEquality().equals(other.markers, markers));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(markers));
+
+  @JsonKey(ignore: true)
+  @override
+  _$PassengerHomeStateUpdateDriversOnMapCopyWith<
+          _PassengerHomeStateUpdateDriversOnMap>
+      get copyWith => __$PassengerHomeStateUpdateDriversOnMapCopyWithImpl<
+          _PassengerHomeStateUpdateDriversOnMap>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(Address address) data,
+  }) {
+    return updateDriversOnMap(markers);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(Address address)? data,
+  }) {
+    return updateDriversOnMap?.call(markers);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(Address address)? data,
+    required TResult orElse(),
+  }) {
+    if (updateDriversOnMap != null) {
+      return updateDriversOnMap(markers);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
+    required TResult Function(_PassengerHomeLoading value) loading,
+    required TResult Function(_PassengerHomeError value) error,
+    required TResult Function(_PassengerHomeData value) data,
+  }) {
+    return updateDriversOnMap(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
+    TResult Function(_PassengerHomeLoading value)? loading,
+    TResult Function(_PassengerHomeError value)? error,
+    TResult Function(_PassengerHomeData value)? data,
+  }) {
+    return updateDriversOnMap?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
+    TResult Function(_PassengerHomeLoading value)? loading,
+    TResult Function(_PassengerHomeError value)? error,
+    TResult Function(_PassengerHomeData value)? data,
+    required TResult orElse(),
+  }) {
+    if (updateDriversOnMap != null) {
+      return updateDriversOnMap(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerHomeStateUpdateDriversOnMap
+    implements PassengerHomeState {
+  const factory _PassengerHomeStateUpdateDriversOnMap(Set<Marker> markers) =
+      _$_PassengerHomeStateUpdateDriversOnMap;
+
+  Set<Marker> get markers;
+  @JsonKey(ignore: true)
+  _$PassengerHomeStateUpdateDriversOnMapCopyWith<
+          _PassengerHomeStateUpdateDriversOnMap>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -144,9 +493,11 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(Account account) data,
+    required TResult Function(Address address) data,
   }) {
     return loading();
   }
@@ -154,9 +505,11 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
   }) {
     return loading?.call();
   }
@@ -164,9 +517,11 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -178,6 +533,9 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
     required TResult Function(_PassengerHomeLoading value) loading,
     required TResult Function(_PassengerHomeError value) error,
     required TResult Function(_PassengerHomeData value) data,
@@ -188,6 +546,9 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -198,6 +559,9 @@ class _$_PassengerHomeLoading implements _PassengerHomeLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -279,9 +643,11 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(Account account) data,
+    required TResult Function(Address address) data,
   }) {
     return error(message);
   }
@@ -289,9 +655,11 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
   }) {
     return error?.call(message);
   }
@@ -299,9 +667,11 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -313,6 +683,9 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
     required TResult Function(_PassengerHomeLoading value) loading,
     required TResult Function(_PassengerHomeError value) error,
     required TResult Function(_PassengerHomeData value) data,
@@ -323,6 +696,9 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -333,6 +709,9 @@ class _$_PassengerHomeError implements _PassengerHomeError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -359,9 +738,9 @@ abstract class _$PassengerHomeDataCopyWith<$Res> {
   factory _$PassengerHomeDataCopyWith(
           _PassengerHomeData value, $Res Function(_PassengerHomeData) then) =
       __$PassengerHomeDataCopyWithImpl<$Res>;
-  $Res call({Account account});
+  $Res call({Address address});
 
-  $AccountCopyWith<$Res> get account;
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -377,20 +756,20 @@ class __$PassengerHomeDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? account = freezed,
+    Object? address = freezed,
   }) {
     return _then(_PassengerHomeData(
-      account == freezed
-          ? _value.account
-          : account // ignore: cast_nullable_to_non_nullable
-              as Account,
+      address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ));
   }
 
   @override
-  $AccountCopyWith<$Res> get account {
-    return $AccountCopyWith<$Res>(_value.account, (value) {
-      return _then(_value.copyWith(account: value));
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value));
     });
   }
 }
@@ -398,14 +777,14 @@ class __$PassengerHomeDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PassengerHomeData implements _PassengerHomeData {
-  const _$_PassengerHomeData(this.account);
+  const _$_PassengerHomeData(this.address);
 
   @override
-  final Account account;
+  final Address address;
 
   @override
   String toString() {
-    return 'PassengerHomeState.data(account: $account)';
+    return 'PassengerHomeState.data(address: $address)';
   }
 
   @override
@@ -413,12 +792,12 @@ class _$_PassengerHomeData implements _PassengerHomeData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PassengerHomeData &&
-            const DeepCollectionEquality().equals(other.account, account));
+            const DeepCollectionEquality().equals(other.address, address));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(account));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(address));
 
   @JsonKey(ignore: true)
   @override
@@ -428,33 +807,39 @@ class _$_PassengerHomeData implements _PassengerHomeData {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(MapState mapState) init,
+    required TResult Function(Set<Marker> markers) updateDriversOnMap,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(Account account) data,
+    required TResult Function(Address address) data,
   }) {
-    return data(account);
+    return data(address);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
   }) {
-    return data?.call(account);
+    return data?.call(address);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MapState mapState)? init,
+    TResult Function(Set<Marker> markers)? updateDriversOnMap,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(Account account)? data,
+    TResult Function(Address address)? data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(account);
+      return data(address);
     }
     return orElse();
   }
@@ -462,6 +847,9 @@ class _$_PassengerHomeData implements _PassengerHomeData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerHomeStateInit value) init,
+    required TResult Function(_PassengerHomeStateUpdateDriversOnMap value)
+        updateDriversOnMap,
     required TResult Function(_PassengerHomeLoading value) loading,
     required TResult Function(_PassengerHomeError value) error,
     required TResult Function(_PassengerHomeData value) data,
@@ -472,6 +860,9 @@ class _$_PassengerHomeData implements _PassengerHomeData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -482,6 +873,9 @@ class _$_PassengerHomeData implements _PassengerHomeData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerHomeStateInit value)? init,
+    TResult Function(_PassengerHomeStateUpdateDriversOnMap value)?
+        updateDriversOnMap,
     TResult Function(_PassengerHomeLoading value)? loading,
     TResult Function(_PassengerHomeError value)? error,
     TResult Function(_PassengerHomeData value)? data,
@@ -495,9 +889,9 @@ class _$_PassengerHomeData implements _PassengerHomeData {
 }
 
 abstract class _PassengerHomeData implements PassengerHomeState {
-  const factory _PassengerHomeData(Account account) = _$_PassengerHomeData;
+  const factory _PassengerHomeData(Address address) = _$_PassengerHomeData;
 
-  Account get account;
+  Address get address;
   @JsonKey(ignore: true)
   _$PassengerHomeDataCopyWith<_PassengerHomeData> get copyWith =>
       throw _privateConstructorUsedError;
