@@ -13,6 +13,13 @@ contract RideCurrencyRegistry {
         return RideLibCurrencyRegistry._registerCrypto(_token);
     }
 
+    //
+    // note:
+    // these getter functions needs _requireCurrencySupported check
+    // as without it, these getters would return a key but it won't
+    // be clear if this key is supported or not
+    //
+
     function getKeyFiat(string memory _code) external view returns (bytes32) {
         bytes32 key = RideLibCurrencyRegistry._encode_code(_code);
         RideLibCurrencyRegistry._requireCurrencySupported(key);

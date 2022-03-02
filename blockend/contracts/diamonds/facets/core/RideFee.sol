@@ -65,6 +65,14 @@ contract RideFee {
             RideLibFee._getFare(_key, _badge, _minutesTaken, _metresTravelled);
     }
 
+    //
+    // note:
+    // the getter functions here needs _requireCurrencySupported
+    // because a return of 0 value could be for a supported currency as well
+    // without _requireCurrencySupported, if a key returns 0 value,
+    // it won't be clear that if this key is supported or not
+    //
+
     function getCancellationFee(bytes32 _key) external view returns (uint256) {
         // note: currency supported check in internal fn (_getCancellationFee) called
         return RideLibFee._getCancellationFee(_key);
