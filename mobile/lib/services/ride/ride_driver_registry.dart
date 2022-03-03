@@ -29,6 +29,16 @@ class RideDriverRegistryService {
   Future<String?> registerAsDriver(BigInt maxMetresPerTrip) async {
     final transactionId = await _rideDriverRegistry
         .registerAsDriver(maxMetresPerTrip, credentials: _credentials);
+
+    return transactionId;
+  }
+
+  Future<String?> updateMaxMetresPerTrip(BigInt maxMetresPerTrip) async {
+    final transactionId = await _rideDriverRegistry.updateMaxMetresPerTrip(
+        maxMetresPerTrip,
+        credentials: _credentials,
+        transaction: Transaction(
+            gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)));
     return transactionId;
   }
 }
