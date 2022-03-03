@@ -30,6 +30,14 @@ class RegisterDriverView extends HookConsumerWidget {
                     .registerAsDriver(registerDriverController.text);
               },
             ),
+            OutlinedButton(
+              child: const Text('Update'),
+              onPressed: () async {
+                await ref
+                    .read(registerDriverProvider.notifier)
+                    .updateMaxMetresPerTrip(registerDriverController.text);
+              },
+            ),
           ],
           children: <Widget>[
             registerDriver.when(
