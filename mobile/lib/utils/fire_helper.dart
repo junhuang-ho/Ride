@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:ride/models/nearby_driver.dart';
 
 class FireHelper {
@@ -20,5 +21,10 @@ class FireHelper {
         .indexWhere((existingDriver) => existingDriver.key == driver.key);
     _nearbyDriverList[index].latitude = driver.latitude;
     _nearbyDriverList[index].longitude = driver.longitude;
+  }
+
+  static Query getRideRequest(String tixId) {
+    final ticketListRef = FirebaseDatabase.instance.ref('request-tickets');
+    return ticketListRef.orderByChild('tix_id').equalTo(tixId);
   }
 }
