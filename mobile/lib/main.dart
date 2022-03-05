@@ -1,12 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/admin/admin.view.dart';
 import 'package:ride/app/driver/driver.view.dart';
 import 'package:ride/app/driver/register.driver.view.dart';
+import 'package:ride/app/driver/trip/driver.trip.view.dart';
 import 'package:ride/app/passenger/home/passenger.home.view.dart';
 import 'package:ride/app/passenger/search/passenger.search.view.dart';
 import 'package:ride/app/qrcode.reader.view.dart';
@@ -24,6 +25,8 @@ import 'package:ride/services/repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   final sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp(
     name: 'Ride',
