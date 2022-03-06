@@ -121,6 +121,13 @@ class RideApp extends ConsumerWidget {
               child: const RegisterDriverView(),
             ),
           ),
+          GoRoute(
+            path: 'trip',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const DriverTripView(),
+            ),
+          ),
         ],
       ),
       GoRoute(
