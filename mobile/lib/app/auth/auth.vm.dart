@@ -43,7 +43,7 @@ class AuthVM extends StateNotifier<AuthState> {
         state = AuthState.authenticated(
           Account(
             accountType: await getAccountType(address),
-            publicKey: address.toString(),
+            publicKey: address.hexEip55,
           ),
         );
       } else {
@@ -63,6 +63,15 @@ class AuthVM extends StateNotifier<AuthState> {
 
   String? getPrivateKey() {
     return _repo.getPrivateKey();
+  }
+
+  Future<String?> getPublicKey() async {
+    String? privateKey = _repo.getPrivateKey();
+    if (privateKey?.isNotEmpty ?? false) {
+      final address = await _crypto.getPublicAddress(privateKey!);
+      return address.hexEip55;
+    }
+    return null;
   }
 
   Future<AccountType> getAccountType(EthereumAddress accountAddress) async {
