@@ -60,6 +60,15 @@ class RideApp extends ConsumerWidget {
         primaryColor: Colors.yellow.shade800,
         primarySwatch: Colors.yellow,
         fontFamily: 'Brand-Bold',
+        textTheme: const TextTheme(
+          button: TextStyle(
+            fontSize: 16,
+            letterSpacing: .8,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ),
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
