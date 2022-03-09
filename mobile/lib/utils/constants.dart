@@ -14,4 +14,10 @@ class Strings {
       '0000000000000000000000000000000000000000000000000000000000000000';
   static const String getTicketFailed = 'FAILED TO GET TICKET';
   static const String ticketNotFound = 'TICKET NOT FOUND';
+  static const String waiting = 'waiting';
+  static const String accepted = 'accepted';
+  static const String arrived = 'arrived';
+  static const String ontrip = 'ontrip';
+  static const String pendingAgreement = 'pending_agreement';
+  static const String driversAvailable = 'drivers_available';
 }
