@@ -35,6 +35,10 @@ class _$ApplyDriverStateTearOff {
   _ApplyDriverApplied applied() {
     return const _ApplyDriverApplied();
   }
+
+  _ApplyDriverApproved approved() {
+    return const _ApplyDriverApproved();
+  }
 }
 
 /// @nodoc
@@ -48,6 +52,7 @@ mixin _$ApplyDriverState {
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function() applied,
+    required TResult Function() approved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,6 +61,7 @@ mixin _$ApplyDriverState {
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -64,6 +70,7 @@ mixin _$ApplyDriverState {
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -73,6 +80,7 @@ mixin _$ApplyDriverState {
     required TResult Function(_ApplyDriverLoading value) loading,
     required TResult Function(_ApplyDriverError value) error,
     required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -81,6 +89,7 @@ mixin _$ApplyDriverState {
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -89,6 +98,7 @@ mixin _$ApplyDriverState {
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -164,6 +174,7 @@ class _$_ApplyDriverInit
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function() applied,
+    required TResult Function() approved,
   }) {
     return init();
   }
@@ -175,6 +186,7 @@ class _$_ApplyDriverInit
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
   }) {
     return init?.call();
   }
@@ -186,6 +198,7 @@ class _$_ApplyDriverInit
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -201,6 +214,7 @@ class _$_ApplyDriverInit
     required TResult Function(_ApplyDriverLoading value) loading,
     required TResult Function(_ApplyDriverError value) error,
     required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
   }) {
     return init(this);
   }
@@ -212,6 +226,7 @@ class _$_ApplyDriverInit
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
   }) {
     return init?.call(this);
   }
@@ -223,6 +238,7 @@ class _$_ApplyDriverInit
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -289,6 +305,7 @@ class _$_ApplyDriverLoading
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function() applied,
+    required TResult Function() approved,
   }) {
     return loading();
   }
@@ -300,6 +317,7 @@ class _$_ApplyDriverLoading
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
   }) {
     return loading?.call();
   }
@@ -311,6 +329,7 @@ class _$_ApplyDriverLoading
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -326,6 +345,7 @@ class _$_ApplyDriverLoading
     required TResult Function(_ApplyDriverLoading value) loading,
     required TResult Function(_ApplyDriverError value) error,
     required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
   }) {
     return loading(this);
   }
@@ -337,6 +357,7 @@ class _$_ApplyDriverLoading
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
   }) {
     return loading?.call(this);
   }
@@ -348,6 +369,7 @@ class _$_ApplyDriverLoading
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -440,6 +462,7 @@ class _$_ApplyDriverError
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function() applied,
+    required TResult Function() approved,
   }) {
     return error(message);
   }
@@ -451,6 +474,7 @@ class _$_ApplyDriverError
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
   }) {
     return error?.call(message);
   }
@@ -462,6 +486,7 @@ class _$_ApplyDriverError
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -477,6 +502,7 @@ class _$_ApplyDriverError
     required TResult Function(_ApplyDriverLoading value) loading,
     required TResult Function(_ApplyDriverError value) error,
     required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
   }) {
     return error(this);
   }
@@ -488,6 +514,7 @@ class _$_ApplyDriverError
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
   }) {
     return error?.call(this);
   }
@@ -499,6 +526,7 @@ class _$_ApplyDriverError
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -570,6 +598,7 @@ class _$_ApplyDriverApplied
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function() applied,
+    required TResult Function() approved,
   }) {
     return applied();
   }
@@ -581,6 +610,7 @@ class _$_ApplyDriverApplied
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
   }) {
     return applied?.call();
   }
@@ -592,6 +622,7 @@ class _$_ApplyDriverApplied
     TResult Function()? loading,
     TResult Function(String? message)? error,
     TResult Function()? applied,
+    TResult Function()? approved,
     required TResult orElse(),
   }) {
     if (applied != null) {
@@ -607,6 +638,7 @@ class _$_ApplyDriverApplied
     required TResult Function(_ApplyDriverLoading value) loading,
     required TResult Function(_ApplyDriverError value) error,
     required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
   }) {
     return applied(this);
   }
@@ -618,6 +650,7 @@ class _$_ApplyDriverApplied
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
   }) {
     return applied?.call(this);
   }
@@ -629,6 +662,7 @@ class _$_ApplyDriverApplied
     TResult Function(_ApplyDriverLoading value)? loading,
     TResult Function(_ApplyDriverError value)? error,
     TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
     required TResult orElse(),
   }) {
     if (applied != null) {
@@ -640,4 +674,135 @@ class _$_ApplyDriverApplied
 
 abstract class _ApplyDriverApplied implements ApplyDriverState {
   const factory _ApplyDriverApplied() = _$_ApplyDriverApplied;
+}
+
+/// @nodoc
+abstract class _$ApplyDriverApprovedCopyWith<$Res> {
+  factory _$ApplyDriverApprovedCopyWith(_ApplyDriverApproved value,
+          $Res Function(_ApplyDriverApproved) then) =
+      __$ApplyDriverApprovedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ApplyDriverApprovedCopyWithImpl<$Res>
+    extends _$ApplyDriverStateCopyWithImpl<$Res>
+    implements _$ApplyDriverApprovedCopyWith<$Res> {
+  __$ApplyDriverApprovedCopyWithImpl(
+      _ApplyDriverApproved _value, $Res Function(_ApplyDriverApproved) _then)
+      : super(_value, (v) => _then(v as _ApplyDriverApproved));
+
+  @override
+  _ApplyDriverApproved get _value => super._value as _ApplyDriverApproved;
+}
+
+/// @nodoc
+
+class _$_ApplyDriverApproved
+    with DiagnosticableTreeMixin
+    implements _ApplyDriverApproved {
+  const _$_ApplyDriverApproved();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ApplyDriverState.approved()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'ApplyDriverState.approved'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ApplyDriverApproved);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function() applied,
+    required TResult Function() approved,
+  }) {
+    return approved();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? applied,
+    TResult Function()? approved,
+  }) {
+    return approved?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? applied,
+    TResult Function()? approved,
+    required TResult orElse(),
+  }) {
+    if (approved != null) {
+      return approved();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ApplyDriverInit value) init,
+    required TResult Function(_ApplyDriverLoading value) loading,
+    required TResult Function(_ApplyDriverError value) error,
+    required TResult Function(_ApplyDriverApplied value) applied,
+    required TResult Function(_ApplyDriverApproved value) approved,
+  }) {
+    return approved(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ApplyDriverInit value)? init,
+    TResult Function(_ApplyDriverLoading value)? loading,
+    TResult Function(_ApplyDriverError value)? error,
+    TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
+  }) {
+    return approved?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ApplyDriverInit value)? init,
+    TResult Function(_ApplyDriverLoading value)? loading,
+    TResult Function(_ApplyDriverError value)? error,
+    TResult Function(_ApplyDriverApplied value)? applied,
+    TResult Function(_ApplyDriverApproved value)? approved,
+    required TResult orElse(),
+  }) {
+    if (approved != null) {
+      return approved(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ApplyDriverApproved implements ApplyDriverState {
+  const factory _ApplyDriverApproved() = _$_ApplyDriverApproved;
 }

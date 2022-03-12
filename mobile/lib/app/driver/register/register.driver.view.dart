@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/driver/register.driver.vm.dart';
+import 'package:ride/app/driver/register/register.driver.vm.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
@@ -30,14 +30,14 @@ class RegisterDriverView extends HookConsumerWidget {
                     .registerAsDriver(registerDriverController.text);
               },
             ),
-            OutlinedButton(
-              child: const Text('Update'),
-              onPressed: () async {
-                await ref
-                    .read(registerDriverProvider.notifier)
-                    .updateMaxMetresPerTrip(registerDriverController.text);
-              },
-            ),
+            // OutlinedButton(
+            //   child: const Text('Update'),
+            //   onPressed: () async {
+            //     await ref
+            //         .read(registerDriverProvider.notifier)
+            //         .updateMaxMetresPerTrip(registerDriverController.text);
+            //   },
+            // ),
           ],
           children: <Widget>[
             registerDriver.when(

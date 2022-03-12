@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/driver/register/apply.driver.vm.dart';
@@ -18,9 +19,17 @@ class ApplyDriverView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authProvider);
-    final applyDriver = ref.watch(appplyDriverProvider);
+    final applyDriver = ref.watch(applyDriverProvider);
 
     return Scaffold(
+      appBar: AppBar(elevation: 0),
+      floatingActionButton: applyDriver.whenOrNull(
+        approved: () => FloatingActionButton.extended(
+          label: const Text('Register now'),
+          icon: const Icon(Icons.arrow_forward),
+          onPressed: () => context.go('/register_driver'),
+        ),
+      ),
       body: Center(
         child: applyDriver.when(
           loading: () => const CircularProgressIndicator(),
@@ -30,6 +39,10 @@ class ApplyDriverView extends HookConsumerWidget {
             title: 'We Have Received Your Application!',
             message: 'Pending Admin Approval...',
           ),
+          approved: () => const EmptyContent(
+            title: 'Your Application has been approved!',
+            message: 'Please proceed with registration...',
+          ),
           init: () => FormBuilder(
             key: _formKey,
             child: Column(
@@ -38,6 +51,8 @@ class ApplyDriverView extends HookConsumerWidget {
                 RideTextField(
                   name: 'driverId',
                   readOnly: true,
+                  focusNode: _formKey
+                      .currentState?.fields['driverId']!.effectiveFocusNode,
                   label: 'Your Driver ID',
                   initialValue: auth.maybeWhen(
                     authenticated: (accountData) => accountData.publicKey,
@@ -69,7 +84,7 @@ class ApplyDriverView extends HookConsumerWidget {
                     onPressed: () async {
                       if (_formKey.currentState?.saveAndValidate() == true) {
                         await ref
-                            .read(appplyDriverProvider.notifier)
+                            .read(applyDriverProvider.notifier)
                             .apply(_formKey.currentState!.value);
                       }
                     },
