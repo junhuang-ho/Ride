@@ -3,7 +3,8 @@
    <application
         android:label="ride"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
 
         <meta-data android:name="com.google.android.geo.API_KEY" 
             android:value="AIzaSyAVNxJ3yx19d-BCI8g8jc6lstDC9xU2u08"/>
