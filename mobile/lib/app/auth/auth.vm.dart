@@ -35,6 +35,7 @@ class AuthVM extends StateNotifier<AuthState> {
 
   Future<void> getAccount() async {
     try {
+      state = const AuthState.loading();
       String? privateKey = _repo.getPrivateKey();
       if (privateKey?.isNotEmpty ?? false) {
         _rideHub.setCredentials(privateKey!);

@@ -38,15 +38,31 @@ class AuthView extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: 60),
-            ElevatedButton(
-              child: const Text('Create new wallet'),
+            MaterialButton(
+              height: 55,
+              color: Colors.white,
+              textColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
               onPressed: () => context.go('/create-wallet'),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Text('Create new wallet'),
+              ),
             ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: OutlinedButton(
-                child: const Text('Import wallet'),
-                onPressed: () => context.go('/import-wallet'),
+            const SizedBox(height: 20),
+            MaterialButton(
+              height: 55,
+              color: Colors.white,
+              textColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              onPressed: () => context.go('/import-wallet'),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Text('Import wallet'),
               ),
             ),
           ],
