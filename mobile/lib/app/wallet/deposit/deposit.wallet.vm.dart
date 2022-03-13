@@ -31,7 +31,6 @@ class DepositWalletVM extends StateNotifier<DepositWalletState> {
   final RideHubService _rideHub;
 
   Future<void> depositToken(
-    DepositKeyType keyType,
     String depositAmount,
   ) async {
     try {
@@ -40,9 +39,7 @@ class DepositWalletVM extends StateNotifier<DepositWalletState> {
       final depositAmountInWei =
           BigInt.from(double.parse(depositAmount) * pow(10, 18));
       await _rideHub.authorizeWETH(depositAmountInWei);
-      final keyPay = keyType == DepositKeyType.crypto
-          ? await _rideCurrencyRegistry.getKeyCrypto()
-          : await _rideCurrencyRegistry.getKeyFiat();
+      final keyPay = await _rideCurrencyRegistry.getKeyCrypto();
       final result =
           await _rideHolding.depositTokens(keyPay, depositAmountInWei);
       state = DepositWalletState.success(result);

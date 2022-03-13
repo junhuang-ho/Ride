@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/models/wallet.dart';
 import 'package:ride/services/crypto.dart';
 import 'package:ride/services/repository.dart';
@@ -24,7 +27,7 @@ class WalletVM extends StateNotifier<WalletState> {
         _rideCurrencyRegistryService = read(rideCurrencyRegistryProvider),
         _rideHoldingService = read(rideHoldingProvider),
         super(const WalletState.loading()) {
-    init();
+    getBalance();
   }
 
   final Crypto _crypto;
@@ -33,29 +36,40 @@ class WalletVM extends StateNotifier<WalletState> {
   final RideCurrencyRegistryService _rideCurrencyRegistryService;
   final RideHoldingService _rideHoldingService;
 
-  Future<void> init() async {
-    final privateKey = _repository.getPrivateKey();
-    if (privateKey?.isEmpty ?? true) {
-      state = const WalletState.error('No private key found.');
-      return;
-    }
-    final address = await _crypto.getPublicAddress(privateKey!);
-    final ethBalance = await _rideHub.getEthBalance(address);
-    final wETHBlance = await _rideHub.getWETHBalance(address);
-    final cryptoKey = await _rideCurrencyRegistryService.getKeyCrypto();
-    final holdingInCrypto =
-        await _rideHoldingService.getHolding(address, cryptoKey);
+  Future<void> getBalance() async {
+    try {
+      state = const WalletState.loading();
+      final privateKey = _repository.getPrivateKey();
+      if (privateKey?.isEmpty ?? true) {
+        state = const WalletState.error('No private key found.');
+        return;
+      }
+      final address = await _crypto.getPublicAddress(privateKey!);
+      final ethBalance = await _rideHub.getEthBalance(address);
+      final wETHBlance = await _rideHub.getWETHBalance(address);
+      final cryptoKey = await _rideCurrencyRegistryService.getKeyCrypto();
+      final holdingInCrypto =
+          await _rideHoldingService.getHolding(address, cryptoKey);
 
-    state = WalletState.data(
-      Wallet(
-        balance: ethBalance,
-        wETHBalance: wETHBlance,
-        holdingInCrypto: holdingInCrypto,
-      ),
-    );
+      state = WalletState.data(
+        Wallet(
+          balance: ethBalance,
+          wETHBalance: wETHBlance,
+          holdingInCrypto: holdingInCrypto,
+        ),
+      );
+    } catch (ex) {
+      if (mounted) {
+        state = WalletState.error(ex.toString());
+      } else {
+        log(ex.toString());
+      }
+    }
   }
 }
 
 final walletProvider = StateNotifierProvider<WalletVM, WalletState>((ref) {
+  ref.watch(authProvider);
+
   return WalletVM(ref.read);
 });

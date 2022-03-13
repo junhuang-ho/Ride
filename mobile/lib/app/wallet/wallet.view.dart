@@ -19,11 +19,20 @@ class WalletView extends HookConsumerWidget {
         title: const Text('Wallet'),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.drive_eta_outlined),
+            icon: const Icon(Icons.refresh),
+            onPressed: wallet.maybeWhen(
+              loading: null,
+              orElse: () => () async {
+                await ref.read(walletProvider.notifier).getBalance();
+              },
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
             onPressed: wallet.maybeWhen(
               loading: null,
               orElse: () => () {
-                context.push('/passenger/ride');
+                context.push('/passenger/wallet/send');
               },
             ),
           ),
@@ -33,6 +42,15 @@ class WalletView extends HookConsumerWidget {
               loading: null,
               orElse: () => () {
                 context.push('/passenger/wallet/deposit');
+              },
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.monetization_on),
+            onPressed: wallet.maybeWhen(
+              loading: null,
+              orElse: () => () {
+                context.push('/passenger/wallet/withdraw');
               },
             ),
           ),

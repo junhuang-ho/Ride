@@ -69,6 +69,7 @@ class SendForm extends HookConsumerWidget {
       if (address != null) {
         receiverController.value = TextEditingValue(text: address!);
       }
+      return null;
     }, [address]);
 
     return Center(

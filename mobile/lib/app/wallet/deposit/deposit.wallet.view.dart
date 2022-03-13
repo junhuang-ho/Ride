@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/wallet/deposit/deposit.wallet.vm.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_input.dart';
-import 'package:ride/widgets/paper_radio.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
 
 class DepositWalletView extends HookConsumerWidget {
@@ -13,7 +12,6 @@ class DepositWalletView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final depositWallet = ref.watch(depositWalletProvider);
-    final depositKeyType = useState(DepositKeyType.crypto);
     final depositAmountController = useTextEditingController();
 
     return Scaffold(
@@ -27,30 +25,13 @@ class DepositWalletView extends HookConsumerWidget {
             OutlinedButton(
               child: const Text('Deposit'),
               onPressed: () async {
-                await ref.read(depositWalletProvider.notifier).depositToken(
-                    depositKeyType.value, depositAmountController.text);
+                await ref
+                    .read(depositWalletProvider.notifier)
+                    .depositToken(depositAmountController.text);
               },
             ),
           ],
           children: <Widget>[
-            Row(
-              children: [
-                PaperRadio(
-                  'Crypto',
-                  groupValue: depositKeyType.value,
-                  value: DepositKeyType.crypto,
-                  onChanged: (value) =>
-                      depositKeyType.value = value as DepositKeyType,
-                ),
-                PaperRadio(
-                  'Fiat',
-                  groupValue: depositKeyType.value,
-                  value: DepositKeyType.fiat,
-                  onChanged: (value) =>
-                      depositKeyType.value = value as DepositKeyType,
-                ),
-              ],
-            ),
             depositWallet.when(
               init: () => PaperInput(
                 labelText: "Deposit Amount",
