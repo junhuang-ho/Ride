@@ -15,8 +15,6 @@ class AdminView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final admin = ref.watch(adminProvider);
-
     AsyncValue<DatabaseEvent> pendingDriverApplicants =
         ref.watch(driverApplicantsProvider(Strings.pendingApproval));
 
@@ -49,21 +47,6 @@ class AdminView extends HookConsumerWidget {
                       );
                       return DriverApplicationListTile(
                           driverApplication: driverApplication);
-                      // return ProviderScope(
-                      //   overrides: [
-                      //     driverApplicationProvider.overrideWithProvider(
-                      //       (argument) => StateNotifierProvider.autoDispose<
-                      //           DriverApplicationVM, DriverApplicationState>(
-                      //         (ref) {
-                      //           return DriverApplicationVM(
-                      //               ref.read, driverApplication);
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ],
-                      //   child: DriverApplicationListTile(
-                      //       driverApplication: driverApplication),
-                      // );
                     },
                   ),
                 );
@@ -76,35 +59,6 @@ class AdminView extends HookConsumerWidget {
                 message: err.toString(),
               ),
             ),
-            // admin.when(
-            //   init: () => Expanded(
-            //     child: FutureBuilder(
-            //       future: ref.read(adminProvider.notifier).loadImages(),
-            //       builder: (context,
-            //           AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-            //         if (snapshot.connectionState == ConnectionState.done) {
-            //           return ListView.builder(
-            //             itemCount: snapshot.data?.length ?? 0,
-            //             itemBuilder: (context, index) {
-            //               return ProviderScope(
-            //                 overrides: [],
-            //                 child: DriverApplicantListTile(
-            //                   driverApplication: snapshot.data![index],
-            //                 ),
-            //               );
-            //             },
-            //           );
-            //         }
-            //         return const Center(
-            //           child: CircularProgressIndicator(),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            //   loading: () => const CircularProgressIndicator(),
-            //   error: (message) => PaperValidationSummary([message!]),
-            //   success: (data) => Text('Sucessfully registered $data!!!'),
-            // ),
           ],
         ),
       ),
