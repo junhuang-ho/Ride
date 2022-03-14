@@ -39,9 +39,9 @@ class ApplyDriverVM extends StateNotifier<ApplyDriverState> {
           await FireHelper.getDriverApplication(publicKey ?? '');
       state = _getDriverApplicationStatus(driverApplication);
     } on FirebaseException catch (ex) {
-      // if (kDebugMode) {
-      //   print(ex);
-      // }
+      if (kDebugMode) {
+        print(ex);
+      }
       state = const ApplyDriverState.init();
     }
   }

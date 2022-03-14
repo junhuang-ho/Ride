@@ -32,18 +32,6 @@ class RegisterDriverVM extends StateNotifier<RegisterDriverState> {
       state = RegisterDriverState.error(ex.toString());
     }
   }
-
-  Future<void> updateMaxMetresPerTrip(String maxMetresPerTrip) async {
-    try {
-      state = const RegisterDriverState.loading();
-      final parsedMaxMetresPerTrip = BigInt.parse(maxMetresPerTrip);
-      final result = await _rideDriverRegistryService
-          .updateMaxMetresPerTrip(parsedMaxMetresPerTrip);
-      state = RegisterDriverState.success(result);
-    } catch (ex) {
-      state = RegisterDriverState.error(ex.toString());
-    }
-  }
 }
 
 final registerDriverProvider =

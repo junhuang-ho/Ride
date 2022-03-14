@@ -40,8 +40,8 @@ class DriverProfileView extends HookConsumerWidget {
           padding: 30,
           actionButtons: <Widget>[
             OutlinedButton(
-              child: const Text('Register as Driver'),
-              onPressed: () => context.go('/driver/register'),
+              child: const Text('Update'),
+              onPressed: () => context.go('/driver/update'),
             ),
             TextButton(
               child: const Text('reset'),

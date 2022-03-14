@@ -28,8 +28,14 @@ class _$DriverRideStateTearOff {
     return const _DriverRideInit();
   }
 
-  _DriverRideAcceptingTicket acceptingTicket() {
-    return const _DriverRideAcceptingTicket();
+  _DriverRideAccepting accepting() {
+    return const _DriverRideAccepting();
+  }
+
+  _DriverRideAccepted accepted(RideRequest rideRequest) {
+    return _DriverRideAccepted(
+      rideRequest,
+    );
   }
 
   _DriverRideInTrip inTrip(RideRequest rideRequest) {
@@ -48,7 +54,8 @@ mixin _$DriverRideState {
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) error,
     required TResult Function() init,
-    required TResult Function() acceptingTicket,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
     required TResult Function(RideRequest rideRequest) inTrip,
   }) =>
       throw _privateConstructorUsedError;
@@ -56,7 +63,8 @@ mixin _$DriverRideState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
   }) =>
       throw _privateConstructorUsedError;
@@ -64,7 +72,8 @@ mixin _$DriverRideState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) =>
@@ -73,7 +82,8 @@ mixin _$DriverRideState {
   TResult map<TResult extends Object?>({
     required TResult Function(_DriverRideError value) error,
     required TResult Function(_DriverRideInit value) init,
-    required TResult Function(_DriverRideAcceptingTicket value) acceptingTicket,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
     required TResult Function(_DriverRideInTrip value) inTrip,
   }) =>
       throw _privateConstructorUsedError;
@@ -81,7 +91,8 @@ mixin _$DriverRideState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
   }) =>
       throw _privateConstructorUsedError;
@@ -89,7 +100,8 @@ mixin _$DriverRideState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
     required TResult orElse(),
   }) =>
@@ -180,7 +192,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) error,
     required TResult Function() init,
-    required TResult Function() acceptingTicket,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
     required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return error(message);
@@ -191,7 +204,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return error?.call(message);
@@ -202,7 +216,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
@@ -217,7 +232,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult map<TResult extends Object?>({
     required TResult Function(_DriverRideError value) error,
     required TResult Function(_DriverRideInit value) init,
-    required TResult Function(_DriverRideAcceptingTicket value) acceptingTicket,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
     required TResult Function(_DriverRideInTrip value) inTrip,
   }) {
     return error(this);
@@ -228,7 +244,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
   }) {
     return error?.call(this);
@@ -239,7 +256,8 @@ class _$_DriverRideError implements _DriverRideError {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
@@ -302,7 +320,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) error,
     required TResult Function() init,
-    required TResult Function() acceptingTicket,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
     required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return init();
@@ -313,7 +332,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return init?.call();
@@ -324,7 +344,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
@@ -339,7 +360,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult map<TResult extends Object?>({
     required TResult Function(_DriverRideError value) error,
     required TResult Function(_DriverRideInit value) init,
-    required TResult Function(_DriverRideAcceptingTicket value) acceptingTicket,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
     required TResult Function(_DriverRideInTrip value) inTrip,
   }) {
     return init(this);
@@ -350,7 +372,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
   }) {
     return init?.call(this);
@@ -361,7 +384,8 @@ class _$_DriverRideInit implements _DriverRideInit {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
@@ -377,40 +401,38 @@ abstract class _DriverRideInit implements DriverRideState {
 }
 
 /// @nodoc
-abstract class _$DriverRideAcceptingTicketCopyWith<$Res> {
-  factory _$DriverRideAcceptingTicketCopyWith(_DriverRideAcceptingTicket value,
-          $Res Function(_DriverRideAcceptingTicket) then) =
-      __$DriverRideAcceptingTicketCopyWithImpl<$Res>;
+abstract class _$DriverRideAcceptingCopyWith<$Res> {
+  factory _$DriverRideAcceptingCopyWith(_DriverRideAccepting value,
+          $Res Function(_DriverRideAccepting) then) =
+      __$DriverRideAcceptingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$DriverRideAcceptingTicketCopyWithImpl<$Res>
+class __$DriverRideAcceptingCopyWithImpl<$Res>
     extends _$DriverRideStateCopyWithImpl<$Res>
-    implements _$DriverRideAcceptingTicketCopyWith<$Res> {
-  __$DriverRideAcceptingTicketCopyWithImpl(_DriverRideAcceptingTicket _value,
-      $Res Function(_DriverRideAcceptingTicket) _then)
-      : super(_value, (v) => _then(v as _DriverRideAcceptingTicket));
+    implements _$DriverRideAcceptingCopyWith<$Res> {
+  __$DriverRideAcceptingCopyWithImpl(
+      _DriverRideAccepting _value, $Res Function(_DriverRideAccepting) _then)
+      : super(_value, (v) => _then(v as _DriverRideAccepting));
 
   @override
-  _DriverRideAcceptingTicket get _value =>
-      super._value as _DriverRideAcceptingTicket;
+  _DriverRideAccepting get _value => super._value as _DriverRideAccepting;
 }
 
 /// @nodoc
 
-class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
-  const _$_DriverRideAcceptingTicket();
+class _$_DriverRideAccepting implements _DriverRideAccepting {
+  const _$_DriverRideAccepting();
 
   @override
   String toString() {
-    return 'DriverRideState.acceptingTicket()';
+    return 'DriverRideState.accepting()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _DriverRideAcceptingTicket);
+        (other.runtimeType == runtimeType && other is _DriverRideAccepting);
   }
 
   @override
@@ -421,10 +443,11 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) error,
     required TResult Function() init,
-    required TResult Function() acceptingTicket,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
     required TResult Function(RideRequest rideRequest) inTrip,
   }) {
-    return acceptingTicket();
+    return accepting();
   }
 
   @override
@@ -432,10 +455,11 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
   }) {
-    return acceptingTicket?.call();
+    return accepting?.call();
   }
 
   @override
@@ -443,12 +467,13 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
-    if (acceptingTicket != null) {
-      return acceptingTicket();
+    if (accepting != null) {
+      return accepting();
     }
     return orElse();
   }
@@ -458,10 +483,11 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult map<TResult extends Object?>({
     required TResult Function(_DriverRideError value) error,
     required TResult Function(_DriverRideInit value) init,
-    required TResult Function(_DriverRideAcceptingTicket value) acceptingTicket,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
     required TResult Function(_DriverRideInTrip value) inTrip,
   }) {
-    return acceptingTicket(this);
+    return accepting(this);
   }
 
   @override
@@ -469,10 +495,11 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
   }) {
-    return acceptingTicket?.call(this);
+    return accepting?.call(this);
   }
 
   @override
@@ -480,19 +507,174 @@ class _$_DriverRideAcceptingTicket implements _DriverRideAcceptingTicket {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
-    if (acceptingTicket != null) {
-      return acceptingTicket(this);
+    if (accepting != null) {
+      return accepting(this);
     }
     return orElse();
   }
 }
 
-abstract class _DriverRideAcceptingTicket implements DriverRideState {
-  const factory _DriverRideAcceptingTicket() = _$_DriverRideAcceptingTicket;
+abstract class _DriverRideAccepting implements DriverRideState {
+  const factory _DriverRideAccepting() = _$_DriverRideAccepting;
+}
+
+/// @nodoc
+abstract class _$DriverRideAcceptedCopyWith<$Res> {
+  factory _$DriverRideAcceptedCopyWith(
+          _DriverRideAccepted value, $Res Function(_DriverRideAccepted) then) =
+      __$DriverRideAcceptedCopyWithImpl<$Res>;
+  $Res call({RideRequest rideRequest});
+}
+
+/// @nodoc
+class __$DriverRideAcceptedCopyWithImpl<$Res>
+    extends _$DriverRideStateCopyWithImpl<$Res>
+    implements _$DriverRideAcceptedCopyWith<$Res> {
+  __$DriverRideAcceptedCopyWithImpl(
+      _DriverRideAccepted _value, $Res Function(_DriverRideAccepted) _then)
+      : super(_value, (v) => _then(v as _DriverRideAccepted));
+
+  @override
+  _DriverRideAccepted get _value => super._value as _DriverRideAccepted;
+
+  @override
+  $Res call({
+    Object? rideRequest = freezed,
+  }) {
+    return _then(_DriverRideAccepted(
+      rideRequest == freezed
+          ? _value.rideRequest
+          : rideRequest // ignore: cast_nullable_to_non_nullable
+              as RideRequest,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_DriverRideAccepted implements _DriverRideAccepted {
+  const _$_DriverRideAccepted(this.rideRequest);
+
+  @override
+  final RideRequest rideRequest;
+
+  @override
+  String toString() {
+    return 'DriverRideState.accepted(rideRequest: $rideRequest)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _DriverRideAccepted &&
+            const DeepCollectionEquality()
+                .equals(other.rideRequest, rideRequest));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(rideRequest));
+
+  @JsonKey(ignore: true)
+  @override
+  _$DriverRideAcceptedCopyWith<_DriverRideAccepted> get copyWith =>
+      __$DriverRideAcceptedCopyWithImpl<_DriverRideAccepted>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) error,
+    required TResult Function() init,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
+    required TResult Function(RideRequest rideRequest) inTrip,
+  }) {
+    return accepted(rideRequest);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
+    TResult Function(RideRequest rideRequest)? inTrip,
+  }) {
+    return accepted?.call(rideRequest);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
+    TResult Function(RideRequest rideRequest)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (accepted != null) {
+      return accepted(rideRequest);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_DriverRideError value) error,
+    required TResult Function(_DriverRideInit value) init,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
+    required TResult Function(_DriverRideInTrip value) inTrip,
+  }) {
+    return accepted(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_DriverRideError value)? error,
+    TResult Function(_DriverRideInit value)? init,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
+    TResult Function(_DriverRideInTrip value)? inTrip,
+  }) {
+    return accepted?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_DriverRideError value)? error,
+    TResult Function(_DriverRideInit value)? init,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
+    TResult Function(_DriverRideInTrip value)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (accepted != null) {
+      return accepted(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DriverRideAccepted implements DriverRideState {
+  const factory _DriverRideAccepted(RideRequest rideRequest) =
+      _$_DriverRideAccepted;
+
+  RideRequest get rideRequest;
+  @JsonKey(ignore: true)
+  _$DriverRideAcceptedCopyWith<_DriverRideAccepted> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -563,7 +745,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) error,
     required TResult Function() init,
-    required TResult Function() acceptingTicket,
+    required TResult Function() accepting,
+    required TResult Function(RideRequest rideRequest) accepted,
     required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return inTrip(rideRequest);
@@ -574,7 +757,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return inTrip?.call(rideRequest);
@@ -585,7 +769,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? error,
     TResult Function()? init,
-    TResult Function()? acceptingTicket,
+    TResult Function()? accepting,
+    TResult Function(RideRequest rideRequest)? accepted,
     TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
@@ -600,7 +785,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult map<TResult extends Object?>({
     required TResult Function(_DriverRideError value) error,
     required TResult Function(_DriverRideInit value) init,
-    required TResult Function(_DriverRideAcceptingTicket value) acceptingTicket,
+    required TResult Function(_DriverRideAccepting value) accepting,
+    required TResult Function(_DriverRideAccepted value) accepted,
     required TResult Function(_DriverRideInTrip value) inTrip,
   }) {
     return inTrip(this);
@@ -611,7 +797,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
   }) {
     return inTrip?.call(this);
@@ -622,7 +809,8 @@ class _$_DriverRideInTrip implements _DriverRideInTrip {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_DriverRideError value)? error,
     TResult Function(_DriverRideInit value)? init,
-    TResult Function(_DriverRideAcceptingTicket value)? acceptingTicket,
+    TResult Function(_DriverRideAccepting value)? accepting,
+    TResult Function(_DriverRideAccepted value)? accepted,
     TResult Function(_DriverRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
