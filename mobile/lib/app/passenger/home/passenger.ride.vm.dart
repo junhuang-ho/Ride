@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hex/hex.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/passenger/trip/passenger.trip.vm.dart';
 import 'package:ride/models/address.dart';
 import 'package:ride/models/direction_details.dart';
 import 'package:ride/models/ride_request.dart';
