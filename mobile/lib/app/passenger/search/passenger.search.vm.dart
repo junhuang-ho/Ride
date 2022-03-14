@@ -45,6 +45,7 @@ class PassengerSearchVM extends StateNotifier<PassengerSearchState> {
 }
 
 final passengerSearchProvider =
-    StateNotifierProvider<PassengerSearchVM, PassengerSearchState>((ref) {
+    StateNotifierProvider.autoDispose<PassengerSearchVM, PassengerSearchState>(
+        (ref) {
   return PassengerSearchVM();
 });

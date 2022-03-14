@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:ride/app/driver/widgets/taxi_button.dart';
 import 'package:ride/app/passenger/home/passenger.ride.vm.dart';
-import 'package:ride/app/passenger/widgets/common_sheet.dart';
+import 'package:ride/widgets/common_sheet.dart';
 import 'package:ride/app/ride/request.ticket.vm.dart';
 import 'package:ride/services/crypto.dart';
 import 'package:ride/services/ride/ride_passenger.dart';
@@ -39,7 +39,6 @@ class DetailsSheet extends HookConsumerWidget {
           .ridePassenger
           .requestTicketEvents()
           .listen((event) {
-        print('Event TIX ID: ${event.tixId}');
         if (event.sender == passengerAddress) {
           ref.read(passengerRideProvider.notifier).requestRide(event.tixId);
         }
@@ -119,7 +118,7 @@ class DetailsSheet extends HookConsumerWidget {
                     style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
                   ),
                   const SizedBox(width: 5),
-                  Container(
+                  SizedBox(
                     height: 50,
                     width: 30,
                     child: NumberPicker(
@@ -169,6 +168,13 @@ class DetailsSheet extends HookConsumerWidget {
 
                   return requestTicketVM.maybeWhen(
                     requesting: () => const CircularProgressIndicator(),
+                    requested: (_) => Column(
+                      children: const [
+                        Text('Pending Transaction...'),
+                        SizedBox(height: 15),
+                        Text('Please don\'t leave the app...'),
+                      ],
+                    ),
                     orElse: () => TaxiButton(
                       title: 'REQUEST RIDE',
                       color: passengerRide.maybeWhen(

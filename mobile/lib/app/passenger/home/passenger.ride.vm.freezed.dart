@@ -39,6 +39,26 @@ class _$PassengerRideStateTearOff {
       tixId,
     );
   }
+
+  _PassengerRideTicketAccepted ticketAccepted(String tixId) {
+    return _PassengerRideTicketAccepted(
+      tixId,
+    );
+  }
+
+  _PassengerRideArrived driverArrived() {
+    return const _PassengerRideArrived();
+  }
+
+  _PassengerRideDriverAddressNotMatched driverAddressNotMatched() {
+    return const _PassengerRideDriverAddressNotMatched();
+  }
+
+  _PassengerRideInTrip inTrip(RideRequest rideRequest) {
+    return _PassengerRideInTrip(
+      rideRequest,
+    );
+  }
 }
 
 /// @nodoc
@@ -52,6 +72,10 @@ mixin _$PassengerRideState {
     required TResult Function() init,
     required TResult Function(DirectionDetails directionDetails) direction,
     required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -60,6 +84,10 @@ mixin _$PassengerRideState {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -68,6 +96,10 @@ mixin _$PassengerRideState {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -77,6 +109,12 @@ mixin _$PassengerRideState {
     required TResult Function(_PassengerRideInit value) init,
     required TResult Function(_PassengerRideDirection value) direction,
     required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -85,6 +123,11 @@ mixin _$PassengerRideState {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -93,6 +136,11 @@ mixin _$PassengerRideState {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -184,6 +232,10 @@ class _$_PassengerRideError implements _PassengerRideError {
     required TResult Function() init,
     required TResult Function(DirectionDetails directionDetails) direction,
     required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return error(message);
   }
@@ -195,6 +247,10 @@ class _$_PassengerRideError implements _PassengerRideError {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return error?.call(message);
   }
@@ -206,6 +262,10 @@ class _$_PassengerRideError implements _PassengerRideError {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -221,6 +281,12 @@ class _$_PassengerRideError implements _PassengerRideError {
     required TResult Function(_PassengerRideInit value) init,
     required TResult Function(_PassengerRideDirection value) direction,
     required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
   }) {
     return error(this);
   }
@@ -232,6 +298,11 @@ class _$_PassengerRideError implements _PassengerRideError {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
   }) {
     return error?.call(this);
   }
@@ -243,6 +314,11 @@ class _$_PassengerRideError implements _PassengerRideError {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -306,6 +382,10 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     required TResult Function() init,
     required TResult Function(DirectionDetails directionDetails) direction,
     required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return init();
   }
@@ -317,6 +397,10 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return init?.call();
   }
@@ -328,6 +412,10 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -343,6 +431,12 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     required TResult Function(_PassengerRideInit value) init,
     required TResult Function(_PassengerRideDirection value) direction,
     required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
   }) {
     return init(this);
   }
@@ -354,6 +448,11 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
   }) {
     return init?.call(this);
   }
@@ -365,6 +464,11 @@ class _$_PassengerRideInit implements _PassengerRideInit {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -458,6 +562,10 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     required TResult Function() init,
     required TResult Function(DirectionDetails directionDetails) direction,
     required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return direction(directionDetails);
   }
@@ -469,6 +577,10 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return direction?.call(directionDetails);
   }
@@ -480,6 +592,10 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
     if (direction != null) {
@@ -495,6 +611,12 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     required TResult Function(_PassengerRideInit value) init,
     required TResult Function(_PassengerRideDirection value) direction,
     required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
   }) {
     return direction(this);
   }
@@ -506,6 +628,11 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
   }) {
     return direction?.call(this);
   }
@@ -517,6 +644,11 @@ class _$_PassengerRideDirection implements _PassengerRideDirection {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
     if (direction != null) {
@@ -607,6 +739,10 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     required TResult Function() init,
     required TResult Function(DirectionDetails directionDetails) direction,
     required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
   }) {
     return requesting(tixId);
   }
@@ -618,6 +754,10 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
   }) {
     return requesting?.call(tixId);
   }
@@ -629,6 +769,10 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     TResult Function()? init,
     TResult Function(DirectionDetails directionDetails)? direction,
     TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
     required TResult orElse(),
   }) {
     if (requesting != null) {
@@ -644,6 +788,12 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     required TResult Function(_PassengerRideInit value) init,
     required TResult Function(_PassengerRideDirection value) direction,
     required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
   }) {
     return requesting(this);
   }
@@ -655,6 +805,11 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
   }) {
     return requesting?.call(this);
   }
@@ -666,6 +821,11 @@ class _$_PassengerRideRequesting implements _PassengerRideRequesting {
     TResult Function(_PassengerRideInit value)? init,
     TResult Function(_PassengerRideDirection value)? direction,
     TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
     required TResult orElse(),
   }) {
     if (requesting != null) {
@@ -682,5 +842,658 @@ abstract class _PassengerRideRequesting implements PassengerRideState {
   String get tixId;
   @JsonKey(ignore: true)
   _$PassengerRideRequestingCopyWith<_PassengerRideRequesting> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$PassengerRideTicketAcceptedCopyWith<$Res> {
+  factory _$PassengerRideTicketAcceptedCopyWith(
+          _PassengerRideTicketAccepted value,
+          $Res Function(_PassengerRideTicketAccepted) then) =
+      __$PassengerRideTicketAcceptedCopyWithImpl<$Res>;
+  $Res call({String tixId});
+}
+
+/// @nodoc
+class __$PassengerRideTicketAcceptedCopyWithImpl<$Res>
+    extends _$PassengerRideStateCopyWithImpl<$Res>
+    implements _$PassengerRideTicketAcceptedCopyWith<$Res> {
+  __$PassengerRideTicketAcceptedCopyWithImpl(
+      _PassengerRideTicketAccepted _value,
+      $Res Function(_PassengerRideTicketAccepted) _then)
+      : super(_value, (v) => _then(v as _PassengerRideTicketAccepted));
+
+  @override
+  _PassengerRideTicketAccepted get _value =>
+      super._value as _PassengerRideTicketAccepted;
+
+  @override
+  $Res call({
+    Object? tixId = freezed,
+  }) {
+    return _then(_PassengerRideTicketAccepted(
+      tixId == freezed
+          ? _value.tixId
+          : tixId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_PassengerRideTicketAccepted implements _PassengerRideTicketAccepted {
+  const _$_PassengerRideTicketAccepted(this.tixId);
+
+  @override
+  final String tixId;
+
+  @override
+  String toString() {
+    return 'PassengerRideState.ticketAccepted(tixId: $tixId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerRideTicketAccepted &&
+            const DeepCollectionEquality().equals(other.tixId, tixId));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(tixId));
+
+  @JsonKey(ignore: true)
+  @override
+  _$PassengerRideTicketAcceptedCopyWith<_PassengerRideTicketAccepted>
+      get copyWith => __$PassengerRideTicketAcceptedCopyWithImpl<
+          _PassengerRideTicketAccepted>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) error,
+    required TResult Function() init,
+    required TResult Function(DirectionDetails directionDetails) direction,
+    required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
+  }) {
+    return ticketAccepted(tixId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+  }) {
+    return ticketAccepted?.call(tixId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (ticketAccepted != null) {
+      return ticketAccepted(tixId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerRideError value) error,
+    required TResult Function(_PassengerRideInit value) init,
+    required TResult Function(_PassengerRideDirection value) direction,
+    required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
+  }) {
+    return ticketAccepted(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+  }) {
+    return ticketAccepted?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (ticketAccepted != null) {
+      return ticketAccepted(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerRideTicketAccepted implements PassengerRideState {
+  const factory _PassengerRideTicketAccepted(String tixId) =
+      _$_PassengerRideTicketAccepted;
+
+  String get tixId;
+  @JsonKey(ignore: true)
+  _$PassengerRideTicketAcceptedCopyWith<_PassengerRideTicketAccepted>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$PassengerRideArrivedCopyWith<$Res> {
+  factory _$PassengerRideArrivedCopyWith(_PassengerRideArrived value,
+          $Res Function(_PassengerRideArrived) then) =
+      __$PassengerRideArrivedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$PassengerRideArrivedCopyWithImpl<$Res>
+    extends _$PassengerRideStateCopyWithImpl<$Res>
+    implements _$PassengerRideArrivedCopyWith<$Res> {
+  __$PassengerRideArrivedCopyWithImpl(
+      _PassengerRideArrived _value, $Res Function(_PassengerRideArrived) _then)
+      : super(_value, (v) => _then(v as _PassengerRideArrived));
+
+  @override
+  _PassengerRideArrived get _value => super._value as _PassengerRideArrived;
+}
+
+/// @nodoc
+
+class _$_PassengerRideArrived implements _PassengerRideArrived {
+  const _$_PassengerRideArrived();
+
+  @override
+  String toString() {
+    return 'PassengerRideState.driverArrived()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _PassengerRideArrived);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) error,
+    required TResult Function() init,
+    required TResult Function(DirectionDetails directionDetails) direction,
+    required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
+  }) {
+    return driverArrived();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+  }) {
+    return driverArrived?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (driverArrived != null) {
+      return driverArrived();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerRideError value) error,
+    required TResult Function(_PassengerRideInit value) init,
+    required TResult Function(_PassengerRideDirection value) direction,
+    required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
+  }) {
+    return driverArrived(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+  }) {
+    return driverArrived?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (driverArrived != null) {
+      return driverArrived(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerRideArrived implements PassengerRideState {
+  const factory _PassengerRideArrived() = _$_PassengerRideArrived;
+}
+
+/// @nodoc
+abstract class _$PassengerRideDriverAddressNotMatchedCopyWith<$Res> {
+  factory _$PassengerRideDriverAddressNotMatchedCopyWith(
+          _PassengerRideDriverAddressNotMatched value,
+          $Res Function(_PassengerRideDriverAddressNotMatched) then) =
+      __$PassengerRideDriverAddressNotMatchedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$PassengerRideDriverAddressNotMatchedCopyWithImpl<$Res>
+    extends _$PassengerRideStateCopyWithImpl<$Res>
+    implements _$PassengerRideDriverAddressNotMatchedCopyWith<$Res> {
+  __$PassengerRideDriverAddressNotMatchedCopyWithImpl(
+      _PassengerRideDriverAddressNotMatched _value,
+      $Res Function(_PassengerRideDriverAddressNotMatched) _then)
+      : super(_value, (v) => _then(v as _PassengerRideDriverAddressNotMatched));
+
+  @override
+  _PassengerRideDriverAddressNotMatched get _value =>
+      super._value as _PassengerRideDriverAddressNotMatched;
+}
+
+/// @nodoc
+
+class _$_PassengerRideDriverAddressNotMatched
+    implements _PassengerRideDriverAddressNotMatched {
+  const _$_PassengerRideDriverAddressNotMatched();
+
+  @override
+  String toString() {
+    return 'PassengerRideState.driverAddressNotMatched()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerRideDriverAddressNotMatched);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) error,
+    required TResult Function() init,
+    required TResult Function(DirectionDetails directionDetails) direction,
+    required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
+  }) {
+    return driverAddressNotMatched();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+  }) {
+    return driverAddressNotMatched?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (driverAddressNotMatched != null) {
+      return driverAddressNotMatched();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerRideError value) error,
+    required TResult Function(_PassengerRideInit value) init,
+    required TResult Function(_PassengerRideDirection value) direction,
+    required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
+  }) {
+    return driverAddressNotMatched(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+  }) {
+    return driverAddressNotMatched?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (driverAddressNotMatched != null) {
+      return driverAddressNotMatched(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerRideDriverAddressNotMatched
+    implements PassengerRideState {
+  const factory _PassengerRideDriverAddressNotMatched() =
+      _$_PassengerRideDriverAddressNotMatched;
+}
+
+/// @nodoc
+abstract class _$PassengerRideInTripCopyWith<$Res> {
+  factory _$PassengerRideInTripCopyWith(_PassengerRideInTrip value,
+          $Res Function(_PassengerRideInTrip) then) =
+      __$PassengerRideInTripCopyWithImpl<$Res>;
+  $Res call({RideRequest rideRequest});
+}
+
+/// @nodoc
+class __$PassengerRideInTripCopyWithImpl<$Res>
+    extends _$PassengerRideStateCopyWithImpl<$Res>
+    implements _$PassengerRideInTripCopyWith<$Res> {
+  __$PassengerRideInTripCopyWithImpl(
+      _PassengerRideInTrip _value, $Res Function(_PassengerRideInTrip) _then)
+      : super(_value, (v) => _then(v as _PassengerRideInTrip));
+
+  @override
+  _PassengerRideInTrip get _value => super._value as _PassengerRideInTrip;
+
+  @override
+  $Res call({
+    Object? rideRequest = freezed,
+  }) {
+    return _then(_PassengerRideInTrip(
+      rideRequest == freezed
+          ? _value.rideRequest
+          : rideRequest // ignore: cast_nullable_to_non_nullable
+              as RideRequest,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_PassengerRideInTrip implements _PassengerRideInTrip {
+  const _$_PassengerRideInTrip(this.rideRequest);
+
+  @override
+  final RideRequest rideRequest;
+
+  @override
+  String toString() {
+    return 'PassengerRideState.inTrip(rideRequest: $rideRequest)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerRideInTrip &&
+            const DeepCollectionEquality()
+                .equals(other.rideRequest, rideRequest));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(rideRequest));
+
+  @JsonKey(ignore: true)
+  @override
+  _$PassengerRideInTripCopyWith<_PassengerRideInTrip> get copyWith =>
+      __$PassengerRideInTripCopyWithImpl<_PassengerRideInTrip>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) error,
+    required TResult Function() init,
+    required TResult Function(DirectionDetails directionDetails) direction,
+    required TResult Function(String tixId) requesting,
+    required TResult Function(String tixId) ticketAccepted,
+    required TResult Function() driverArrived,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function(RideRequest rideRequest) inTrip,
+  }) {
+    return inTrip(rideRequest);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+  }) {
+    return inTrip?.call(rideRequest);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? error,
+    TResult Function()? init,
+    TResult Function(DirectionDetails directionDetails)? direction,
+    TResult Function(String tixId)? requesting,
+    TResult Function(String tixId)? ticketAccepted,
+    TResult Function()? driverArrived,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function(RideRequest rideRequest)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (inTrip != null) {
+      return inTrip(rideRequest);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerRideError value) error,
+    required TResult Function(_PassengerRideInit value) init,
+    required TResult Function(_PassengerRideDirection value) direction,
+    required TResult Function(_PassengerRideRequesting value) requesting,
+    required TResult Function(_PassengerRideTicketAccepted value)
+        ticketAccepted,
+    required TResult Function(_PassengerRideArrived value) driverArrived,
+    required TResult Function(_PassengerRideDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerRideInTrip value) inTrip,
+  }) {
+    return inTrip(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+  }) {
+    return inTrip?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerRideError value)? error,
+    TResult Function(_PassengerRideInit value)? init,
+    TResult Function(_PassengerRideDirection value)? direction,
+    TResult Function(_PassengerRideRequesting value)? requesting,
+    TResult Function(_PassengerRideTicketAccepted value)? ticketAccepted,
+    TResult Function(_PassengerRideArrived value)? driverArrived,
+    TResult Function(_PassengerRideDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerRideInTrip value)? inTrip,
+    required TResult orElse(),
+  }) {
+    if (inTrip != null) {
+      return inTrip(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerRideInTrip implements PassengerRideState {
+  const factory _PassengerRideInTrip(RideRequest rideRequest) =
+      _$_PassengerRideInTrip;
+
+  RideRequest get rideRequest;
+  @JsonKey(ignore: true)
+  _$PassengerRideInTripCopyWith<_PassengerRideInTrip> get copyWith =>
       throw _privateConstructorUsedError;
 }

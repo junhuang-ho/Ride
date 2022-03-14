@@ -24,7 +24,7 @@ class PassengerSearchView extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 1000,
               child: Padding(
                 padding: const EdgeInsets.only(

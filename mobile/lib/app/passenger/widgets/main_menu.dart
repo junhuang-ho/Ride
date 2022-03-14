@@ -21,42 +21,19 @@ class MainMenu extends HookConsumerWidget {
     return SizedBox(
       width: 300,
       child: Drawer(
+        backgroundColor: Theme.of(context).bottomAppBarColor,
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: <Widget>[
             const HeaderSection(),
-            const SizedBox(width: 5),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: const Text(
-                  'Wallet',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 15,
-                  ),
-                ),
-                onTap: () {
-                  context.go('/passenger/wallet');
-                },
-              ),
+            const SizedBox(height: 5),
+            ListTile(
+              title: const Text('Wallet'),
+              subtitle: const Text('View Account Balance and Holdings'),
+              leading: const Icon(Icons.wallet_membership),
+              onTap: () => context.go('/passenger/wallet'),
             ),
-            const SizedBox(width: 5),
-            Container(
-              height: 75,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      child: const Text('Send'),
-                      onPressed: () => context.go('/passenger/wallet/send'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(height: 5),
             const Divider(height: 1, color: Color(0xffe2e2e2), thickness: 1),
             ListTile(
               title: const Text('Private key'),
@@ -76,7 +53,7 @@ class MainMenu extends HookConsumerWidget {
             ListTile(
               title: const Text('Drive with Ride'),
               leading: const Icon(Icons.drive_eta),
-              onTap: () => context.go('/driver/register'),
+              onTap: () => context.go('/apply_driver'),
             ),
           ],
         ),

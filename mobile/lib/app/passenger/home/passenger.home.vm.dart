@@ -3,12 +3,13 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hex/hex.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/passenger/home/passenger.ride.vm.dart';
+import 'package:ride/app/passenger/trip/passenger.trip.vm.dart';
 import 'package:ride/app/ride/request.ticket.vm.dart';
 import 'package:ride/models/address.dart';
 import 'package:ride/models/nearby_driver.dart';
-import 'package:ride/services/ride/ride_ticket.dart';
 import 'package:ride/utils/constants.dart';
 import 'package:ride/utils/fire_helper.dart';
 import 'package:ride/utils/hex_helper.dart';
@@ -76,12 +77,14 @@ class PassengerHomeState with _$PassengerHomeState {
 class PassengerHomeVM extends StateNotifier<PassengerHomeState> {
   PassengerHomeVM(Reader read)
       : _passengerRideVM = read(passengerRideProvider.notifier),
+        _passengerTripVM = read(passengerTripProvider.notifier),
         _requestTicketVM = read(requestTicketProvider.notifier),
         super(PassengerHomeState.init(MapState.initial())) {
     checkRequestingStatus();
   }
 
   final PassengerRideVM _passengerRideVM;
+  final PassengerTripVM _passengerTripVM;
   final RequestTicketVM _requestTicketVM;
 
   Future<void> checkRequestingStatus() async {
@@ -89,6 +92,21 @@ class PassengerHomeVM extends StateNotifier<PassengerHomeState> {
     if (tixId == null || HexHelper.isAllZeroIn64Hex(tixId)) {
       return;
     }
+    final rideRequest = await FireHelper.getRideRequest(HEX.encode(tixId));
+
+    if (rideRequest.status == Strings.accepted) {
+      _passengerRideVM.updateTicketAccepted(HEX.encode(tixId));
+      return;
+    }
+
+    if (rideRequest.status == Strings.ontrip ||
+        rideRequest.status == Strings.destReached ||
+        rideRequest.status == Strings.destNotReached) {
+      _passengerRideVM.updateInTrip(rideRequest);
+      _passengerTripVM.updateOnTheWay(rideRequest);
+      return;
+    }
+
     // Switch to requesting status if ticket found
     await _passengerRideVM.requestRide(tixId);
   }
@@ -110,7 +128,7 @@ class PassengerHomeVM extends StateNotifier<PassengerHomeState> {
   void startGeoFireListener(Position currentPosition) {
     bool nearbyDriversKeysLoaded = false;
 
-    Geofire.initialize('driversAvailable');
+    Geofire.initialize(Strings.driversAvailable);
     Geofire.queryAtLocation(
             currentPosition.latitude, currentPosition.longitude, 20)!
         .listen((map) {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -8,13 +9,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/passenger/home/passenger.home.vm.dart';
 import 'package:ride/app/passenger/home/passenger.ride.vm.dart';
+import 'package:ride/app/passenger/trip/passenger.trip.vm.dart';
+import 'package:ride/app/passenger/widgets/agreement_sheet.dart';
 import 'package:ride/app/passenger/widgets/alert.dart';
 import 'package:ride/app/passenger/widgets/details_sheet.dart';
 import 'package:ride/app/passenger/widgets/main_menu.dart';
 import 'package:ride/app/passenger/widgets/menu_button.dart';
 import 'package:ride/app/passenger/widgets/requesting_sheet.dart';
 import 'package:ride/app/passenger/widgets/search_sheet.dart';
+import 'package:ride/app/passenger/widgets/trip_sheet.dart';
 import 'package:ride/app/ride/request.ticket.vm.dart';
+import 'package:ride/models/ride_request.dart';
 import 'package:ride/utils/constants.dart';
 
 class PassengerHomeView extends HookConsumerWidget {
@@ -26,6 +31,14 @@ class PassengerHomeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final passengerHome = ref.watch(passengerHomeProvider);
     final passengerHomeVM = ref.read(passengerHomeProvider.notifier);
+
+    ref.listen<PassengerTripState>(passengerTripProvider,
+        (prevTripState, newTripState) {
+      if (newTripState == const PassengerTripState.ended()) {
+        ref.read(requestTicketProvider.notifier).backToInit();
+        ref.read(passengerRideProvider.notifier).backToInit();
+      }
+    });
 
     bool drawerCanOpen = passengerHome.maybeWhen(
         init: (mapState) => mapState.drawerCanOpen, orElse: () => true);
@@ -89,7 +102,7 @@ class PassengerHomeView extends HookConsumerWidget {
           GoogleMap(
             padding: EdgeInsets.only(bottom: mapBottomPadding),
             mapType: MapType.normal,
-            initialCameraPosition: kGooglePlex,
+            initialCameraPosition: kKualaLumpurPlex,
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
             zoomGesturesEnabled: true,
@@ -137,12 +150,62 @@ class PassengerHomeView extends HookConsumerWidget {
           Consumer(
             builder: (context, ref, _) {
               final passengerRide = ref.watch(passengerRideProvider);
+              double sheetHeight = (Platform.isIOS) ? 220 : 195;
               double requestingSheetHeight = passengerRide.maybeWhen(
-                  requesting: (_) => (Platform.isIOS) ? 220 : 195,
-                  orElse: () => 0.0);
+                requesting: (_) => sheetHeight,
+                ticketAccepted: (_) => sheetHeight,
+                orElse: () => 0.0,
+              );
               return RequestingSheet(
                 requestingSheetHeight: requestingSheetHeight,
-                tixId: passengerRide.whenOrNull(requesting: (tixId) => tixId),
+                tixId: passengerRide.whenOrNull(
+                    requesting: (tixId) => tixId,
+                    ticketAccepted: (tixId) => tixId),
+              );
+            },
+          ),
+          Consumer(
+            builder: (context, ref, _) {
+              final passengerRide = ref.watch(passengerRideProvider);
+              double tripSheetHeight = passengerRide.maybeWhen(
+                inTrip: (_) => (Platform.isIOS) ? 275 : 300,
+                orElse: () => 0.0,
+              );
+
+              RideRequest? rideRequest = passengerRide.maybeWhen(
+                  inTrip: (rideRequest) {
+                    ref.listen<AsyncValue<DatabaseEvent>>(
+                      rideRequestProvider(rideRequest.tixId),
+                      (prev, next) {
+                        next.whenData(
+                          (dbEvent) {
+                            final rawRideRequest = dbEvent.snapshot.value;
+                            if (rawRideRequest != null) {
+                              final rideRequest =
+                                  RideRequest.parseRaw(rawRideRequest);
+                              if (rideRequest.status == Strings.destReached ||
+                                  rideRequest.status ==
+                                      Strings.destNotReached) {
+                                showModalBottomSheet(
+                                  isDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AgreementSheet(
+                                        rideRequest: rideRequest);
+                                  },
+                                );
+                              }
+                            }
+                          },
+                        );
+                      },
+                    );
+                    return rideRequest;
+                  },
+                  orElse: () => null);
+              return TripSheet(
+                tripSheetHeight: tripSheetHeight,
+                rideRequest: rideRequest,
               );
             },
           ),

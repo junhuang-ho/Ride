@@ -6,11 +6,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hex/hex.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/passenger/trip/passenger.trip.vm.dart';
 import 'package:ride/models/address.dart';
 import 'package:ride/models/direction_details.dart';
+import 'package:ride/models/ride_request.dart';
 import 'package:ride/services/maps_api.dart';
-import 'package:ride/services/ride/ride_driver.dart';
 import 'package:ride/utils/connectivity_helper.dart';
+import 'package:ride/utils/constants.dart';
+import 'package:ride/utils/fire_helper.dart';
 
 part 'passenger.ride.vm.freezed.dart';
 
@@ -22,10 +25,15 @@ class PassengerRideState with _$PassengerRideState {
       DirectionDetails directionDetails) = _PassengerRideDirection;
   const factory PassengerRideState.requesting(String tixId) =
       _PassengerRideRequesting;
+  const factory PassengerRideState.ticketAccepted(String tixId) =
+      _PassengerRideTicketAccepted;
+  const factory PassengerRideState.driverArrived() = _PassengerRideArrived;
+  const factory PassengerRideState.inTrip(RideRequest rideRequest) =
+      _PassengerRideInTrip;
 }
 
 class PassengerRideVM extends StateNotifier<PassengerRideState> {
-  PassengerRideVM() : super(const PassengerRideState.init());
+  PassengerRideVM(Reader read) : super(const PassengerRideState.init());
 
   Address? pickUpAddress;
   Address? destAddress;
@@ -110,7 +118,7 @@ class PassengerRideVM extends StateNotifier<PassengerRideState> {
 
   Future<void> requestRide(Uint8List? tixId) async {
     if (tixId == null) {
-      state = const PassengerRideState.error('Sorry, something goes wrong');
+      state = const PassengerRideState.error('Sorry, ticket ID not found.');
       return;
     }
 
@@ -118,9 +126,6 @@ class PassengerRideVM extends StateNotifier<PassengerRideState> {
       final encodedTixId = HEX.encode(tixId);
       state = PassengerRideState.requesting(encodedTixId);
       if (pickUpAddress != null && destAddress != null) {
-        final ticketListRef = FirebaseDatabase.instance.ref('request-tickets');
-        final newTicketRef = ticketListRef.push();
-
         final Map pickUpMap = {
           'latitude': pickUpAddress!.latitude.toString(),
           'longitude': pickUpAddress!.longitude.toString(),
@@ -131,17 +136,18 @@ class PassengerRideVM extends StateNotifier<PassengerRideState> {
           'longitude': destAddress!.longitude.toString(),
         };
 
-        Map rideMap = <String, Object>{
+        Map<String, Object> rideMap = {
           'tix_id': encodedTixId,
           'created_at': DateTime.now().toString(),
           'pickup_address': pickUpAddress!.placeName,
           'destination_address': destAddress!.placeName,
           'location': pickUpMap,
           'destination': destinationMap,
-          'driver_id': 'waiting',
+          'driver_id': Strings.waiting,
+          'status': Strings.waiting,
         };
 
-        newTicketRef.set(rideMap);
+        await FireHelper.addRideRequest(encodedTixId, rideMap);
       }
     } catch (ex) {
       state = PassengerRideState.error(ex.toString());
@@ -150,20 +156,48 @@ class PassengerRideVM extends StateNotifier<PassengerRideState> {
 
   Future<void> cancelRide({String? tixId}) async {
     if (tixId != null) {
-      final ticketListRef = FirebaseDatabase.instance.ref('request-tickets');
-      final ticketQuery = ticketListRef.orderByChild('tix_id').equalTo(tixId);
-      await ticketQuery.ref.remove();
+      await FireHelper.removeRideRequest(tixId);
     }
+    backToInit();
+  }
+
+  void updateTicketAccepted(String tixId) {
+    state = PassengerRideState.ticketAccepted(tixId);
+  }
+
+  void updateDriverArrived() {
+    // state = const PassengerRideState.driverArrived();
+  }
+
+  Future<void> startRideTrip(RideRequest rideRequest) async {
+    try {
+      await FireHelper.updateRideRequest(
+        rideRequest.tixId,
+        {"status": Strings.ontrip},
+      );
+      updateInTrip(rideRequest);
+    } catch (ex) {
+      state = PassengerRideState.error(ex.toString());
+    }
+  }
+
+  void updateInTrip(RideRequest rideRequest) {
+    state = PassengerRideState.inTrip(rideRequest);
+  }
+
+  void backToInit() {
     state = const PassengerRideState.init();
   }
 }
 
 final passengerRideProvider =
-    StateNotifierProvider<PassengerRideVM, PassengerRideState>(
-        (ref) => PassengerRideVM());
+    StateNotifierProvider.autoDispose<PassengerRideVM, PassengerRideState>(
+        (ref) => PassengerRideVM(ref.read));
 
-final requestAcceptedEventProvider = StreamProvider((ref) {
-  final rideDriver = ref.watch(rideDriverProvider);
-
-  return rideDriver.rideDriver.acceptedTicketEvents();
+final rideRequestProvider =
+    StreamProvider.family.autoDispose<DatabaseEvent, String?>((ref, tixId) {
+  if (tixId != null) {
+    return FireHelper.getRideRequestStreamByTixId(tixId);
+  }
+  return const Stream.empty();
 });

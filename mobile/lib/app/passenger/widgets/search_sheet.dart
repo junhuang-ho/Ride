@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ride/app/passenger/widgets/common_sheet.dart';
+import 'package:ride/widgets/common_sheet.dart';
 
 class SearchSheet extends HookConsumerWidget {
   const SearchSheet({
