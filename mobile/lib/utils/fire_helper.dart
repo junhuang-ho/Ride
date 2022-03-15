@@ -1,14 +1,18 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:ride/models/driver_application.dart';
 import 'package:ride/models/nearby_driver.dart';
 import 'package:ride/models/ride_request.dart';
 
 class FireHelper {
-  static List<NearbyDriver> _nearbyDriverList = [];
+  static final List<NearbyDriver> _nearbyDriverList = [];
 
   static List<NearbyDriver> get nearbyDriverList => _nearbyDriverList;
 
   static final _rideRequestsRef =
       FirebaseDatabase.instance.ref('ride_requests');
+
+  static final _driverApplicantsRef =
+      FirebaseDatabase.instance.ref('driver_applications');
 
   static void addNearbyDriver(NearbyDriver driver) {
     _nearbyDriverList.add(driver);
@@ -25,6 +29,28 @@ class FireHelper {
         .indexWhere((existingDriver) => existingDriver.key == driver.key);
     _nearbyDriverList[index].latitude = driver.latitude;
     _nearbyDriverList[index].longitude = driver.longitude;
+  }
+
+  static Future<void> addDriverApplication(
+      String driverId, Map<String, Object> applicantMap) async {
+    await _driverApplicantsRef.child(driverId).set(applicantMap);
+  }
+
+  static Stream<DatabaseEvent> getDriverApplicationsStream(String status) {
+    return _driverApplicantsRef.orderByChild('status').equalTo(status).onValue;
+  }
+
+  static Future<DriverApplication?> getDriverApplication(
+      String driverId) async {
+    return await _driverApplicantsRef.child(driverId).once().then((result) {
+      final Object? value = result.snapshot.value;
+      return value != null ? DriverApplication.parseRaw(value) : null;
+    });
+  }
+
+  static Future<void> updateDriverApplication(
+      String driverId, Map<String, Object?> value) async {
+    await _driverApplicantsRef.child(driverId).update(value);
   }
 
   static Future<void> addRideRequest(
