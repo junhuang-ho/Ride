@@ -35,7 +35,7 @@ class AgreementSheet extends HookConsumerWidget {
           children: <Widget>[
             const SizedBox(height: 10),
             Text(
-              'Are you agree that Destination ${rideRequest.status == Strings.destReached ? '' : ' Not '} Reached',
+              'Are you agree that Destination${rideRequest.status == Strings.destReached ? '' : ' Not'} Reached?',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 22,
