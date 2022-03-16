@@ -101,64 +101,64 @@ class DetailsSheet extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 22),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(width: 16),
-                  const Icon(
-                    Icons.badge,
-                    size: 18,
-                    color: RideColors.colorTextLight,
-                  ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'Badge',
-                    style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
-                  ),
-                  const SizedBox(width: 5),
-                  SizedBox(
-                    height: 50,
-                    width: 30,
-                    child: NumberPicker(
-                      zeroPad: true,
-                      minValue: 0,
-                      maxValue: 6,
-                      value: badge.value,
-                      onChanged: (value) {
-                        badge.value = value;
-                      },
-                      textStyle: const TextStyle(fontSize: 18),
-                      haptics: true,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: RideColors.colorTextLight,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 16),
-                  const Icon(
-                    Icons.assignment_turned_in,
-                    size: 18,
-                    color: RideColors.colorTextLight,
-                  ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'Strict',
-                    style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
-                  ),
-                  const SizedBox(width: 5),
-                  Switch(
-                    value: strict.value,
-                    onChanged: (value) {
-                      strict.value = value;
-                    },
-                  )
-                ],
-              ),
-            ),
+            // const SizedBox(height: 22),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16),
+            //   child: Row(
+            //     children: <Widget>[
+            //       const SizedBox(width: 16),
+            //       const Icon(
+            //         Icons.badge,
+            //         size: 18,
+            //         color: RideColors.colorTextLight,
+            //       ),
+            //       const SizedBox(width: 16),
+            //       const Text(
+            //         'Badge',
+            //         style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
+            //       ),
+            //       const SizedBox(width: 5),
+            //       SizedBox(
+            //         height: 50,
+            //         width: 30,
+            //         child: NumberPicker(
+            //           zeroPad: true,
+            //           minValue: 0,
+            //           maxValue: 6,
+            //           value: badge.value,
+            //           onChanged: (value) {
+            //             badge.value = value;
+            //           },
+            //           textStyle: const TextStyle(fontSize: 18),
+            //           haptics: true,
+            //         ),
+            //       ),
+            //       const Icon(
+            //         Icons.keyboard_arrow_down,
+            //         color: RideColors.colorTextLight,
+            //         size: 16,
+            //       ),
+            //       const SizedBox(width: 16),
+            //       const Icon(
+            //         Icons.assignment_turned_in,
+            //         size: 18,
+            //         color: RideColors.colorTextLight,
+            //       ),
+            //       const SizedBox(width: 16),
+            //       const Text(
+            //         'Strict',
+            //         style: TextStyle(fontSize: 18, fontFamily: 'Brand-Bold'),
+            //       ),
+            //       const SizedBox(width: 5),
+            //       Switch(
+            //         value: strict.value,
+            //         onChanged: (value) {
+            //           strict.value = value;
+            //         },
+            //       )
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
