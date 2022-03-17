@@ -59,7 +59,8 @@ class PassengerSearchView extends HookConsumerWidget {
                               .notifier
                               .select((passengerAddressVM) =>
                                   passengerAddressVM.pickUpAddress));
-                          pickupController.text = pickUpAddress!.placeName;
+                          pickupController.text =
+                              pickUpAddress?.placeName ?? '';
 
                           return SearchField(
                             imageName: 'images/pickicon.png',
