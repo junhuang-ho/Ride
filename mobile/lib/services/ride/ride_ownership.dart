@@ -5,13 +5,13 @@ import 'package:web3dart/web3dart.dart';
 import 'package:ride/abi/RideOwnership.g.dart';
 
 class RideOwnershipService {
-  late RideOwnership _rideOwnership;
-
-  RideOwnershipService(
-      {required EthereumAddress rideHubAddress,
-      required Web3Client web3Client}) {
-    _rideOwnership = RideOwnership(address: rideHubAddress, client: web3Client);
+  RideOwnershipService(Reader read) : _rideHub = read(rideHubProvider) {
+    _rideOwnership = RideOwnership(
+        address: _rideHub.rideHubAddress, client: _rideHub.web3Client);
   }
+
+  final RideHubService _rideHub;
+  late RideOwnership _rideOwnership;
 
   Future<EthereumAddress> getOwner() async {
     return await _rideOwnership.owner();
@@ -19,10 +19,5 @@ class RideOwnershipService {
 }
 
 final rideOwnershipProvider = Provider<RideOwnershipService>((ref) {
-  final rideHub = ref.watch(rideHubProvider);
-
-  return RideOwnershipService(
-    rideHubAddress: rideHub.rideHubAddress,
-    web3Client: rideHub.web3Client,
-  );
+  return RideOwnershipService(ref.read);
 });

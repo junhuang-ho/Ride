@@ -9,14 +9,6 @@ class RidePassengerService {
   RidePassengerService(Reader read) : _rideHub = read(rideHubProvider) {
     _ridePassenger = RidePassenger(
         address: _rideHub.rideHubAddress, client: _rideHub.web3Client);
-    _ridePassenger.requestTicketEvents().listen((event) {
-      print('Tix ID: ${event.tixId}');
-      print('Sender: ${event.sender}');
-    });
-    // _ridePassenger.requestCancelledEvents().listen((event) {
-    //   print('Tix ID: ${event.tixId}');
-    //   print('Sender: ${event.sender}');
-    // });
   }
 
   final RideHubService _rideHub;
