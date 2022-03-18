@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:go_router/go_router.dart';
 
 typedef OnScanned = void Function(String? address);
 
@@ -66,8 +65,8 @@ class _QRCodeReaderViewState extends ConsumerState<QRCodeReaderView> {
         _subscription?.cancel();
 
         if (Navigator.canPop(context)) {
-          // Navigator.pop(context);
-          context.pop();
+          Navigator.pop(context);
+          // context.pop();
         }
       }
     });
