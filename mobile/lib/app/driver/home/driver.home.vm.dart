@@ -7,6 +7,7 @@ import 'package:hex/hex.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/driver/home/driver.ride.vm.dart';
+import 'package:ride/app/driver/trip/driver.trip.vm.dart';
 import 'package:ride/app/ride/request.ticket.vm.dart';
 import 'package:ride/utils/constants.dart';
 import 'package:ride/utils/fire_helper.dart';
@@ -30,6 +31,7 @@ class DriverHomeVM extends StateNotifier<DriverHomeState> {
       : _authVM = read(authProvider.notifier),
         _requestTicketVM = read(requestTicketProvider.notifier),
         _driverRideVM = read(driverRideProvider.notifier),
+        _driverTripVM = read(driverTripProvider.notifier),
         super(const DriverHomeState.offline()) {
     checkAcceptedStatus();
   }
@@ -38,6 +40,7 @@ class DriverHomeVM extends StateNotifier<DriverHomeState> {
   final AuthVM _authVM;
   final RequestTicketVM _requestTicketVM;
   final DriverRideVM _driverRideVM;
+  final DriverTripVM _driverTripVM;
 
   Future<void> checkAcceptedStatus() async {
     final tixId = await _requestTicketVM.getTicket();
@@ -49,6 +52,13 @@ class DriverHomeVM extends StateNotifier<DriverHomeState> {
     final driverAddress = await _authVM.getPublicKey();
     if (rideRequest.driverId == driverAddress) {
       _driverRideVM.updateInTrip(rideRequest);
+      if (rideRequest.status == Strings.ontrip ||
+          rideRequest.status == Strings.destReached ||
+          rideRequest.status == Strings.destNotReached ||
+          rideRequest.status == Strings.paxAgreed) {
+        _driverTripVM.updateOnTheWay(rideRequest);
+        return;
+      }
     }
   }
 
@@ -90,6 +100,8 @@ class DriverHomeVM extends StateNotifier<DriverHomeState> {
 
 final driverHomeProvider =
     StateNotifierProvider<DriverHomeVM, DriverHomeState>((ref) {
+  ref.watch(authProvider);
+
   return DriverHomeVM(ref.read);
 });
 
