@@ -15,6 +15,13 @@ class RideFeeService {
   final RideHubService _rideHub;
   late RideFee _rideFee;
 
+  Future<BigInt> getFare(Uint8List keyLocal, BigInt badge,
+      BigInt metresTravelled, BigInt minutesTaken) async {
+    final fare =
+        await _rideFee.getFare(keyLocal, badge, minutesTaken, metresTravelled);
+    return fare;
+  }
+
   Future<BigInt> getCancellationFee(Uint8List keyPay) async {
     return await _rideFee.getCancellationFee(keyPay);
   }
