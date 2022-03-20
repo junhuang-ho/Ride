@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/abi/RideTicket.g.dart';
+import 'package:ride/models/ticket.dart';
 import 'package:ride/services/ride/ride_hub.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -17,6 +18,11 @@ class RideTicketService {
   Future<Uint8List> getTixId(EthereumAddress user) async {
     final tixId = await _rideTicket.getUserToTixId(user);
     return tixId;
+  }
+
+  Future<Ticket> getTicket(Uint8List tixId) async {
+    List<dynamic> resultInRawArray = await _rideTicket.getTixIdToTicket(tixId);
+    return Ticket.parseRaw(resultInRawArray);
   }
 }
 
