@@ -27,7 +27,7 @@ class AdminView extends HookConsumerWidget {
           padding: 30,
           actionButtons: <Widget>[
             TextButton(
-              child: const Text('reset'),
+              child: const Text('Log out'),
               onPressed: () async {
                 await ref.read(authProvider.notifier).deleteAccount();
                 context.go('/');
