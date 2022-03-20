@@ -13,6 +13,7 @@ import 'package:ride/app/wallet/widgets/wallet_app_bar.dart';
 import 'package:ride/utils/eth_amount_formatter.dart';
 import 'package:ride/utils/ride_colors.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
+import 'package:ride/widgets/sheet_handle.dart';
 
 class NewWalletView extends HookConsumerWidget {
   const NewWalletView({Key? key}) : super(key: key);
@@ -93,7 +94,7 @@ class AccountInfo extends StatelessWidget {
         const SizedBox(height: 15),
         CircleAvatar(
           radius: 28,
-          backgroundColor: RideColors.secondaryColor,
+          backgroundColor: RideColors.primaryColor,
           child: CircleAvatar(
             child: SvgPicture.string(Jdenticon.toSvg(publicKey)),
             radius: 25,
@@ -172,7 +173,7 @@ class WalletActionButton extends StatelessWidget {
             ),
             child: CircleAvatar(
               radius: 20,
-              backgroundColor: RideColors.secondaryColor,
+              backgroundColor: RideColors.primaryColor,
               foregroundColor: Colors.white,
               child: Icon(actionIcon),
             ),
@@ -183,7 +184,7 @@ class WalletActionButton extends StatelessWidget {
           actionText,
           style: const TextStyle(
             fontSize: 15,
-            color: RideColors.secondaryColor,
+            color: RideColors.primaryColor,
           ),
         )
       ],
@@ -214,14 +215,7 @@ class WalletReceiveSheet extends HookConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         child: Column(
           children: <Widget>[
-            Container(
-              width: 40.0,
-              height: 5.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.grey,
-              ),
-            ),
+            const SheetHandle(),
             const SizedBox(height: 15),
             const Text(
               'Receive',

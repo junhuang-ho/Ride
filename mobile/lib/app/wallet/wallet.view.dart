@@ -36,24 +36,6 @@ class WalletView extends HookConsumerWidget {
               },
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.savings),
-            onPressed: wallet.maybeWhen(
-              loading: null,
-              orElse: () => () {
-                context.push('/passenger/wallet/deposit');
-              },
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.monetization_on),
-            onPressed: wallet.maybeWhen(
-              loading: null,
-              orElse: () => () {
-                context.push('/passenger/wallet/withdraw');
-              },
-            ),
-          ),
         ],
       ),
       body: Center(
