@@ -64,9 +64,12 @@ class NewWalletView extends HookConsumerWidget {
                   const SizedBox(height: 25),
                   TabBar(
                     controller: tabController,
-                    tabs: const [Tab(text: 'TOKENS'), Tab(text: 'NFTs')],
+                    tabs: const [Tab(text: 'TOKENS'), Tab(text: 'Activity')],
                   ),
-                  TokensList(tokenBalance: walletData.wETHBalance),
+                  TokensList(
+                    ethBalance: walletData.balance!.getInWei,
+                    tokenBalance: walletData.wETHBalance,
+                  ),
                 ],
               ),
             ),
@@ -253,9 +256,11 @@ class WalletReceiveSheet extends HookConsumerWidget {
 class TokensList extends StatelessWidget {
   const TokensList({
     Key? key,
+    required this.ethBalance,
     required this.tokenBalance,
   }) : super(key: key);
 
+  final BigInt ethBalance;
   final BigInt tokenBalance;
 
   @override
@@ -268,7 +273,17 @@ class TokensList extends StatelessWidget {
             vertical: 15.0,
             horizontal: 20.0,
           ),
-          leading: Image.asset('images/ethereum-logo.png'),
+          leading: Image.asset('images/matic-logo.png', width: 40),
+          title: Text('${EthAmountFormatter(ethBalance).format()} MATIC'),
+          trailing: const Icon(Icons.arrow_forward_ios),
+          onTap: () => context.push('/passenger/wallet/send'),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 15.0,
+            horizontal: 20.0,
+          ),
+          leading: Image.asset('images/ethereum-logo.png', width: 40),
           title: Text('${EthAmountFormatter(tokenBalance).format()} WETH'),
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => context.push('/passenger/wallet/send'),
