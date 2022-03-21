@@ -34,8 +34,8 @@ class UpdateDriverView extends HookConsumerWidget {
           children: <Widget>[
             updateDriver.when(
               init: () => PaperInput(
-                labelText: "Max Metres Per Trip",
-                hintText: 'Please type in max metres per trip',
+                labelText: "Maximum Travel Distance",
+                hintText: 'Please type in distance in metres',
                 maxLines: 1,
                 controller: updateDriverController,
               ),

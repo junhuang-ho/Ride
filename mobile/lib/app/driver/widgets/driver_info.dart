@@ -34,27 +34,27 @@ class DriverInfo extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('URI'),
+            title: const Text('Documents'),
             trailing: Text('$uri'),
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('Max Metres Per Trip'),
+            title: const Text('Maximum Travel Distance'),
             trailing: Text('$maxMetresPerTrip'),
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('Metres Travelled'),
+            title: const Text('Distance Travelled'),
             trailing: Text('$metresTravelled'),
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('Count Start'),
+            title: const Text('Number of Trips Began'),
             trailing: Text('$countStart'),
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('Count End'),
+            title: const Text('Number of Trips Completed'),
             trailing: Text('$countEnd'),
           ),
           ListTile(
@@ -64,7 +64,7 @@ class DriverInfo extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity),
-            title: const Text('Count Rating'),
+            title: const Text('No. of Rating'),
             trailing: Text('$countRating'),
           ),
         ],
