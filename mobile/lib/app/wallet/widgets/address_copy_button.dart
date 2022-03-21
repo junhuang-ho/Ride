@@ -48,6 +48,7 @@ class AddressCopyButton extends StatelessWidget {
                 style: const TextStyle(fontSize: 18),
               ),
             ),
+            const Icon(Icons.copy, size: 15),
           ],
         ),
       ),
