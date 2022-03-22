@@ -94,8 +94,8 @@ class PassengerSearchView extends HookConsumerWidget {
                           itemBuilder: (context, index) {
                             return PredictionTile(
                               prediction: predictions[index],
-                              onSelect: () async {
-                                await ref
+                              onSelect: () {
+                                ref
                                     .read(passengerRideProvider.notifier)
                                     .updateDestinationAddress(
                                       predictions[index].placeId,
