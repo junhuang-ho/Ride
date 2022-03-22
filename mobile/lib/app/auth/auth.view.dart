@@ -54,8 +54,7 @@ class AuthView extends HookConsumerWidget {
             const SizedBox(height: 20),
             MaterialButton(
               height: 55,
-              color: Colors.white,
-              textColor: Colors.black,
+              color: Theme.of(context).primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
