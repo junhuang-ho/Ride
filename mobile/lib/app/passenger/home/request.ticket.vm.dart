@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/services/crypto.dart';
 import 'package:ride/services/repository.dart';
 import 'package:ride/services/ride/ride_currency_registry.dart';
@@ -85,5 +86,6 @@ class RequestTicketVM extends StateNotifier<RequestTicketState> {
 
 final requestTicketProvider =
     StateNotifierProvider<RequestTicketVM, RequestTicketState>((ref) {
+  ref.watch(authProvider);
   return RequestTicketVM(ref.read);
 });
