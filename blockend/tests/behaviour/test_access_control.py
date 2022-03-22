@@ -10,9 +10,9 @@ TEST1_ROLE_ADMIN = Web3.toHex(Web3.solidityKeccak(["string"], ["TEST1_ROLE_ADMIN
 
 
 @pytest.fixture(scope="module", autouse=True)
-def ride_access_control(ride_hub, RideAccessControl, Contract, deployer):
+def ride_access_control(ride_hub, AccessControl, Contract, deployer):
     yield Contract.from_abi(
-        "RideAccessControl", ride_hub[0].address, RideAccessControl.abi, deployer
+        "AccessControl", ride_hub[0].address, AccessControl.abi, deployer
     )
 
 
@@ -37,9 +37,10 @@ def test_default_admin_role(ride_access_control):
 
 def test_admin_role(
     ride_hub,
-    RideTestAccessControl,
+    TestAccessControl,
     Contract,
     ride_access_control,
+    ride_multi_sigs,
     deployer,
     person1,
     person2,
@@ -47,17 +48,16 @@ def test_admin_role(
     # only admin of role can grant/revoke that role on addresses - DEFAULT_ADMIN_ROLE
     assert not ride_access_control.hasRole(TEST1_ROLE, person1)
 
-    tx = ride_access_control.grantRole(TEST1_ROLE, person1, {"from": deployer})
+    tx = ride_access_control.grantRole(
+        TEST1_ROLE, person1, {"from": ride_multi_sigs[0]}
+    )
     tx.wait(1)
 
     assert ride_access_control.hasRole(TEST1_ROLE, person1)
 
     # only admin of role can grant/revoke that role on addresses - TEST1_ROLE_ADMIN
     ride_access_control_1 = Contract.from_abi(
-        "RideTestAccessControl",
-        ride_hub[0].address,
-        RideTestAccessControl.abi,
-        deployer,
+        "TestAccessControl", ride_hub[0].address, TestAccessControl.abi, deployer,
     )
 
     ### giving addresses admin role, note this fn is NOT exposed as external fn as it can be dangerous
@@ -66,7 +66,9 @@ def test_admin_role(
 
     assert not ride_access_control.hasRole(TEST1_ROLE_ADMIN, person1)
 
-    tx = ride_access_control.grantRole(TEST1_ROLE_ADMIN, person1, {"from": deployer})
+    tx = ride_access_control.grantRole(
+        TEST1_ROLE_ADMIN, person1, {"from": ride_multi_sigs[0]}
+    )
     tx.wait(1)
 
     assert not ride_access_control.hasRole(TEST1_ROLE, person2)

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
@@ -15,8 +16,12 @@ contract RideGovernor is
     GovernorCountingSimple,
     GovernorVotes,
     GovernorVotesQuorumFraction,
-    GovernorTimelockControl
+    GovernorTimelockControl,
+    Ownable
 {
+    // custom state variables
+    mapping(uint256 => bool) public expiredProposalIdToExecuted;
+
     constructor(
         ERC20Votes _token,
         TimelockController _timelock,
@@ -36,9 +41,57 @@ contract RideGovernor is
         GovernorTimelockControl(_timelock)
     {}
 
-    // function getCurrentBlockNumber() external view returns (uint256) {
-    //     return block.number;
-    // }
+    // custom
+
+    function state(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (ProposalState)
+    {
+        ProposalState baseState = super.state(proposalId);
+        if (
+            baseState == ProposalState.Defeated && !_quorumReached(proposalId)
+        ) {
+            if (expiredProposalIdToExecuted[proposalId]) {
+                return ProposalState.Executed;
+            } else {
+                return ProposalState.Expired; // note: when quorum not reached
+            }
+        } else {
+            return baseState;
+        }
+    }
+
+    // TODO: test
+    // TODO: transfer ownership to multisig
+    function fallbackExecute(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) external payable onlyOwner returns (uint256) {
+        uint256 proposalId = hashProposal(
+            targets,
+            values,
+            calldatas,
+            descriptionHash
+        );
+
+        ProposalState status = state(proposalId);
+        require(
+            status == ProposalState.Expired,
+            "RideGovernor: proposal not expired"
+        );
+        // _proposals[proposalId].executed = true; // private state variable not visible
+        expiredProposalIdToExecuted[proposalId] = true;
+
+        emit ProposalExecuted(proposalId);
+
+        _execute(proposalId, targets, values, calldatas, descriptionHash);
+
+        return proposalId;
+    }
 
     // The following functions are overrides required by Solidity.
 
@@ -78,14 +131,14 @@ contract RideGovernor is
         return super.getVotes(account, blockNumber);
     }
 
-    function state(uint256 proposalId)
-        public
-        view
-        override(Governor, GovernorTimelockControl)
-        returns (ProposalState)
-    {
-        return super.state(proposalId);
-    }
+    // function state(uint256 proposalId)
+    //     public
+    //     view
+    //     override(Governor, GovernorTimelockControl)
+    //     returns (ProposalState)
+    // {
+    //     return super.state(proposalId);
+    // }
 
     function propose(
         address[] memory targets,

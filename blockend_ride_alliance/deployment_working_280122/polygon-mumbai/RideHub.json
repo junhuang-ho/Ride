@@ -1,0 +1,1 @@
+{"address":"0x2554FAc78F53b92d57999A635985518D7b3edb43","abi":[{"inputs":[{"internalType":"address","name":"_contractOwner","type":"address"},{"internalType":"address","name":"_rideCutFacet","type":"address"}],"stateMutability":"payable","type":"constructor"},{"stateMutability":"payable","type":"fallback"},{"stateMutability":"payable","type":"receive"}]}
