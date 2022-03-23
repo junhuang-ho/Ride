@@ -35,6 +35,7 @@ const $Wallet = _$WalletTearOff();
 
 /// @nodoc
 mixin _$Wallet {
+// ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   EtherAmount? get balance => throw _privateConstructorUsedError;
   BigInt get wETHBalance => throw _privateConstructorUsedError;
@@ -136,7 +137,7 @@ class _$_Wallet implements _Wallet {
       required this.wETHBalance,
       required this.holdingInCrypto});
 
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   final EtherAmount? balance;
   @override
@@ -180,7 +181,7 @@ abstract class _Wallet implements Wallet {
       required BigInt wETHBalance,
       required BigInt holdingInCrypto}) = _$_Wallet;
 
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   EtherAmount? get balance;
   @override

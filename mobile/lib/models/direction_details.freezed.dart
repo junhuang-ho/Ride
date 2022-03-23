@@ -19,12 +19,20 @@ class _$DirectionDetailsTearOff {
   const _$DirectionDetailsTearOff();
 
   _DirectionDetails call(
-      {required String distanceText,
+      {required String startAddress,
+      required LatLng startLocation,
+      required String endAddress,
+      required LatLng endLocation,
+      required String distanceText,
       required String durationText,
       required int distanceValue,
       required int durationValue,
       required String encodedPoints}) {
     return _DirectionDetails(
+      startAddress: startAddress,
+      startLocation: startLocation,
+      endAddress: endAddress,
+      endLocation: endLocation,
       distanceText: distanceText,
       durationText: durationText,
       distanceValue: distanceValue,
@@ -39,6 +47,10 @@ const $DirectionDetails = _$DirectionDetailsTearOff();
 
 /// @nodoc
 mixin _$DirectionDetails {
+  String get startAddress => throw _privateConstructorUsedError;
+  LatLng get startLocation => throw _privateConstructorUsedError;
+  String get endAddress => throw _privateConstructorUsedError;
+  LatLng get endLocation => throw _privateConstructorUsedError;
   String get distanceText => throw _privateConstructorUsedError;
   String get durationText => throw _privateConstructorUsedError;
   int get distanceValue => throw _privateConstructorUsedError;
@@ -56,7 +68,11 @@ abstract class $DirectionDetailsCopyWith<$Res> {
           DirectionDetails value, $Res Function(DirectionDetails) then) =
       _$DirectionDetailsCopyWithImpl<$Res>;
   $Res call(
-      {String distanceText,
+      {String startAddress,
+      LatLng startLocation,
+      String endAddress,
+      LatLng endLocation,
+      String distanceText,
       String durationText,
       int distanceValue,
       int durationValue,
@@ -74,6 +90,10 @@ class _$DirectionDetailsCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? startAddress = freezed,
+    Object? startLocation = freezed,
+    Object? endAddress = freezed,
+    Object? endLocation = freezed,
     Object? distanceText = freezed,
     Object? durationText = freezed,
     Object? distanceValue = freezed,
@@ -81,6 +101,22 @@ class _$DirectionDetailsCopyWithImpl<$Res>
     Object? encodedPoints = freezed,
   }) {
     return _then(_value.copyWith(
+      startAddress: startAddress == freezed
+          ? _value.startAddress
+          : startAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      startLocation: startLocation == freezed
+          ? _value.startLocation
+          : startLocation // ignore: cast_nullable_to_non_nullable
+              as LatLng,
+      endAddress: endAddress == freezed
+          ? _value.endAddress
+          : endAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      endLocation: endLocation == freezed
+          ? _value.endLocation
+          : endLocation // ignore: cast_nullable_to_non_nullable
+              as LatLng,
       distanceText: distanceText == freezed
           ? _value.distanceText
           : distanceText // ignore: cast_nullable_to_non_nullable
@@ -113,7 +149,11 @@ abstract class _$DirectionDetailsCopyWith<$Res>
       __$DirectionDetailsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String distanceText,
+      {String startAddress,
+      LatLng startLocation,
+      String endAddress,
+      LatLng endLocation,
+      String distanceText,
       String durationText,
       int distanceValue,
       int durationValue,
@@ -133,6 +173,10 @@ class __$DirectionDetailsCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? startAddress = freezed,
+    Object? startLocation = freezed,
+    Object? endAddress = freezed,
+    Object? endLocation = freezed,
     Object? distanceText = freezed,
     Object? durationText = freezed,
     Object? distanceValue = freezed,
@@ -140,6 +184,22 @@ class __$DirectionDetailsCopyWithImpl<$Res>
     Object? encodedPoints = freezed,
   }) {
     return _then(_DirectionDetails(
+      startAddress: startAddress == freezed
+          ? _value.startAddress
+          : startAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      startLocation: startLocation == freezed
+          ? _value.startLocation
+          : startLocation // ignore: cast_nullable_to_non_nullable
+              as LatLng,
+      endAddress: endAddress == freezed
+          ? _value.endAddress
+          : endAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      endLocation: endLocation == freezed
+          ? _value.endLocation
+          : endLocation // ignore: cast_nullable_to_non_nullable
+              as LatLng,
       distanceText: distanceText == freezed
           ? _value.distanceText
           : distanceText // ignore: cast_nullable_to_non_nullable
@@ -168,12 +228,24 @@ class __$DirectionDetailsCopyWithImpl<$Res>
 
 class _$_DirectionDetails implements _DirectionDetails {
   const _$_DirectionDetails(
-      {required this.distanceText,
+      {required this.startAddress,
+      required this.startLocation,
+      required this.endAddress,
+      required this.endLocation,
+      required this.distanceText,
       required this.durationText,
       required this.distanceValue,
       required this.durationValue,
       required this.encodedPoints});
 
+  @override
+  final String startAddress;
+  @override
+  final LatLng startLocation;
+  @override
+  final String endAddress;
+  @override
+  final LatLng endLocation;
   @override
   final String distanceText;
   @override
@@ -187,7 +259,7 @@ class _$_DirectionDetails implements _DirectionDetails {
 
   @override
   String toString() {
-    return 'DirectionDetails(distanceText: $distanceText, durationText: $durationText, distanceValue: $distanceValue, durationValue: $durationValue, encodedPoints: $encodedPoints)';
+    return 'DirectionDetails(startAddress: $startAddress, startLocation: $startLocation, endAddress: $endAddress, endLocation: $endLocation, distanceText: $distanceText, durationText: $durationText, distanceValue: $distanceValue, durationValue: $durationValue, encodedPoints: $encodedPoints)';
   }
 
   @override
@@ -195,6 +267,14 @@ class _$_DirectionDetails implements _DirectionDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DirectionDetails &&
+            const DeepCollectionEquality()
+                .equals(other.startAddress, startAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.startLocation, startLocation) &&
+            const DeepCollectionEquality()
+                .equals(other.endAddress, endAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.endLocation, endLocation) &&
             const DeepCollectionEquality()
                 .equals(other.distanceText, distanceText) &&
             const DeepCollectionEquality()
@@ -210,6 +290,10 @@ class _$_DirectionDetails implements _DirectionDetails {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(startAddress),
+      const DeepCollectionEquality().hash(startLocation),
+      const DeepCollectionEquality().hash(endAddress),
+      const DeepCollectionEquality().hash(endLocation),
       const DeepCollectionEquality().hash(distanceText),
       const DeepCollectionEquality().hash(durationText),
       const DeepCollectionEquality().hash(distanceValue),
@@ -224,12 +308,24 @@ class _$_DirectionDetails implements _DirectionDetails {
 
 abstract class _DirectionDetails implements DirectionDetails {
   const factory _DirectionDetails(
-      {required String distanceText,
+      {required String startAddress,
+      required LatLng startLocation,
+      required String endAddress,
+      required LatLng endLocation,
+      required String distanceText,
       required String durationText,
       required int distanceValue,
       required int durationValue,
       required String encodedPoints}) = _$_DirectionDetails;
 
+  @override
+  String get startAddress;
+  @override
+  LatLng get startLocation;
+  @override
+  String get endAddress;
+  @override
+  LatLng get endLocation;
   @override
   String get distanceText;
   @override
