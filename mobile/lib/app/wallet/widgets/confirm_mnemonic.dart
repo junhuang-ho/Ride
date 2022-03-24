@@ -24,10 +24,24 @@ class ConfirmMnemonic extends HookWidget {
             padding: 30,
             actionButtons: <Widget>[
               OutlinedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                  ),
+                ),
                 child: const Text('Generate New'),
                 onPressed: onGenerateNew,
               ),
               ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                  ),
+                ),
                 child: const Text('Confirm'),
                 onPressed: onConfirm != null
                     ? () => onConfirm!(mnemonicController.value.text)

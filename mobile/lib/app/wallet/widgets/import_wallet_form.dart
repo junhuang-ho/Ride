@@ -32,7 +32,12 @@ class ImportWalletForm extends HookConsumerWidget {
 
                   return setupWallet.maybeWhen(
                     loading: () => const CircularProgressIndicator(),
-                    orElse: () => ElevatedButton(
+                    orElse: () => MaterialButton(
+                      height: 45,
+                      color: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                       child: const Text('Import'),
                       onPressed: onImport != null
                           ? () => onImport!(

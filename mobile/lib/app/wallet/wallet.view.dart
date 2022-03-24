@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:ride/app/auth/auth.vm.dart';
+import 'package:ride/app/wallet/send/send.wallet.vm.dart';
 import 'package:ride/app/wallet/wallet.vm.dart';
 import 'package:ride/app/wallet/widgets/address_copy_button.dart';
 import 'package:ride/app/wallet/widgets/wallet_app_bar.dart';
@@ -145,7 +146,8 @@ class WalletActions extends StatelessWidget {
         WalletActionButton(
           actionIcon: Icons.send,
           actionText: 'Send',
-          onTap: () {},
+          onTap: () =>
+              context.push('/passenger/wallet/send', extra: TokenType.matic),
         ),
       ],
     );
@@ -276,7 +278,8 @@ class TokensList extends StatelessWidget {
           leading: Image.asset('images/matic-logo.png', width: 40),
           title: Text('${EthAmountFormatter(ethBalance).format()} MATIC'),
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => context.push('/passenger/wallet/send'),
+          onTap: () =>
+              context.push('/passenger/wallet/send', extra: TokenType.matic),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(
@@ -286,7 +289,8 @@ class TokensList extends StatelessWidget {
           leading: Image.asset('images/ethereum-logo.png', width: 40),
           title: Text('${EthAmountFormatter(tokenBalance).format()} WETH'),
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => context.push('/passenger/wallet/send'),
+          onTap: () =>
+              context.push('/passenger/wallet/send', extra: TokenType.weth),
         ),
       ],
     );

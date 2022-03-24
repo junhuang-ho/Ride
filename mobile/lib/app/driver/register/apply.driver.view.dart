@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/driver/register/apply.driver.vm.dart';
-import 'package:ride/app/driver/widgets/taxi_button.dart';
+import 'package:ride/app/driver/widgets/ride_button.dart';
 import 'package:ride/utils/ride_colors.dart';
 import 'package:ride/widgets/empty_content.dart';
 import 'package:ride/widgets/ride_text_field.dart';
@@ -49,6 +49,7 @@ class ApplyDriverView extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 RideTextField(
+                  width: 300,
                   name: 'driverId',
                   readOnly: true,
                   focusNode: _formKey
@@ -78,7 +79,7 @@ class ApplyDriverView extends HookConsumerWidget {
                 const SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 55.0),
-                  child: TaxiButton(
+                  child: RideButton(
                     title: 'Submit',
                     color: RideColors.colorGreen,
                     onPressed: () async {

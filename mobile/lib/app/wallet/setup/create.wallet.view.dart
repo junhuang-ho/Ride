@@ -22,11 +22,15 @@ class CreateWalletView extends HookConsumerWidget {
           child: CircularProgressIndicator(),
         ),
         init: () => Center(
-          child: ElevatedButton(
-            child: const Text('Start'),
-            onPressed: () {
-              ref.read(setupWalletProvider.notifier).generateMnemonic();
-            },
+          child: MaterialButton(
+            height: 45,
+            color: Theme.of(context).primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: const Text('Begin Your Ride'),
+            onPressed: () =>
+                ref.read(setupWalletProvider.notifier).generateMnemonic(),
           ),
         ),
         display: (mnemonic) => DisplayMnemonic(

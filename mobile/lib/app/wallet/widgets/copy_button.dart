@@ -15,6 +15,13 @@ class CopyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       child: text,
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<OutlinedBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+        ),
+      ),
       onPressed: () {
         Clipboard.setData(ClipboardData(text: value));
 

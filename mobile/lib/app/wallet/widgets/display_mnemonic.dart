@@ -32,7 +32,14 @@ class DisplayMnemonic extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   CopyButton(text: const Text('Copy'), value: mnemonic),
-                  ElevatedButton(child: const Text('Next'), onPressed: onNext)
+                  MaterialButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const Text('Next'),
+                    onPressed: onNext,
+                  ),
                 ],
               )
             ],
