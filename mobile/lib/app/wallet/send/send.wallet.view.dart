@@ -9,7 +9,12 @@ import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
 
 class SendWalletView extends HookConsumerWidget {
-  const SendWalletView({Key? key}) : super(key: key);
+  const SendWalletView({
+    Key? key,
+    required this.tokenType,
+  }) : super(key: key);
+
+  final TokenType tokenType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,6 +46,7 @@ class SendWalletView extends HookConsumerWidget {
       body: sendWallet.maybeWhen(
         loading: () => const Center(child: CircularProgressIndicator()),
         orElse: () => SendForm(
+          tokenType: tokenType,
           address: qrcodeAddress.value,
           onSubmit: (address, amount) async {},
         ),
@@ -52,10 +58,12 @@ class SendWalletView extends HookConsumerWidget {
 class SendForm extends HookConsumerWidget {
   const SendForm({
     Key? key,
+    required this.tokenType,
     required this.address,
     required this.onSubmit,
   }) : super(key: key);
 
+  final TokenType tokenType;
   final String? address;
   final void Function(String address, String amount) onSubmit;
 
@@ -79,9 +87,16 @@ class SendForm extends HookConsumerWidget {
           OutlinedButton(
             child: const Text('Send now'),
             onPressed: () async {
-              await ref
-                  .read(sendWalletProvider.notifier)
-                  .sendWETHTo(receiverController.text, amountController.text);
+              switch (tokenType) {
+                case TokenType.matic:
+                  await ref.read(sendWalletProvider.notifier).sendMaticTo(
+                      receiverController.text, amountController.text);
+                  break;
+                case TokenType.weth:
+                  await ref.read(sendWalletProvider.notifier).sendWETHTo(
+                      receiverController.text, amountController.text);
+                  break;
+              }
             },
           ),
         ],
@@ -90,7 +105,7 @@ class SendForm extends HookConsumerWidget {
             init: () => Column(
               children: [
                 PaperInput(
-                  labelText: "Send WETH To",
+                  labelText: "Send ${tokenType.name.toUpperCase()} To",
                   hintText: 'Receiver Public Address',
                   maxLines: 1,
                   controller: receiverController,

@@ -7,6 +7,8 @@ import 'package:web3dart/web3dart.dart';
 
 part 'send.wallet.vm.freezed.dart';
 
+enum TokenType { matic, weth }
+
 @freezed
 class SendWalletState with _$SendWalletState {
   const factory SendWalletState.init() = _SendWalletInit;
@@ -21,6 +23,21 @@ class SendWalletVM extends StateNotifier<SendWalletState> {
         super(const SendWalletState.init());
 
   final RideHubService _rideHub;
+
+  Future<void> sendMaticTo(String receiverAddress, String sendAmount) async {
+    try {
+      state = const SendWalletState.loading();
+      final sendAmountInWei =
+          BigInt.from(double.parse(sendAmount) * pow(10, 18));
+      final result = await _rideHub.sendEth(
+        EthereumAddress.fromHex(receiverAddress),
+        EtherAmount.fromUnitAndValue(EtherUnit.wei, sendAmountInWei),
+      );
+      state = SendWalletState.success(result);
+    } catch (ex) {
+      state = SendWalletState.error(ex.toString());
+    }
+  }
 
   Future<void> sendWETHTo(String receiverAddress, String sendAmount) async {
     try {
