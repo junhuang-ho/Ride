@@ -6,25 +6,26 @@ import 'package:ride/services/ride/ride_currency_registry.dart';
 import 'package:ride/services/ride/ride_holding.dart';
 import 'package:ride/services/ride/ride_hub.dart';
 
-part 'deposit.wallet.vm.freezed.dart';
+part 'deposit.holdings.vm.freezed.dart';
 
 enum DepositKeyType { crypto, fiat }
 
 @freezed
-class DepositWalletState with _$DepositWalletState {
-  const factory DepositWalletState.init() = _DepositWalletInit;
-  const factory DepositWalletState.loading() = _DepositWalletLoading;
-  const factory DepositWalletState.error(String? message) = _DepositWalletError;
-  const factory DepositWalletState.success(String? data) =
-      _DepositWalletSuccess;
+class DepositHoldingsState with _$DepositHoldingsState {
+  const factory DepositHoldingsState.init() = _DepositHoldingsInit;
+  const factory DepositHoldingsState.loading() = _DepositHoldingsLoading;
+  const factory DepositHoldingsState.error(String? message) =
+      _DepositHoldingsError;
+  const factory DepositHoldingsState.success(String? data) =
+      _DepositHoldingsSuccess;
 }
 
-class DepositWalletVM extends StateNotifier<DepositWalletState> {
-  DepositWalletVM(Reader read)
+class DepositHoldingsVM extends StateNotifier<DepositHoldingsState> {
+  DepositHoldingsVM(Reader read)
       : _rideHolding = read(rideHoldingProvider),
         _rideCurrencyRegistry = read(rideCurrencyRegistryProvider),
         _rideHub = read(rideHubProvider),
-        super(const DepositWalletState.init());
+        super(const DepositHoldingsState.init());
 
   final RideHoldingService _rideHolding;
   final RideCurrencyRegistryService _rideCurrencyRegistry;
@@ -34,7 +35,7 @@ class DepositWalletVM extends StateNotifier<DepositWalletState> {
     String depositAmount,
   ) async {
     try {
-      state = const DepositWalletState.loading();
+      state = const DepositHoldingsState.loading();
 
       final depositAmountInWei =
           BigInt.from(double.parse(depositAmount) * pow(10, 18));
@@ -42,15 +43,15 @@ class DepositWalletVM extends StateNotifier<DepositWalletState> {
       final keyPay = await _rideCurrencyRegistry.getKeyCrypto();
       final result =
           await _rideHolding.depositTokens(keyPay, depositAmountInWei);
-      state = DepositWalletState.success(result);
+      state = DepositHoldingsState.success(result);
     } catch (ex) {
-      state = DepositWalletState.error(ex.toString());
+      state = DepositHoldingsState.error(ex.toString());
     }
   }
 }
 
-final depositWalletProvider =
-    StateNotifierProvider.autoDispose<DepositWalletVM, DepositWalletState>(
+final depositHoldingsProvider =
+    StateNotifierProvider.autoDispose<DepositHoldingsVM, DepositHoldingsState>(
         (ref) {
-  return DepositWalletVM(ref.read);
+  return DepositHoldingsVM(ref.read);
 });

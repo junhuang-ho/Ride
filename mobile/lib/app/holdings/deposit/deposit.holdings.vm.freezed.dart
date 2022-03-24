@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'withdraw.wallet.vm.dart';
+part of 'deposit.holdings.vm.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,35 +15,35 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$WithdrawWalletStateTearOff {
-  const _$WithdrawWalletStateTearOff();
+class _$DepositHoldingsStateTearOff {
+  const _$DepositHoldingsStateTearOff();
 
-  _WithdrawWalletInit init() {
-    return const _WithdrawWalletInit();
+  _DepositHoldingsInit init() {
+    return const _DepositHoldingsInit();
   }
 
-  _WithdrawWalletLoading loading() {
-    return const _WithdrawWalletLoading();
+  _DepositHoldingsLoading loading() {
+    return const _DepositHoldingsLoading();
   }
 
-  _WithdrawWalletError error(String? message) {
-    return _WithdrawWalletError(
+  _DepositHoldingsError error(String? message) {
+    return _DepositHoldingsError(
       message,
     );
   }
 
-  _WithdrawWalletSuccess success(String? data) {
-    return _WithdrawWalletSuccess(
+  _DepositHoldingsSuccess success(String? data) {
+    return _DepositHoldingsSuccess(
       data,
     );
   }
 }
 
 /// @nodoc
-const $WithdrawWalletState = _$WithdrawWalletStateTearOff();
+const $DepositHoldingsState = _$DepositHoldingsStateTearOff();
 
 /// @nodoc
-mixin _$WithdrawWalletState {
+mixin _$DepositHoldingsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
@@ -71,81 +71,81 @@ mixin _$WithdrawWalletState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WithdrawWalletInit value) init,
-    required TResult Function(_WithdrawWalletLoading value) loading,
-    required TResult Function(_WithdrawWalletError value) error,
-    required TResult Function(_WithdrawWalletSuccess value) success,
+    required TResult Function(_DepositHoldingsInit value) init,
+    required TResult Function(_DepositHoldingsLoading value) loading,
+    required TResult Function(_DepositHoldingsError value) error,
+    required TResult Function(_DepositHoldingsSuccess value) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $WithdrawWalletStateCopyWith<$Res> {
-  factory $WithdrawWalletStateCopyWith(
-          WithdrawWalletState value, $Res Function(WithdrawWalletState) then) =
-      _$WithdrawWalletStateCopyWithImpl<$Res>;
+abstract class $DepositHoldingsStateCopyWith<$Res> {
+  factory $DepositHoldingsStateCopyWith(DepositHoldingsState value,
+          $Res Function(DepositHoldingsState) then) =
+      _$DepositHoldingsStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$WithdrawWalletStateCopyWithImpl<$Res>
-    implements $WithdrawWalletStateCopyWith<$Res> {
-  _$WithdrawWalletStateCopyWithImpl(this._value, this._then);
+class _$DepositHoldingsStateCopyWithImpl<$Res>
+    implements $DepositHoldingsStateCopyWith<$Res> {
+  _$DepositHoldingsStateCopyWithImpl(this._value, this._then);
 
-  final WithdrawWalletState _value;
+  final DepositHoldingsState _value;
   // ignore: unused_field
-  final $Res Function(WithdrawWalletState) _then;
+  final $Res Function(DepositHoldingsState) _then;
 }
 
 /// @nodoc
-abstract class _$WithdrawWalletInitCopyWith<$Res> {
-  factory _$WithdrawWalletInitCopyWith(
-          _WithdrawWalletInit value, $Res Function(_WithdrawWalletInit) then) =
-      __$WithdrawWalletInitCopyWithImpl<$Res>;
+abstract class _$DepositHoldingsInitCopyWith<$Res> {
+  factory _$DepositHoldingsInitCopyWith(_DepositHoldingsInit value,
+          $Res Function(_DepositHoldingsInit) then) =
+      __$DepositHoldingsInitCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$WithdrawWalletInitCopyWithImpl<$Res>
-    extends _$WithdrawWalletStateCopyWithImpl<$Res>
-    implements _$WithdrawWalletInitCopyWith<$Res> {
-  __$WithdrawWalletInitCopyWithImpl(
-      _WithdrawWalletInit _value, $Res Function(_WithdrawWalletInit) _then)
-      : super(_value, (v) => _then(v as _WithdrawWalletInit));
+class __$DepositHoldingsInitCopyWithImpl<$Res>
+    extends _$DepositHoldingsStateCopyWithImpl<$Res>
+    implements _$DepositHoldingsInitCopyWith<$Res> {
+  __$DepositHoldingsInitCopyWithImpl(
+      _DepositHoldingsInit _value, $Res Function(_DepositHoldingsInit) _then)
+      : super(_value, (v) => _then(v as _DepositHoldingsInit));
 
   @override
-  _WithdrawWalletInit get _value => super._value as _WithdrawWalletInit;
+  _DepositHoldingsInit get _value => super._value as _DepositHoldingsInit;
 }
 
 /// @nodoc
 
-class _$_WithdrawWalletInit implements _WithdrawWalletInit {
-  const _$_WithdrawWalletInit();
+class _$_DepositHoldingsInit implements _DepositHoldingsInit {
+  const _$_DepositHoldingsInit();
 
   @override
   String toString() {
-    return 'WithdrawWalletState.init()';
+    return 'DepositHoldingsState.init()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _WithdrawWalletInit);
+        (other.runtimeType == runtimeType && other is _DepositHoldingsInit);
   }
 
   @override
@@ -191,10 +191,10 @@ class _$_WithdrawWalletInit implements _WithdrawWalletInit {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WithdrawWalletInit value) init,
-    required TResult Function(_WithdrawWalletLoading value) loading,
-    required TResult Function(_WithdrawWalletError value) error,
-    required TResult Function(_WithdrawWalletSuccess value) success,
+    required TResult Function(_DepositHoldingsInit value) init,
+    required TResult Function(_DepositHoldingsLoading value) loading,
+    required TResult Function(_DepositHoldingsError value) error,
+    required TResult Function(_DepositHoldingsSuccess value) success,
   }) {
     return init(this);
   }
@@ -202,10 +202,10 @@ class _$_WithdrawWalletInit implements _WithdrawWalletInit {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
   }) {
     return init?.call(this);
   }
@@ -213,10 +213,10 @@ class _$_WithdrawWalletInit implements _WithdrawWalletInit {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -226,43 +226,43 @@ class _$_WithdrawWalletInit implements _WithdrawWalletInit {
   }
 }
 
-abstract class _WithdrawWalletInit implements WithdrawWalletState {
-  const factory _WithdrawWalletInit() = _$_WithdrawWalletInit;
+abstract class _DepositHoldingsInit implements DepositHoldingsState {
+  const factory _DepositHoldingsInit() = _$_DepositHoldingsInit;
 }
 
 /// @nodoc
-abstract class _$WithdrawWalletLoadingCopyWith<$Res> {
-  factory _$WithdrawWalletLoadingCopyWith(_WithdrawWalletLoading value,
-          $Res Function(_WithdrawWalletLoading) then) =
-      __$WithdrawWalletLoadingCopyWithImpl<$Res>;
+abstract class _$DepositHoldingsLoadingCopyWith<$Res> {
+  factory _$DepositHoldingsLoadingCopyWith(_DepositHoldingsLoading value,
+          $Res Function(_DepositHoldingsLoading) then) =
+      __$DepositHoldingsLoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$WithdrawWalletLoadingCopyWithImpl<$Res>
-    extends _$WithdrawWalletStateCopyWithImpl<$Res>
-    implements _$WithdrawWalletLoadingCopyWith<$Res> {
-  __$WithdrawWalletLoadingCopyWithImpl(_WithdrawWalletLoading _value,
-      $Res Function(_WithdrawWalletLoading) _then)
-      : super(_value, (v) => _then(v as _WithdrawWalletLoading));
+class __$DepositHoldingsLoadingCopyWithImpl<$Res>
+    extends _$DepositHoldingsStateCopyWithImpl<$Res>
+    implements _$DepositHoldingsLoadingCopyWith<$Res> {
+  __$DepositHoldingsLoadingCopyWithImpl(_DepositHoldingsLoading _value,
+      $Res Function(_DepositHoldingsLoading) _then)
+      : super(_value, (v) => _then(v as _DepositHoldingsLoading));
 
   @override
-  _WithdrawWalletLoading get _value => super._value as _WithdrawWalletLoading;
+  _DepositHoldingsLoading get _value => super._value as _DepositHoldingsLoading;
 }
 
 /// @nodoc
 
-class _$_WithdrawWalletLoading implements _WithdrawWalletLoading {
-  const _$_WithdrawWalletLoading();
+class _$_DepositHoldingsLoading implements _DepositHoldingsLoading {
+  const _$_DepositHoldingsLoading();
 
   @override
   String toString() {
-    return 'WithdrawWalletState.loading()';
+    return 'DepositHoldingsState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _WithdrawWalletLoading);
+        (other.runtimeType == runtimeType && other is _DepositHoldingsLoading);
   }
 
   @override
@@ -308,10 +308,10 @@ class _$_WithdrawWalletLoading implements _WithdrawWalletLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WithdrawWalletInit value) init,
-    required TResult Function(_WithdrawWalletLoading value) loading,
-    required TResult Function(_WithdrawWalletError value) error,
-    required TResult Function(_WithdrawWalletSuccess value) success,
+    required TResult Function(_DepositHoldingsInit value) init,
+    required TResult Function(_DepositHoldingsLoading value) loading,
+    required TResult Function(_DepositHoldingsError value) error,
+    required TResult Function(_DepositHoldingsSuccess value) success,
   }) {
     return loading(this);
   }
@@ -319,10 +319,10 @@ class _$_WithdrawWalletLoading implements _WithdrawWalletLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
   }) {
     return loading?.call(this);
   }
@@ -330,10 +330,10 @@ class _$_WithdrawWalletLoading implements _WithdrawWalletLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -343,34 +343,34 @@ class _$_WithdrawWalletLoading implements _WithdrawWalletLoading {
   }
 }
 
-abstract class _WithdrawWalletLoading implements WithdrawWalletState {
-  const factory _WithdrawWalletLoading() = _$_WithdrawWalletLoading;
+abstract class _DepositHoldingsLoading implements DepositHoldingsState {
+  const factory _DepositHoldingsLoading() = _$_DepositHoldingsLoading;
 }
 
 /// @nodoc
-abstract class _$WithdrawWalletErrorCopyWith<$Res> {
-  factory _$WithdrawWalletErrorCopyWith(_WithdrawWalletError value,
-          $Res Function(_WithdrawWalletError) then) =
-      __$WithdrawWalletErrorCopyWithImpl<$Res>;
+abstract class _$DepositHoldingsErrorCopyWith<$Res> {
+  factory _$DepositHoldingsErrorCopyWith(_DepositHoldingsError value,
+          $Res Function(_DepositHoldingsError) then) =
+      __$DepositHoldingsErrorCopyWithImpl<$Res>;
   $Res call({String? message});
 }
 
 /// @nodoc
-class __$WithdrawWalletErrorCopyWithImpl<$Res>
-    extends _$WithdrawWalletStateCopyWithImpl<$Res>
-    implements _$WithdrawWalletErrorCopyWith<$Res> {
-  __$WithdrawWalletErrorCopyWithImpl(
-      _WithdrawWalletError _value, $Res Function(_WithdrawWalletError) _then)
-      : super(_value, (v) => _then(v as _WithdrawWalletError));
+class __$DepositHoldingsErrorCopyWithImpl<$Res>
+    extends _$DepositHoldingsStateCopyWithImpl<$Res>
+    implements _$DepositHoldingsErrorCopyWith<$Res> {
+  __$DepositHoldingsErrorCopyWithImpl(
+      _DepositHoldingsError _value, $Res Function(_DepositHoldingsError) _then)
+      : super(_value, (v) => _then(v as _DepositHoldingsError));
 
   @override
-  _WithdrawWalletError get _value => super._value as _WithdrawWalletError;
+  _DepositHoldingsError get _value => super._value as _DepositHoldingsError;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_WithdrawWalletError(
+    return _then(_DepositHoldingsError(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -381,22 +381,22 @@ class __$WithdrawWalletErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WithdrawWalletError implements _WithdrawWalletError {
-  const _$_WithdrawWalletError(this.message);
+class _$_DepositHoldingsError implements _DepositHoldingsError {
+  const _$_DepositHoldingsError(this.message);
 
   @override
   final String? message;
 
   @override
   String toString() {
-    return 'WithdrawWalletState.error(message: $message)';
+    return 'DepositHoldingsState.error(message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WithdrawWalletError &&
+            other is _DepositHoldingsError &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -406,8 +406,8 @@ class _$_WithdrawWalletError implements _WithdrawWalletError {
 
   @JsonKey(ignore: true)
   @override
-  _$WithdrawWalletErrorCopyWith<_WithdrawWalletError> get copyWith =>
-      __$WithdrawWalletErrorCopyWithImpl<_WithdrawWalletError>(
+  _$DepositHoldingsErrorCopyWith<_DepositHoldingsError> get copyWith =>
+      __$DepositHoldingsErrorCopyWithImpl<_DepositHoldingsError>(
           this, _$identity);
 
   @override
@@ -450,10 +450,10 @@ class _$_WithdrawWalletError implements _WithdrawWalletError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WithdrawWalletInit value) init,
-    required TResult Function(_WithdrawWalletLoading value) loading,
-    required TResult Function(_WithdrawWalletError value) error,
-    required TResult Function(_WithdrawWalletSuccess value) success,
+    required TResult Function(_DepositHoldingsInit value) init,
+    required TResult Function(_DepositHoldingsLoading value) loading,
+    required TResult Function(_DepositHoldingsError value) error,
+    required TResult Function(_DepositHoldingsSuccess value) success,
   }) {
     return error(this);
   }
@@ -461,10 +461,10 @@ class _$_WithdrawWalletError implements _WithdrawWalletError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
   }) {
     return error?.call(this);
   }
@@ -472,10 +472,10 @@ class _$_WithdrawWalletError implements _WithdrawWalletError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -485,39 +485,40 @@ class _$_WithdrawWalletError implements _WithdrawWalletError {
   }
 }
 
-abstract class _WithdrawWalletError implements WithdrawWalletState {
-  const factory _WithdrawWalletError(String? message) = _$_WithdrawWalletError;
+abstract class _DepositHoldingsError implements DepositHoldingsState {
+  const factory _DepositHoldingsError(String? message) =
+      _$_DepositHoldingsError;
 
   String? get message;
   @JsonKey(ignore: true)
-  _$WithdrawWalletErrorCopyWith<_WithdrawWalletError> get copyWith =>
+  _$DepositHoldingsErrorCopyWith<_DepositHoldingsError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$WithdrawWalletSuccessCopyWith<$Res> {
-  factory _$WithdrawWalletSuccessCopyWith(_WithdrawWalletSuccess value,
-          $Res Function(_WithdrawWalletSuccess) then) =
-      __$WithdrawWalletSuccessCopyWithImpl<$Res>;
+abstract class _$DepositHoldingsSuccessCopyWith<$Res> {
+  factory _$DepositHoldingsSuccessCopyWith(_DepositHoldingsSuccess value,
+          $Res Function(_DepositHoldingsSuccess) then) =
+      __$DepositHoldingsSuccessCopyWithImpl<$Res>;
   $Res call({String? data});
 }
 
 /// @nodoc
-class __$WithdrawWalletSuccessCopyWithImpl<$Res>
-    extends _$WithdrawWalletStateCopyWithImpl<$Res>
-    implements _$WithdrawWalletSuccessCopyWith<$Res> {
-  __$WithdrawWalletSuccessCopyWithImpl(_WithdrawWalletSuccess _value,
-      $Res Function(_WithdrawWalletSuccess) _then)
-      : super(_value, (v) => _then(v as _WithdrawWalletSuccess));
+class __$DepositHoldingsSuccessCopyWithImpl<$Res>
+    extends _$DepositHoldingsStateCopyWithImpl<$Res>
+    implements _$DepositHoldingsSuccessCopyWith<$Res> {
+  __$DepositHoldingsSuccessCopyWithImpl(_DepositHoldingsSuccess _value,
+      $Res Function(_DepositHoldingsSuccess) _then)
+      : super(_value, (v) => _then(v as _DepositHoldingsSuccess));
 
   @override
-  _WithdrawWalletSuccess get _value => super._value as _WithdrawWalletSuccess;
+  _DepositHoldingsSuccess get _value => super._value as _DepositHoldingsSuccess;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_WithdrawWalletSuccess(
+    return _then(_DepositHoldingsSuccess(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -528,22 +529,22 @@ class __$WithdrawWalletSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
-  const _$_WithdrawWalletSuccess(this.data);
+class _$_DepositHoldingsSuccess implements _DepositHoldingsSuccess {
+  const _$_DepositHoldingsSuccess(this.data);
 
   @override
   final String? data;
 
   @override
   String toString() {
-    return 'WithdrawWalletState.success(data: $data)';
+    return 'DepositHoldingsState.success(data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WithdrawWalletSuccess &&
+            other is _DepositHoldingsSuccess &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -553,8 +554,8 @@ class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
 
   @JsonKey(ignore: true)
   @override
-  _$WithdrawWalletSuccessCopyWith<_WithdrawWalletSuccess> get copyWith =>
-      __$WithdrawWalletSuccessCopyWithImpl<_WithdrawWalletSuccess>(
+  _$DepositHoldingsSuccessCopyWith<_DepositHoldingsSuccess> get copyWith =>
+      __$DepositHoldingsSuccessCopyWithImpl<_DepositHoldingsSuccess>(
           this, _$identity);
 
   @override
@@ -597,10 +598,10 @@ class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WithdrawWalletInit value) init,
-    required TResult Function(_WithdrawWalletLoading value) loading,
-    required TResult Function(_WithdrawWalletError value) error,
-    required TResult Function(_WithdrawWalletSuccess value) success,
+    required TResult Function(_DepositHoldingsInit value) init,
+    required TResult Function(_DepositHoldingsLoading value) loading,
+    required TResult Function(_DepositHoldingsError value) error,
+    required TResult Function(_DepositHoldingsSuccess value) success,
   }) {
     return success(this);
   }
@@ -608,10 +609,10 @@ class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
   }) {
     return success?.call(this);
   }
@@ -619,10 +620,10 @@ class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WithdrawWalletInit value)? init,
-    TResult Function(_WithdrawWalletLoading value)? loading,
-    TResult Function(_WithdrawWalletError value)? error,
-    TResult Function(_WithdrawWalletSuccess value)? success,
+    TResult Function(_DepositHoldingsInit value)? init,
+    TResult Function(_DepositHoldingsLoading value)? loading,
+    TResult Function(_DepositHoldingsError value)? error,
+    TResult Function(_DepositHoldingsSuccess value)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -632,11 +633,12 @@ class _$_WithdrawWalletSuccess implements _WithdrawWalletSuccess {
   }
 }
 
-abstract class _WithdrawWalletSuccess implements WithdrawWalletState {
-  const factory _WithdrawWalletSuccess(String? data) = _$_WithdrawWalletSuccess;
+abstract class _DepositHoldingsSuccess implements DepositHoldingsState {
+  const factory _DepositHoldingsSuccess(String? data) =
+      _$_DepositHoldingsSuccess;
 
   String? get data;
   @JsonKey(ignore: true)
-  _$WithdrawWalletSuccessCopyWith<_WithdrawWalletSuccess> get copyWith =>
+  _$DepositHoldingsSuccessCopyWith<_DepositHoldingsSuccess> get copyWith =>
       throw _privateConstructorUsedError;
 }
