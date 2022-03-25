@@ -32,10 +32,12 @@ class AuthVM extends StateNotifier<AuthState> {
   final Crypto _crypto;
   final Repository _repo;
   final RideHubService _rideHub;
+  bool isMnemonicExist = false;
 
   Future<void> getAccount() async {
     try {
       state = const AuthState.loading();
+      isMnemonicExist = _repo.getMnemonic()?.isNotEmpty ?? false;
       String? privateKey = _repo.getPrivateKey();
       if (privateKey?.isNotEmpty ?? false) {
         _rideHub.setCredentials(privateKey!);
@@ -60,6 +62,13 @@ class AuthVM extends StateNotifier<AuthState> {
     await _repo.setPrivateKey(null);
     await _repo.setupDone(false);
     state = const AuthState.unAuthenticated();
+  }
+
+  String? getMnemonic() {
+    String? entropyMnemonic = _repo.getMnemonic();
+    return entropyMnemonic != null
+        ? _crypto.getMnemonic(entropyMnemonic)
+        : null;
   }
 
   String? getPrivateKey() {
