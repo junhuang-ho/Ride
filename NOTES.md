@@ -1,3 +1,5 @@
+# Some notes for developer reference
+
 # Encrypt data before send to blockchain
 
 1. Good tutorial explaining the steps to encrypt data (in JS): https://github.com/pubkey/eth-crypto/blob/master/tutorials/encrypted-message.md
@@ -6,6 +8,23 @@
     - encryption of data using receiver's public key (note some are hashing algo which is not the same as encryption): https://pub.dev/packages/webcrypto   OR    https://pub.dev/packages/encrypt
     - decryption of data on receiver's side and signature verification using same libraries.
 
+
+# Interesting Chains
+
+0. Bitcoin (no smart contracts)
+0. Ethereum - uses nakamoto concensus mechanism, NCM (smart contracts)
+
+0. Cardano (uses Haskell smart contracts)
+0. Polkadot (launch Solidity smart contracts via Moonbeam)
+1. Polygon, NCM (can launch solidity smart contracts)
+2. Avalanche - uses diff avalanche/snowman concesus mechanism (can launch solidity smart contracts)
+3. Near, NCM (on Layer 2, Aurora layer) (launch solidity smart contract via Aurora)
+4. The Graph ( mainly for indexing )
+5. Filecoin
+6. Chainlink
+7. Arbitrum
+8. Optimium
+9. Algorand
 
 
 # Tokenomics
@@ -48,23 +67,6 @@ https://dcxlearn.com/economics/tokenomics-a-guide-to-utility-business-and-value-
 https://www.vardhamaninfotech.com/blog/understanding-tokenomics-a-complete-guide/
 https://coinmarketcap.com/alexandria/article/what-is-tokenomics
 https://timesofindia.indiatimes.com/business/cryptocurrency/blockchain/tokenomics-demand-and-supply-of-cryptocurrencies/articleshow/87273549.cms?from=mdr
-
-# Interesting Chains
-
-0. Bitcoin (no smart contracts)
-0. Ethereum - uses nakamoto concensus mechanism, NCM (smart contracts)
-
-0. Cardano (uses Haskell smart contracts)
-0. Polkadot (launch Solidity smart contracts via Moonbeam)
-1. Polygon, NCM (can launch solidity smart contracts)
-2. Avalanche - uses diff avalanche/snowman concesus mechanism (can launch solidity smart contracts)
-3. Near, NCM (on Layer 2, Aurora layer) (launch solidity smart contract via Aurora)
-4. The Graph ( mainly for indexing )
-5. Filecoin
-6. Chainlink
-7. Arbitrum
-8. Optimium
-9. Algorand
 
 # Ride Payment System
 
