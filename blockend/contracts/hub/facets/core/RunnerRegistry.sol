@@ -73,9 +73,9 @@ contract RunnerRegistry is IHubLibraryEvents {
             .uri = _uri;
     }
 
-    event SecededFromHive(address indexed sender, address hive);
+    event LeftHive(address indexed sender, address hive);
 
-    function secedeFromHive() external {
+    function leaveHive() external {
         LibRunnerRegistry._requireIsRunner();
         LibJobBoard._requireNotActive(); // ok use of requireNotActive
 
@@ -87,6 +87,6 @@ contract RunnerRegistry is IHubLibraryEvents {
 
         s1.runnerToRunnerDetail[msg.sender].hive = address(0);
 
-        emit SecededFromHive(msg.sender, hive);
+        emit LeftHive(msg.sender, hive);
     }
 }
