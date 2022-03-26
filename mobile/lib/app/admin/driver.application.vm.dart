@@ -17,6 +17,8 @@ class DriverApplicationState with _$DriverApplicationState {
   const factory DriverApplicationState.loaded() = _DriverApplicationLoaded;
   const factory DriverApplicationState.approving() =
       _DriverApplicationApproving;
+  const factory DriverApplicationState.pendingBlockEnd() =
+      _DriverApplicationPendingBlockEnd;
   const factory DriverApplicationState.approved() = _DriverApplicationApproved;
 }
 
@@ -45,6 +47,14 @@ class DriverApplicationVM extends StateNotifier<DriverApplicationState> {
           EthereumAddress.fromHex(driverApplication.driverId);
       await _rideDriverRegistryService.approveApplicant(
           applicantAddress, 'testDocs');
+      state = const DriverApplicationState.pendingBlockEnd();
+    } catch (ex) {
+      state = DriverApplicationState.error(ex.toString());
+    }
+  }
+
+  Future<void> updateDriverApplication() async {
+    try {
       await FireHelper.updateDriverApplication(
           driverApplication.driverId, {"status": Strings.approved});
       state = const DriverApplicationState.approved();

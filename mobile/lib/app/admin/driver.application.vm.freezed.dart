@@ -36,6 +36,10 @@ class _$DriverApplicationStateTearOff {
     return const _DriverApplicationApproving();
   }
 
+  _DriverApplicationPendingBlockEnd pendingBlockEnd() {
+    return const _DriverApplicationPendingBlockEnd();
+  }
+
   _DriverApplicationApproved approved() {
     return const _DriverApplicationApproved();
   }
@@ -52,6 +56,7 @@ mixin _$DriverApplicationState {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) =>
       throw _privateConstructorUsedError;
@@ -61,6 +66,7 @@ mixin _$DriverApplicationState {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) =>
       throw _privateConstructorUsedError;
@@ -70,6 +76,7 @@ mixin _$DriverApplicationState {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) =>
@@ -80,6 +87,8 @@ mixin _$DriverApplicationState {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) =>
       throw _privateConstructorUsedError;
@@ -89,6 +98,7 @@ mixin _$DriverApplicationState {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) =>
       throw _privateConstructorUsedError;
@@ -98,6 +108,7 @@ mixin _$DriverApplicationState {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) =>
@@ -168,6 +179,7 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) {
     return loading();
@@ -180,6 +192,7 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) {
     return loading?.call();
@@ -192,6 +205,7 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) {
@@ -208,6 +222,8 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) {
     return loading(this);
@@ -220,6 +236,7 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) {
     return loading?.call(this);
@@ -232,6 +249,7 @@ class _$_DriverApplicationLoading implements _DriverApplicationLoading {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) {
@@ -316,6 +334,7 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) {
     return error(message);
@@ -328,6 +347,7 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) {
     return error?.call(message);
@@ -340,6 +360,7 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) {
@@ -356,6 +377,8 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) {
     return error(this);
@@ -368,6 +391,7 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) {
     return error?.call(this);
@@ -380,6 +404,7 @@ class _$_DriverApplicationError implements _DriverApplicationError {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) {
@@ -446,6 +471,7 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) {
     return loaded();
@@ -458,6 +484,7 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) {
     return loaded?.call();
@@ -470,6 +497,7 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) {
@@ -486,6 +514,8 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) {
     return loaded(this);
@@ -498,6 +528,7 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) {
     return loaded?.call(this);
@@ -510,6 +541,7 @@ class _$_DriverApplicationLoaded implements _DriverApplicationLoaded {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) {
@@ -572,6 +604,7 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) {
     return approving();
@@ -584,6 +617,7 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) {
     return approving?.call();
@@ -596,6 +630,7 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) {
@@ -612,6 +647,8 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) {
     return approving(this);
@@ -624,6 +661,7 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) {
     return approving?.call(this);
@@ -636,6 +674,7 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) {
@@ -648,6 +687,143 @@ class _$_DriverApplicationApproving implements _DriverApplicationApproving {
 
 abstract class _DriverApplicationApproving implements DriverApplicationState {
   const factory _DriverApplicationApproving() = _$_DriverApplicationApproving;
+}
+
+/// @nodoc
+abstract class _$DriverApplicationPendingBlockEndCopyWith<$Res> {
+  factory _$DriverApplicationPendingBlockEndCopyWith(
+          _DriverApplicationPendingBlockEnd value,
+          $Res Function(_DriverApplicationPendingBlockEnd) then) =
+      __$DriverApplicationPendingBlockEndCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$DriverApplicationPendingBlockEndCopyWithImpl<$Res>
+    extends _$DriverApplicationStateCopyWithImpl<$Res>
+    implements _$DriverApplicationPendingBlockEndCopyWith<$Res> {
+  __$DriverApplicationPendingBlockEndCopyWithImpl(
+      _DriverApplicationPendingBlockEnd _value,
+      $Res Function(_DriverApplicationPendingBlockEnd) _then)
+      : super(_value, (v) => _then(v as _DriverApplicationPendingBlockEnd));
+
+  @override
+  _DriverApplicationPendingBlockEnd get _value =>
+      super._value as _DriverApplicationPendingBlockEnd;
+}
+
+/// @nodoc
+
+class _$_DriverApplicationPendingBlockEnd
+    implements _DriverApplicationPendingBlockEnd {
+  const _$_DriverApplicationPendingBlockEnd();
+
+  @override
+  String toString() {
+    return 'DriverApplicationState.pendingBlockEnd()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _DriverApplicationPendingBlockEnd);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function() loaded,
+    required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
+    required TResult Function() approved,
+  }) {
+    return pendingBlockEnd();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? loaded,
+    TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
+    TResult Function()? approved,
+  }) {
+    return pendingBlockEnd?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? loaded,
+    TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
+    TResult Function()? approved,
+    required TResult orElse(),
+  }) {
+    if (pendingBlockEnd != null) {
+      return pendingBlockEnd();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_DriverApplicationLoading value) loading,
+    required TResult Function(_DriverApplicationError value) error,
+    required TResult Function(_DriverApplicationLoaded value) loaded,
+    required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
+    required TResult Function(_DriverApplicationApproved value) approved,
+  }) {
+    return pendingBlockEnd(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_DriverApplicationLoading value)? loading,
+    TResult Function(_DriverApplicationError value)? error,
+    TResult Function(_DriverApplicationLoaded value)? loaded,
+    TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
+    TResult Function(_DriverApplicationApproved value)? approved,
+  }) {
+    return pendingBlockEnd?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_DriverApplicationLoading value)? loading,
+    TResult Function(_DriverApplicationError value)? error,
+    TResult Function(_DriverApplicationLoaded value)? loaded,
+    TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
+    TResult Function(_DriverApplicationApproved value)? approved,
+    required TResult orElse(),
+  }) {
+    if (pendingBlockEnd != null) {
+      return pendingBlockEnd(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DriverApplicationPendingBlockEnd
+    implements DriverApplicationState {
+  const factory _DriverApplicationPendingBlockEnd() =
+      _$_DriverApplicationPendingBlockEnd;
 }
 
 /// @nodoc
@@ -697,6 +873,7 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     required TResult Function(String? message) error,
     required TResult Function() loaded,
     required TResult Function() approving,
+    required TResult Function() pendingBlockEnd,
     required TResult Function() approved,
   }) {
     return approved();
@@ -709,6 +886,7 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
   }) {
     return approved?.call();
@@ -721,6 +899,7 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     TResult Function(String? message)? error,
     TResult Function()? loaded,
     TResult Function()? approving,
+    TResult Function()? pendingBlockEnd,
     TResult Function()? approved,
     required TResult orElse(),
   }) {
@@ -737,6 +916,8 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     required TResult Function(_DriverApplicationError value) error,
     required TResult Function(_DriverApplicationLoaded value) loaded,
     required TResult Function(_DriverApplicationApproving value) approving,
+    required TResult Function(_DriverApplicationPendingBlockEnd value)
+        pendingBlockEnd,
     required TResult Function(_DriverApplicationApproved value) approved,
   }) {
     return approved(this);
@@ -749,6 +930,7 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
   }) {
     return approved?.call(this);
@@ -761,6 +943,7 @@ class _$_DriverApplicationApproved implements _DriverApplicationApproved {
     TResult Function(_DriverApplicationError value)? error,
     TResult Function(_DriverApplicationLoaded value)? loaded,
     TResult Function(_DriverApplicationApproving value)? approving,
+    TResult Function(_DriverApplicationPendingBlockEnd value)? pendingBlockEnd,
     TResult Function(_DriverApplicationApproved value)? approved,
     required TResult orElse(),
   }) {
