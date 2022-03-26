@@ -36,53 +36,127 @@ class HoldingsView extends HookConsumerWidget {
             holdings.when(
               loading: () => const CircularProgressIndicator(),
               error: (errorMsg) => PaperValidationSummary([errorMsg!]),
-              data: (holdingsData) => Column(
-                children: [
-                  const Text(
-                    'Ride Holdings Amount',
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${EthAmountFormatter(holdingsData).format()} WETH',
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  MaterialButton(
-                    height: 55,
-                    color: RideColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    onPressed: () =>
-                        context.push('/passenger/holdings/deposit'),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text('Deposit'),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  MaterialButton(
-                    height: 55,
-                    color: RideColors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    onPressed: () =>
-                        context.push('/passenger/holdings/withdraw'),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text('Withdraw'),
-                    ),
-                  ),
-                ],
+              data: (holdingsInCrypto, holdingsInFiat) => RideHoldingsCard(
+                holdingsInCrypto: holdingsInCrypto,
+                holdingsInFiat: holdingsInFiat,
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RideHoldingsCard extends HookConsumerWidget {
+  const RideHoldingsCard({
+    Key? key,
+    required this.holdingsInCrypto,
+    required this.holdingsInFiat,
+  }) : super(key: key);
+
+  final BigInt holdingsInCrypto;
+  final BigInt holdingsInFiat;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Card(
+      elevation: 5.0,
+      margin: const EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: RideColors.cardColor,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Ride Holdings',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '${EthAmountFormatter(holdingsInCrypto).format()} WETH',
+                  style: const TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w900,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '\$${EthAmountFormatter(holdingsInFiat).formatFiat()}',
+                  style: const TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w900,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Crypto, Fiat, Now Both',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: RideColors.lightGrayColor,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: MaterialButton(
+                        height: 55,
+                        color: RideColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        onPressed: () =>
+                            context.push('/passenger/holdings/deposit'),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Text('Deposit'),
+                        ),
+                      ),
+                    ),
+                    const VerticalDivider(
+                      color: RideColors.lightGrayColor,
+                      thickness: 1,
+                      indent: 20,
+                      endIndent: 0,
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: MaterialButton(
+                        height: 55,
+                        color: RideColors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        onPressed: () =>
+                            context.push('/passenger/holdings/withdraw'),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Text('Withdraw'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
           ],
         ),
       ),

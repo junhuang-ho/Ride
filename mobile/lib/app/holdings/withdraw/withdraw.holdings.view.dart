@@ -50,7 +50,7 @@ class WithdrawWalletView extends HookConsumerWidget {
               ),
               loading: () => const CircularProgressIndicator(),
               error: (message) => PaperValidationSummary([message!]),
-              success: (data) => Text('Sucessfully withdraw $data!!!'),
+              success: (data) => Text('Sucessfullready withdraw $data!!!'),
             ),
             const SizedBox(height: 15),
             Consumer(builder: (context, ref, _) {
@@ -62,7 +62,7 @@ class WithdrawWalletView extends HookConsumerWidget {
                 child: holdings.when(
                   loading: () => SpinKitThreeBounce(),
                   error: (errorMsg) => Text(errorMsg!),
-                  data: (holdingsData) => Row(
+                  data: (holdingsInCrypto, holdingsInFiat) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
@@ -72,10 +72,10 @@ class WithdrawWalletView extends HookConsumerWidget {
                           children: [
                             const Text(
                               'Available: ',
-                              style: TextStyle(fontSize: 20.0),
+                              style: TextStyle(fontSize: 15.0),
                             ),
                             Text(
-                              '${EthAmountFormatter(holdingsData).formatFiat(decimalPoint: 10)} WETH',
+                              '${EthAmountFormatter(holdingsInCrypto).formatFiat(decimalPoint: 10)} WETH',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -95,7 +95,7 @@ class WithdrawWalletView extends HookConsumerWidget {
                           ),
                           onPressed: () {
                             withdrawAmountController.text =
-                                EthAmountFormatter(holdingsData).format();
+                                EthAmountFormatter(holdingsInCrypto).format();
                           },
                         ),
                       )

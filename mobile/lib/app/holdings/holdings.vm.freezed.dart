@@ -28,9 +28,10 @@ class _$HoldingsStateTearOff {
     );
   }
 
-  _HoldingsData data(BigInt holdings) {
+  _HoldingsData data(BigInt holdingsInCrypto, BigInt holdingsInFiat) {
     return _HoldingsData(
-      holdings,
+      holdingsInCrypto,
+      holdingsInFiat,
     );
   }
 }
@@ -44,21 +45,22 @@ mixin _$HoldingsState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(BigInt holdings) data,
+    required TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)
+        data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -146,7 +148,8 @@ class _$_HoldingsLoading implements _HoldingsLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(BigInt holdings) data,
+    required TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)
+        data,
   }) {
     return loading();
   }
@@ -156,7 +159,7 @@ class _$_HoldingsLoading implements _HoldingsLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
   }) {
     return loading?.call();
   }
@@ -166,7 +169,7 @@ class _$_HoldingsLoading implements _HoldingsLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -281,7 +284,8 @@ class _$_HoldingsError implements _HoldingsError {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(BigInt holdings) data,
+    required TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)
+        data,
   }) {
     return error(message);
   }
@@ -291,7 +295,7 @@ class _$_HoldingsError implements _HoldingsError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
   }) {
     return error?.call(message);
   }
@@ -301,7 +305,7 @@ class _$_HoldingsError implements _HoldingsError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -359,7 +363,7 @@ abstract class _$HoldingsDataCopyWith<$Res> {
   factory _$HoldingsDataCopyWith(
           _HoldingsData value, $Res Function(_HoldingsData) then) =
       __$HoldingsDataCopyWithImpl<$Res>;
-  $Res call({BigInt holdings});
+  $Res call({BigInt holdingsInCrypto, BigInt holdingsInFiat});
 }
 
 /// @nodoc
@@ -375,12 +379,17 @@ class __$HoldingsDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? holdings = freezed,
+    Object? holdingsInCrypto = freezed,
+    Object? holdingsInFiat = freezed,
   }) {
     return _then(_HoldingsData(
-      holdings == freezed
-          ? _value.holdings
-          : holdings // ignore: cast_nullable_to_non_nullable
+      holdingsInCrypto == freezed
+          ? _value.holdingsInCrypto
+          : holdingsInCrypto // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      holdingsInFiat == freezed
+          ? _value.holdingsInFiat
+          : holdingsInFiat // ignore: cast_nullable_to_non_nullable
               as BigInt,
     ));
   }
@@ -389,14 +398,16 @@ class __$HoldingsDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_HoldingsData implements _HoldingsData {
-  const _$_HoldingsData(this.holdings);
+  const _$_HoldingsData(this.holdingsInCrypto, this.holdingsInFiat);
 
   @override
-  final BigInt holdings;
+  final BigInt holdingsInCrypto;
+  @override
+  final BigInt holdingsInFiat;
 
   @override
   String toString() {
-    return 'HoldingsState.data(holdings: $holdings)';
+    return 'HoldingsState.data(holdingsInCrypto: $holdingsInCrypto, holdingsInFiat: $holdingsInFiat)';
   }
 
   @override
@@ -404,12 +415,17 @@ class _$_HoldingsData implements _HoldingsData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _HoldingsData &&
-            const DeepCollectionEquality().equals(other.holdings, holdings));
+            const DeepCollectionEquality()
+                .equals(other.holdingsInCrypto, holdingsInCrypto) &&
+            const DeepCollectionEquality()
+                .equals(other.holdingsInFiat, holdingsInFiat));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(holdings));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(holdingsInCrypto),
+      const DeepCollectionEquality().hash(holdingsInFiat));
 
   @JsonKey(ignore: true)
   @override
@@ -421,9 +437,10 @@ class _$_HoldingsData implements _HoldingsData {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(BigInt holdings) data,
+    required TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)
+        data,
   }) {
-    return data(holdings);
+    return data(holdingsInCrypto, holdingsInFiat);
   }
 
   @override
@@ -431,9 +448,9 @@ class _$_HoldingsData implements _HoldingsData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
   }) {
-    return data?.call(holdings);
+    return data?.call(holdingsInCrypto, holdingsInFiat);
   }
 
   @override
@@ -441,11 +458,11 @@ class _$_HoldingsData implements _HoldingsData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(BigInt holdings)? data,
+    TResult Function(BigInt holdingsInCrypto, BigInt holdingsInFiat)? data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(holdings);
+      return data(holdingsInCrypto, holdingsInFiat);
     }
     return orElse();
   }
@@ -486,9 +503,11 @@ class _$_HoldingsData implements _HoldingsData {
 }
 
 abstract class _HoldingsData implements HoldingsState {
-  const factory _HoldingsData(BigInt holdings) = _$_HoldingsData;
+  const factory _HoldingsData(BigInt holdingsInCrypto, BigInt holdingsInFiat) =
+      _$_HoldingsData;
 
-  BigInt get holdings;
+  BigInt get holdingsInCrypto;
+  BigInt get holdingsInFiat;
   @JsonKey(ignore: true)
   _$HoldingsDataCopyWith<_HoldingsData> get copyWith =>
       throw _privateConstructorUsedError;
