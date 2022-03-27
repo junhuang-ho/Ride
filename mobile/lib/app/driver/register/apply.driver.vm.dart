@@ -48,17 +48,28 @@ class ApplyDriverVM extends StateNotifier<ApplyDriverState> {
 
   Future<void> apply(Map<String, dynamic> formValue) async {
     state = const ApplyDriverState.loading();
-    XFile? pickedImage;
+    XFile? pickedDoc;
     try {
-      pickedImage = formValue['document'][0];
+      pickedDoc = formValue['document'][0];
 
-      final String fileName = path.basename(pickedImage!.path);
-      File imageFile = File(pickedImage.path);
+      final String fileName = path.basename(pickedDoc!.path);
+      File imageFile = File(pickedDoc.path);
 
       try {
         final driverId = formValue['driverId'];
+        final firstName = formValue['firstName'];
+        final lastName = formValue['lastName'];
+        final email = formValue['email'];
+        final phoneNumber = formValue['phoneNumber'];
+        final location = formValue['location'];
+
         Map<String, Object> applicantMap = {
           'driver_id': driverId,
+          'first_name': firstName,
+          'last_name': lastName,
+          'email': email,
+          'phone_number': phoneNumber,
+          'location': location,
           'created_at': DateTime.now().toString(),
           'file_name': fileName,
           'status': Strings.pendingApproval,
