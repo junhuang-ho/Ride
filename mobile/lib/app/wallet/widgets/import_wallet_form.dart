@@ -82,6 +82,7 @@ class ImportWalletForm extends HookConsumerWidget {
                       label: 'Seed phrase',
                       hintText: 'Type your seed phrase',
                       controller: inputController,
+                      maxLines: 3,
                     ),
                     visible: importType.value == WalletImportType.mnemonic,
                   ),

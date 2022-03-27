@@ -53,6 +53,7 @@ class ConfirmMnemonic extends HookWidget {
                 label: 'Confirm your seed',
                 hintText: 'Please type your seed phrase again',
                 controller: mnemonicController,
+                maxLines: 3,
               ),
             ],
           ),

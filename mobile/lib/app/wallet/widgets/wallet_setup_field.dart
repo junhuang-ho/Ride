@@ -10,11 +10,13 @@ class WalletSetupField extends ConsumerWidget {
     required this.label,
     required this.hintText,
     required this.controller,
+    this.maxLines = 1,
   }) : super(key: key);
 
   final String label;
   final String hintText;
   final TextEditingController controller;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +31,7 @@ class WalletSetupField extends ConsumerWidget {
         PaperInput(
           labelText: label,
           hintText: hintText,
-          maxLines: 3,
+          maxLines: maxLines,
           controller: controller,
         ),
       ],
