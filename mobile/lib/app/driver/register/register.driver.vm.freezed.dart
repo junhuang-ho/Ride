@@ -32,10 +32,12 @@ class _$RegisterDriverStateTearOff {
     );
   }
 
-  _RegisterDriverSuccess success(String? data) {
-    return _RegisterDriverSuccess(
-      data,
-    );
+  _RegisterDriverPendingTransaction pendingTransaction() {
+    return const _RegisterDriverPendingTransaction();
+  }
+
+  _RegisterDriverSuccess success() {
+    return const _RegisterDriverSuccess();
   }
 }
 
@@ -49,7 +51,8 @@ mixin _$RegisterDriverState {
     required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(String? data) success,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,7 +60,8 @@ mixin _$RegisterDriverState {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,7 +69,8 @@ mixin _$RegisterDriverState {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -74,6 +79,8 @@ mixin _$RegisterDriverState {
     required TResult Function(_RegisterDriverInit value) init,
     required TResult Function(_RegisterDriverLoading value) loading,
     required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_RegisterDriverSuccess value) success,
   }) =>
       throw _privateConstructorUsedError;
@@ -82,6 +89,8 @@ mixin _$RegisterDriverState {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
   }) =>
       throw _privateConstructorUsedError;
@@ -90,6 +99,8 @@ mixin _$RegisterDriverState {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
     required TResult orElse(),
   }) =>
@@ -157,7 +168,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(String? data) success,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
   }) {
     return init();
   }
@@ -168,7 +180,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
   }) {
     return init?.call();
   }
@@ -179,7 +192,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -194,6 +208,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     required TResult Function(_RegisterDriverInit value) init,
     required TResult Function(_RegisterDriverLoading value) loading,
     required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_RegisterDriverSuccess value) success,
   }) {
     return init(this);
@@ -205,6 +221,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
   }) {
     return init?.call(this);
@@ -216,6 +234,8 @@ class _$_RegisterDriverInit implements _RegisterDriverInit {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
     required TResult orElse(),
   }) {
@@ -274,7 +294,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(String? data) success,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
   }) {
     return loading();
   }
@@ -285,7 +306,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
   }) {
     return loading?.call();
   }
@@ -296,7 +318,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -311,6 +334,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     required TResult Function(_RegisterDriverInit value) init,
     required TResult Function(_RegisterDriverLoading value) loading,
     required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_RegisterDriverSuccess value) success,
   }) {
     return loading(this);
@@ -322,6 +347,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
   }) {
     return loading?.call(this);
@@ -333,6 +360,8 @@ class _$_RegisterDriverLoading implements _RegisterDriverLoading {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
     required TResult orElse(),
   }) {
@@ -416,7 +445,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(String? data) success,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
   }) {
     return error(message);
   }
@@ -427,7 +457,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
   }) {
     return error?.call(message);
   }
@@ -438,7 +469,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -453,6 +485,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     required TResult Function(_RegisterDriverInit value) init,
     required TResult Function(_RegisterDriverLoading value) loading,
     required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_RegisterDriverSuccess value) success,
   }) {
     return error(this);
@@ -464,6 +498,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
   }) {
     return error?.call(this);
@@ -475,6 +511,8 @@ class _$_RegisterDriverError implements _RegisterDriverError {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
     required TResult orElse(),
   }) {
@@ -495,11 +533,143 @@ abstract class _RegisterDriverError implements RegisterDriverState {
 }
 
 /// @nodoc
+abstract class _$RegisterDriverPendingTransactionCopyWith<$Res> {
+  factory _$RegisterDriverPendingTransactionCopyWith(
+          _RegisterDriverPendingTransaction value,
+          $Res Function(_RegisterDriverPendingTransaction) then) =
+      __$RegisterDriverPendingTransactionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$RegisterDriverPendingTransactionCopyWithImpl<$Res>
+    extends _$RegisterDriverStateCopyWithImpl<$Res>
+    implements _$RegisterDriverPendingTransactionCopyWith<$Res> {
+  __$RegisterDriverPendingTransactionCopyWithImpl(
+      _RegisterDriverPendingTransaction _value,
+      $Res Function(_RegisterDriverPendingTransaction) _then)
+      : super(_value, (v) => _then(v as _RegisterDriverPendingTransaction));
+
+  @override
+  _RegisterDriverPendingTransaction get _value =>
+      super._value as _RegisterDriverPendingTransaction;
+}
+
+/// @nodoc
+
+class _$_RegisterDriverPendingTransaction
+    implements _RegisterDriverPendingTransaction {
+  const _$_RegisterDriverPendingTransaction();
+
+  @override
+  String toString() {
+    return 'RegisterDriverState.pendingTransaction()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _RegisterDriverPendingTransaction);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
+  }) {
+    return pendingTransaction();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
+  }) {
+    return pendingTransaction?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
+    required TResult orElse(),
+  }) {
+    if (pendingTransaction != null) {
+      return pendingTransaction();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_RegisterDriverInit value) init,
+    required TResult Function(_RegisterDriverLoading value) loading,
+    required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
+    required TResult Function(_RegisterDriverSuccess value) success,
+  }) {
+    return pendingTransaction(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_RegisterDriverInit value)? init,
+    TResult Function(_RegisterDriverLoading value)? loading,
+    TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
+    TResult Function(_RegisterDriverSuccess value)? success,
+  }) {
+    return pendingTransaction?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_RegisterDriverInit value)? init,
+    TResult Function(_RegisterDriverLoading value)? loading,
+    TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
+    TResult Function(_RegisterDriverSuccess value)? success,
+    required TResult orElse(),
+  }) {
+    if (pendingTransaction != null) {
+      return pendingTransaction(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RegisterDriverPendingTransaction
+    implements RegisterDriverState {
+  const factory _RegisterDriverPendingTransaction() =
+      _$_RegisterDriverPendingTransaction;
+}
+
+/// @nodoc
 abstract class _$RegisterDriverSuccessCopyWith<$Res> {
   factory _$RegisterDriverSuccessCopyWith(_RegisterDriverSuccess value,
           $Res Function(_RegisterDriverSuccess) then) =
       __$RegisterDriverSuccessCopyWithImpl<$Res>;
-  $Res call({String? data});
 }
 
 /// @nodoc
@@ -512,50 +682,26 @@ class __$RegisterDriverSuccessCopyWithImpl<$Res>
 
   @override
   _RegisterDriverSuccess get _value => super._value as _RegisterDriverSuccess;
-
-  @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_RegisterDriverSuccess(
-      data == freezed
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
-  const _$_RegisterDriverSuccess(this.data);
-
-  @override
-  final String? data;
+  const _$_RegisterDriverSuccess();
 
   @override
   String toString() {
-    return 'RegisterDriverState.success(data: $data)';
+    return 'RegisterDriverState.success()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _RegisterDriverSuccess &&
-            const DeepCollectionEquality().equals(other.data, data));
+        (other.runtimeType == runtimeType && other is _RegisterDriverSuccess);
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
-
-  @JsonKey(ignore: true)
-  @override
-  _$RegisterDriverSuccessCopyWith<_RegisterDriverSuccess> get copyWith =>
-      __$RegisterDriverSuccessCopyWithImpl<_RegisterDriverSuccess>(
-          this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
@@ -563,9 +709,10 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(String? data) success,
+    required TResult Function() pendingTransaction,
+    required TResult Function() success,
   }) {
-    return success(data);
+    return success();
   }
 
   @override
@@ -574,9 +721,10 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
   }) {
-    return success?.call(data);
+    return success?.call();
   }
 
   @override
@@ -585,11 +733,12 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     TResult Function()? init,
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(String? data)? success,
+    TResult Function()? pendingTransaction,
+    TResult Function()? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(data);
+      return success();
     }
     return orElse();
   }
@@ -600,6 +749,8 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     required TResult Function(_RegisterDriverInit value) init,
     required TResult Function(_RegisterDriverLoading value) loading,
     required TResult Function(_RegisterDriverError value) error,
+    required TResult Function(_RegisterDriverPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_RegisterDriverSuccess value) success,
   }) {
     return success(this);
@@ -611,6 +762,8 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
   }) {
     return success?.call(this);
@@ -622,6 +775,8 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
     TResult Function(_RegisterDriverInit value)? init,
     TResult Function(_RegisterDriverLoading value)? loading,
     TResult Function(_RegisterDriverError value)? error,
+    TResult Function(_RegisterDriverPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_RegisterDriverSuccess value)? success,
     required TResult orElse(),
   }) {
@@ -633,10 +788,5 @@ class _$_RegisterDriverSuccess implements _RegisterDriverSuccess {
 }
 
 abstract class _RegisterDriverSuccess implements RegisterDriverState {
-  const factory _RegisterDriverSuccess(String? data) = _$_RegisterDriverSuccess;
-
-  String? get data;
-  @JsonKey(ignore: true)
-  _$RegisterDriverSuccessCopyWith<_RegisterDriverSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _RegisterDriverSuccess() = _$_RegisterDriverSuccess;
 }

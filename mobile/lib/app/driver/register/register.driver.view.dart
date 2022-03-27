@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/app/driver/register/register.driver.vm.dart';
+import 'package:ride/services/crypto.dart';
+import 'package:ride/services/ride/ride_driver_registry.dart';
 import 'package:ride/widgets/paper_form.dart';
 import 'package:ride/widgets/paper_input.dart';
 import 'package:ride/widgets/paper_validation_summary.dart';
+import 'package:ride/widgets/pending_transaction.dart';
 
 class RegisterDriverView extends HookConsumerWidget {
   const RegisterDriverView({Key? key}) : super(key: key);
@@ -16,11 +19,27 @@ class RegisterDriverView extends HookConsumerWidget {
     final registerDriver = ref.watch(registerDriverProvider);
     final registerDriverController = useTextEditingController();
 
+    Future<void> _registerAsDriver() async {
+      await ref
+          .read(registerDriverProvider.notifier)
+          .registerAsDriver(registerDriverController.text);
+      final userAddress = await ref.read(cryptoProvider).getUserPublicAddress();
+      ref
+          .read(rideDriverRegistryProvider)
+          .rideDriverRegistry
+          .registeredAsDriverEvents()
+          .listen((event) {
+        if (event.sender == userAddress) {
+          ref.read(registerDriverProvider.notifier).goToSuccess();
+        }
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Driver Registration'),
         automaticallyImplyLeading: registerDriver.maybeWhen(
-          success: (_) => false,
+          success: () => false,
           orElse: () => true,
         ),
       ),
@@ -29,13 +48,11 @@ class RegisterDriverView extends HookConsumerWidget {
           padding: 30,
           actionButtons: <Widget>[
             registerDriver.maybeWhen(
-              success: (_) => const SizedBox(),
+              success: () => const SizedBox(),
               orElse: () => OutlinedButton(
                 child: const Text('Register'),
                 onPressed: () async {
-                  await ref
-                      .read(registerDriverProvider.notifier)
-                      .registerAsDriver(registerDriverController.text);
+                  await _registerAsDriver();
                 },
               ),
             ),
@@ -47,10 +64,12 @@ class RegisterDriverView extends HookConsumerWidget {
                 hintText: 'Please type in max metres per trip',
                 maxLines: 1,
                 controller: registerDriverController,
+                keyboardType: TextInputType.number,
               ),
               loading: () => const CircularProgressIndicator(),
               error: (message) => PaperValidationSummary([message!]),
-              success: (data) => const RegisteredSuccessfulContent(),
+              pendingTransaction: () => const PendingTransaction(),
+              success: () => const RegisteredSuccessfulContent(),
             ),
           ],
         ),
