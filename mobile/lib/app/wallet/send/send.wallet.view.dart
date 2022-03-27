@@ -115,6 +115,7 @@ class SendForm extends HookConsumerWidget {
                   hintText: 'Please enter the amount in ether',
                   maxLines: 1,
                   controller: amountController,
+                  keyboardType: TextInputType.number,
                 ),
               ],
             ),

@@ -52,7 +52,7 @@ class AccountDropdown extends StatelessWidget {
                     const Text('Account 1'),
                     Text(
                       'Balance: ${EthAmountFormatter(balance).format()} $symbol',
-                      style: TextStyle(fontSize: 14.0),
+                      style: const TextStyle(fontSize: 14.0),
                     ),
                   ],
                 )

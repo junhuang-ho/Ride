@@ -75,6 +75,7 @@ class DepositHoldingsView extends HookConsumerWidget {
                 hintText: 'Please enter deposit amount in Ether',
                 maxLines: 1,
                 controller: depositAmountController,
+                keyboardType: TextInputType.number,
               ),
               loading: () => const CircularProgressIndicator(),
               error: (message) => PaperValidationSummary([message!]),
