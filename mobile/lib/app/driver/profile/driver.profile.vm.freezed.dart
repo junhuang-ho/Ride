@@ -28,9 +28,11 @@ class _$DriverProfileStateTearOff {
     );
   }
 
-  _DriverProfileData data(DriverReputation driverReputation) {
+  _DriverProfileData data(
+      DriverReputation driverReputation, DriverApplication driverApplication) {
     return _DriverProfileData(
       driverReputation,
+      driverApplication,
     );
   }
 }
@@ -44,21 +46,27 @@ mixin _$DriverProfileState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(DriverReputation driverReputation) data,
+    required TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)
+        data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -146,7 +154,9 @@ class _$_DriverProfileLoading implements _DriverProfileLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(DriverReputation driverReputation) data,
+    required TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)
+        data,
   }) {
     return loading();
   }
@@ -156,7 +166,9 @@ class _$_DriverProfileLoading implements _DriverProfileLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
   }) {
     return loading?.call();
   }
@@ -166,7 +178,9 @@ class _$_DriverProfileLoading implements _DriverProfileLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -281,7 +295,9 @@ class _$_DriverProfileError implements _DriverProfileError {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(DriverReputation driverReputation) data,
+    required TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)
+        data,
   }) {
     return error(message);
   }
@@ -291,7 +307,9 @@ class _$_DriverProfileError implements _DriverProfileError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
   }) {
     return error?.call(message);
   }
@@ -301,7 +319,9 @@ class _$_DriverProfileError implements _DriverProfileError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -359,7 +379,8 @@ abstract class _$DriverProfileDataCopyWith<$Res> {
   factory _$DriverProfileDataCopyWith(
           _DriverProfileData value, $Res Function(_DriverProfileData) then) =
       __$DriverProfileDataCopyWithImpl<$Res>;
-  $Res call({DriverReputation driverReputation});
+  $Res call(
+      {DriverReputation driverReputation, DriverApplication driverApplication});
 
   $DriverReputationCopyWith<$Res> get driverReputation;
 }
@@ -378,12 +399,17 @@ class __$DriverProfileDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? driverReputation = freezed,
+    Object? driverApplication = freezed,
   }) {
     return _then(_DriverProfileData(
       driverReputation == freezed
           ? _value.driverReputation
           : driverReputation // ignore: cast_nullable_to_non_nullable
               as DriverReputation,
+      driverApplication == freezed
+          ? _value.driverApplication
+          : driverApplication // ignore: cast_nullable_to_non_nullable
+              as DriverApplication,
     ));
   }
 
@@ -398,14 +424,16 @@ class __$DriverProfileDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_DriverProfileData implements _DriverProfileData {
-  const _$_DriverProfileData(this.driverReputation);
+  const _$_DriverProfileData(this.driverReputation, this.driverApplication);
 
   @override
   final DriverReputation driverReputation;
+  @override
+  final DriverApplication driverApplication;
 
   @override
   String toString() {
-    return 'DriverProfileState.data(driverReputation: $driverReputation)';
+    return 'DriverProfileState.data(driverReputation: $driverReputation, driverApplication: $driverApplication)';
   }
 
   @override
@@ -414,12 +442,16 @@ class _$_DriverProfileData implements _DriverProfileData {
         (other.runtimeType == runtimeType &&
             other is _DriverProfileData &&
             const DeepCollectionEquality()
-                .equals(other.driverReputation, driverReputation));
+                .equals(other.driverReputation, driverReputation) &&
+            const DeepCollectionEquality()
+                .equals(other.driverApplication, driverApplication));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(driverReputation));
+      runtimeType,
+      const DeepCollectionEquality().hash(driverReputation),
+      const DeepCollectionEquality().hash(driverApplication));
 
   @JsonKey(ignore: true)
   @override
@@ -431,9 +463,11 @@ class _$_DriverProfileData implements _DriverProfileData {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(String? message) error,
-    required TResult Function(DriverReputation driverReputation) data,
+    required TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)
+        data,
   }) {
-    return data(driverReputation);
+    return data(driverReputation, driverApplication);
   }
 
   @override
@@ -441,9 +475,11 @@ class _$_DriverProfileData implements _DriverProfileData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
   }) {
-    return data?.call(driverReputation);
+    return data?.call(driverReputation, driverApplication);
   }
 
   @override
@@ -451,11 +487,13 @@ class _$_DriverProfileData implements _DriverProfileData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(String? message)? error,
-    TResult Function(DriverReputation driverReputation)? data,
+    TResult Function(DriverReputation driverReputation,
+            DriverApplication driverApplication)?
+        data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(driverReputation);
+      return data(driverReputation, driverApplication);
     }
     return orElse();
   }
@@ -496,10 +534,11 @@ class _$_DriverProfileData implements _DriverProfileData {
 }
 
 abstract class _DriverProfileData implements DriverProfileState {
-  const factory _DriverProfileData(DriverReputation driverReputation) =
-      _$_DriverProfileData;
+  const factory _DriverProfileData(DriverReputation driverReputation,
+      DriverApplication driverApplication) = _$_DriverProfileData;
 
   DriverReputation get driverReputation;
+  DriverApplication get driverApplication;
   @JsonKey(ignore: true)
   _$DriverProfileDataCopyWith<_DriverProfileData> get copyWith =>
       throw _privateConstructorUsedError;
