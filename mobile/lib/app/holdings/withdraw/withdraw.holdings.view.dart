@@ -47,6 +47,7 @@ class WithdrawWalletView extends HookConsumerWidget {
                 hintText: 'Please enter withdrawal amount in Ether',
                 maxLines: 1,
                 controller: withdrawAmountController,
+                keyboardType: TextInputType.number,
               ),
               loading: () => const CircularProgressIndicator(),
               error: (message) => PaperValidationSummary([message!]),

@@ -86,6 +86,7 @@ class RideHoldingsCard extends HookConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   '${EthAmountFormatter(holdingsInCrypto).format()} WETH',
+                  maxLines: 3,
                   style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w900,
