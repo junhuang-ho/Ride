@@ -16,4 +16,18 @@ class EthAmountFormatter {
         .getValueInUnit(toUnit)
         .toString();
   }
+
+  String formatFiat({
+    EtherUnit fromUnit = EtherUnit.wei,
+    EtherUnit toUnit = EtherUnit.ether,
+    int decimalPoint = 2,
+  }) {
+    if (amount == null) {
+      return '-';
+    }
+
+    return EtherAmount.fromUnitAndValue(fromUnit, amount)
+        .getValueInUnit(toUnit)
+        .toStringAsFixed(decimalPoint);
+  }
 }
