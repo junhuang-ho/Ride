@@ -17,6 +17,10 @@ class Crypto {
     return bip39.generateMnemonic();
   }
 
+  String getMnemonic(String entropyString) {
+    return bip39.entropyToMnemonic(entropyString);
+  }
+
   Future<String> getPrivateKey(String mnemonic) async {
     final seed = bip39.mnemonicToSeedHex(mnemonic);
     final master = await ED25519_HD_KEY.getMasterKeyFromSeed(hex.decode(seed),
