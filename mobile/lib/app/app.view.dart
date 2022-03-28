@@ -33,7 +33,7 @@ class AppView extends HookConsumerWidget {
         } else if (accountData.accountType == AccountType.driver) {
           return const DriverView();
         } else {
-          return const PassengerHomeView();
+          return PassengerHomeView();
         }
       },
       unAuthenticated: () => const AuthView(),

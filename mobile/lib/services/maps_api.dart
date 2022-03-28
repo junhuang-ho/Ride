@@ -24,7 +24,6 @@ class MapsAPI {
       String placeId, String sessionToken) async {
     String url = 'https://maps.googleapis.com/maps/api/place/details/json?'
         'place_id=$placeId&key=$kMapKey&sessiontoken=$sessionToken';
-    print('place details: $url');
     return await RequestHelper.get(url);
   }
 
