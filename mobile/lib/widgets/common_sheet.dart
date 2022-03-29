@@ -23,10 +23,6 @@ class CommonSheet extends StatelessWidget {
           height: sheetHeight,
           decoration: BoxDecoration(
             color: Theme.of(context).bottomAppBarColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            ),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
