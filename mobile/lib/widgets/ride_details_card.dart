@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ride/utils/ride_colors.dart';
 import 'package:ride/widgets/ride_details_content.dart';
 
 class RideDetailsCard extends StatelessWidget {
   const RideDetailsCard({
     Key? key,
+    this.userId,
     required this.distanceText,
     required this.durationText,
     required this.fare,
@@ -11,6 +13,7 @@ class RideDetailsCard extends StatelessWidget {
     required this.destAddress,
   }) : super(key: key);
 
+  final String? userId;
   final String distanceText;
   final String durationText;
   final BigInt fare;
@@ -31,8 +34,9 @@ class RideDetailsCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: Theme.of(context).bottomAppBarColor,
+        color: RideColors.cardColor,
         child: RideDetailsContent(
+          userId: userId,
           distanceText: distanceText,
           durationText: durationText,
           fare: fare,

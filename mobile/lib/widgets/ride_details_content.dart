@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jdenticon_dart/jdenticon_dart.dart';
+import 'package:ride/app/wallet/widgets/address_copy_button.dart';
 import 'package:ride/utils/eth_amount_formatter.dart';
 import 'package:ride/utils/ride_colors.dart';
 
 class RideDetailsContent extends StatelessWidget {
   const RideDetailsContent({
     Key? key,
+    this.userId,
     required this.distanceText,
     required this.durationText,
     required this.fare,
@@ -13,6 +17,7 @@ class RideDetailsContent extends StatelessWidget {
     this.showPickupAndDest = true,
   }) : super(key: key);
 
+  final String? userId;
   final String distanceText;
   final String durationText;
   final BigInt fare;
@@ -41,6 +46,22 @@ class RideDetailsContent extends StatelessWidget {
             const SizedBox(height: 2),
             const Divider(color: RideColors.primaryColor),
             const SizedBox(height: 2),
+            if (userId != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      child: SvgPicture.string(
+                        Jdenticon.toSvg(userId!),
+                      ),
+                      radius: 20,
+                    ),
+                  ),
+                  AddressCopyButton(publicKey: userId!),
+                ],
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -97,7 +118,7 @@ class RideDetailsContent extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'USD${EthAmountFormatter(fare).formatFiat()}',
+                      '\$${EthAmountFormatter(fare).formatFiat()}',
                       style: const TextStyle(
                         fontSize: 20,
                         color: RideColors.primaryColor,
@@ -150,6 +171,7 @@ class RideDetailsContent extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),
