@@ -40,6 +40,23 @@ class RideHubService {
     return await _web3Client.getBalance(from);
   }
 
+  Future<String?> sendEth(
+    EthereumAddress to,
+    EtherAmount amount,
+  ) async {
+    final transactionId = await _web3Client.sendTransaction(
+      _credentials,
+      Transaction(
+        to: to,
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+        value: amount,
+      ),
+      chainId: null,
+      fetchChainIdFromNetworkId: true,
+    );
+    return transactionId;
+  }
+
   Future<BigInt> getWETHBalance(EthereumAddress from) async {
     return await _wethToken.balanceOf(from);
   }
@@ -48,14 +65,26 @@ class RideHubService {
     EthereumAddress to,
     EtherAmount amount,
   ) async {
-    final transactionId = await _wethToken.transfer(to, amount.getInWei,
-        credentials: credentials);
+    final transactionId = await _wethToken.transfer(
+      to,
+      amount.getInWei,
+      credentials: credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
     return transactionId;
   }
 
   Future<String> authorizeWETH(BigInt amount) async {
-    final transactionId = await _wethToken.approve(rideHubAddress, amount,
-        credentials: _credentials);
+    final transactionId = await _wethToken.approve(
+      rideHubAddress,
+      amount,
+      credentials: _credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
     return transactionId;
   }
 }
