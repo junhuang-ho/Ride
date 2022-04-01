@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:ride/app/auth/auth.vm.dart';
+import 'package:ride/widgets/sheet_handle.dart';
 
 class QRCodeSheet extends HookConsumerWidget {
   const QRCodeSheet({
@@ -15,7 +16,6 @@ class QRCodeSheet extends HookConsumerWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
@@ -25,12 +25,13 @@ class QRCodeSheet extends HookConsumerWidget {
           ),
         ],
       ),
-      height: 220,
+      height: 300,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 10),
+            const SheetHandle(),
+            const SizedBox(height: 30),
             if (MediaQuery.of(context).orientation == Orientation.portrait ||
                 kIsWeb)
               QrImage(
@@ -41,6 +42,11 @@ class QRCodeSheet extends HookConsumerWidget {
                 size: 150.0,
                 backgroundColor: Colors.white,
               ),
+            const SizedBox(height: 15),
+            const Text(
+              'Passenger scan address to start trip',
+              style: TextStyle(fontSize: 15),
+            ),
           ],
         ),
       ),
