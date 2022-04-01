@@ -20,14 +20,25 @@ class RideDriverRegistryService {
     String uri,
   ) async {
     final transactionId = await _rideDriverRegistry.approveApplicant(
-        driverAddress, uri,
-        credentials: _rideHub.credentials);
+      driverAddress,
+      uri,
+      credentials: _rideHub.credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
+
     return transactionId;
   }
 
   Future<String?> registerAsDriver(BigInt maxMetresPerTrip) async {
-    final transactionId = await _rideDriverRegistry
-        .registerAsDriver(maxMetresPerTrip, credentials: _rideHub.credentials);
+    final transactionId = await _rideDriverRegistry.registerAsDriver(
+      maxMetresPerTrip,
+      credentials: _rideHub.credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
     return transactionId;
   }
 
@@ -35,6 +46,9 @@ class RideDriverRegistryService {
     final transactionId = await _rideDriverRegistry.updateMaxMetresPerTrip(
       maxMetresPerTrip,
       credentials: _rideHub.credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
     );
     return transactionId;
   }

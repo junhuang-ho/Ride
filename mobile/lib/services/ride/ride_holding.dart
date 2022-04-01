@@ -20,16 +20,26 @@ class RideHoldingService {
 
   Future<String?> depositTokens(Uint8List keyPay, BigInt depositAmount) async {
     final transactionId = await _rideHolding.depositTokens(
-        keyPay, depositAmount,
-        credentials: _rideHub.credentials);
+      keyPay,
+      depositAmount,
+      credentials: _rideHub.credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
     return transactionId;
   }
 
   Future<String?> withdrawTokens(
       Uint8List keyPay, BigInt withdrawalAmount) async {
     final transactionId = await _rideHolding.withdrawTokens(
-        keyPay, withdrawalAmount,
-        credentials: _rideHub.credentials);
+      keyPay,
+      withdrawalAmount,
+      credentials: _rideHub.credentials,
+      transaction: Transaction(
+        gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50),
+      ),
+    );
     return transactionId;
   }
 }
