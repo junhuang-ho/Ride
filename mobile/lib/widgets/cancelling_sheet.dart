@@ -20,7 +20,7 @@ class CancellingSheet extends HookConsumerWidget {
           children: const <Widget>[
             Text(
               'Cancelling....',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Brand-Bold',
               ),

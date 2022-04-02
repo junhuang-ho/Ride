@@ -9,7 +9,7 @@ class PendingTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        SpinKitPouringHourGlass(color: RideColors.secondaryColor),
+        SpinKitPouringHourGlass(color: RideColors.primaryColor),
         SizedBox(height: 15),
         Text(
           'Pending Blockend Transaction...',
