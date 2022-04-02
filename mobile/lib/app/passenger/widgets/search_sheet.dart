@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/utils/ride_colors.dart';
 import 'package:ride/widgets/common_sheet.dart';
 
 class SearchSheet extends HookConsumerWidget {
@@ -18,8 +19,15 @@ class SearchSheet extends HookConsumerWidget {
       sheetHeight: searchSheetHeight,
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            const Text(
+              'Hey there',
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
             const SizedBox(height: 20),
             GestureDetector(
               onTap: onSearchBarTap,
@@ -51,7 +59,7 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: RideColors.grey,
         borderRadius: BorderRadius.circular(4),
         boxShadow: const [
           BoxShadow(
@@ -68,13 +76,18 @@ class SearchBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(
               Icons.search,
-              color: Theme.of(context).primaryColor,
+              color: RideColors.primaryColor,
             ),
-            const SizedBox(width: 10),
-            const Text('Search Destination'),
+            SizedBox(width: 10),
+            Text(
+              'Where are you going?',
+              style: TextStyle(
+                fontSize: 15.0,
+              ),
+            ),
           ],
         ),
       ),
