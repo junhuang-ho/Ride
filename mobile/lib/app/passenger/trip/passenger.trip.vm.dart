@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ride/app/auth/auth.vm.dart';
 import 'package:ride/models/ride_request.dart';
 import 'package:ride/services/ride/ride_passenger.dart';
 import 'package:ride/utils/constants.dart';
@@ -18,6 +19,9 @@ class PassengerTripState with _$PassengerTripState {
   const factory PassengerTripState.onTheWay(String tixId) =
       _PassengerTripOnTheWay;
   const factory PassengerTripState.endingTrip() = _PassengerTripEndingTrip;
+  const factory PassengerTripState.pendingTransaction() =
+      _PassengerTripPendingTransaction;
+
   const factory PassengerTripState.ended() = _PassengerTripEnded;
 }
 
@@ -53,6 +57,15 @@ class PassengerTripVM extends StateNotifier<PassengerTripState> {
   Future<void> endTrip(bool agreed, int rating) async {
     try {
       state = const PassengerTripState.endingTrip();
+      await _ridePassenger.endTrip(agreed, BigInt.from(rating));
+      state = const PassengerTripState.pendingTransaction();
+    } catch (ex) {
+      state = PassengerTripState.error(ex.toString());
+    }
+  }
+
+  Future<void> updateRideRequestStatus(bool agreed) async {
+    try {
       final rideRequestStatus =
           agreed ? Strings.paxAgreed : Strings.paxDisagreed;
 
@@ -62,10 +75,7 @@ class PassengerTripVM extends StateNotifier<PassengerTripState> {
       );
 
       if (agreed) {
-        await _ridePassenger.endTrip(agreed, BigInt.from(rating));
         state = const PassengerTripState.ended();
-      } else {
-        state = PassengerTripState.onTheWay(acceptedRideRequest.tixId);
       }
     } catch (ex) {
       state = PassengerTripState.error(ex.toString());
@@ -75,5 +85,6 @@ class PassengerTripVM extends StateNotifier<PassengerTripState> {
 
 final passengerTripProvider =
     StateNotifierProvider<PassengerTripVM, PassengerTripState>((ref) {
+  ref.watch(authProvider);
   return PassengerTripVM(ref.read);
 });

@@ -46,6 +46,10 @@ class _$PassengerTripStateTearOff {
     return const _PassengerTripEndingTrip();
   }
 
+  _PassengerTripPendingTransaction pendingTransaction() {
+    return const _PassengerTripPendingTransaction();
+  }
+
   _PassengerTripEnded ended() {
     return const _PassengerTripEnded();
   }
@@ -64,6 +68,7 @@ mixin _$PassengerTripState {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) =>
       throw _privateConstructorUsedError;
@@ -75,6 +80,7 @@ mixin _$PassengerTripState {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) =>
       throw _privateConstructorUsedError;
@@ -86,6 +92,7 @@ mixin _$PassengerTripState {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) =>
@@ -99,6 +106,8 @@ mixin _$PassengerTripState {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) =>
       throw _privateConstructorUsedError;
@@ -111,6 +120,8 @@ mixin _$PassengerTripState {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) =>
       throw _privateConstructorUsedError;
@@ -123,6 +134,8 @@ mixin _$PassengerTripState {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) =>
@@ -193,6 +206,7 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return init();
@@ -207,6 +221,7 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return init?.call();
@@ -221,6 +236,7 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -240,6 +256,8 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return init(this);
@@ -255,6 +273,8 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return init?.call(this);
@@ -270,6 +290,8 @@ class _$_PassengerTripInit implements _PassengerTripInit {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -355,6 +377,7 @@ class _$_PassengerTripError implements _PassengerTripError {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return error(message);
@@ -369,6 +392,7 @@ class _$_PassengerTripError implements _PassengerTripError {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return error?.call(message);
@@ -383,6 +407,7 @@ class _$_PassengerTripError implements _PassengerTripError {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -402,6 +427,8 @@ class _$_PassengerTripError implements _PassengerTripError {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return error(this);
@@ -417,6 +444,8 @@ class _$_PassengerTripError implements _PassengerTripError {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return error?.call(this);
@@ -432,6 +461,8 @@ class _$_PassengerTripError implements _PassengerTripError {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -503,6 +534,7 @@ class _$_PassengerTripDriverAddressNotMatched
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return driverAddressNotMatched();
@@ -517,6 +549,7 @@ class _$_PassengerTripDriverAddressNotMatched
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return driverAddressNotMatched?.call();
@@ -531,6 +564,7 @@ class _$_PassengerTripDriverAddressNotMatched
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -550,6 +584,8 @@ class _$_PassengerTripDriverAddressNotMatched
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return driverAddressNotMatched(this);
@@ -565,6 +601,8 @@ class _$_PassengerTripDriverAddressNotMatched
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return driverAddressNotMatched?.call(this);
@@ -580,6 +618,8 @@ class _$_PassengerTripDriverAddressNotMatched
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -645,6 +685,7 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return startingTrip();
@@ -659,6 +700,7 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return startingTrip?.call();
@@ -673,6 +715,7 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -692,6 +735,8 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return startingTrip(this);
@@ -707,6 +752,8 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return startingTrip?.call(this);
@@ -722,6 +769,8 @@ class _$_PassengerTripStartingTrip implements _PassengerTripStartingTrip {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -808,6 +857,7 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return onTheWay(tixId);
@@ -822,6 +872,7 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return onTheWay?.call(tixId);
@@ -836,6 +887,7 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -855,6 +907,8 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return onTheWay(this);
@@ -870,6 +924,8 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return onTheWay?.call(this);
@@ -885,6 +941,8 @@ class _$_PassengerTripOnTheWay implements _PassengerTripOnTheWay {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -952,6 +1010,7 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return endingTrip();
@@ -966,6 +1025,7 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return endingTrip?.call();
@@ -980,6 +1040,7 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -999,6 +1060,8 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return endingTrip(this);
@@ -1014,6 +1077,8 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return endingTrip?.call(this);
@@ -1029,6 +1094,8 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
@@ -1041,6 +1108,159 @@ class _$_PassengerTripEndingTrip implements _PassengerTripEndingTrip {
 
 abstract class _PassengerTripEndingTrip implements PassengerTripState {
   const factory _PassengerTripEndingTrip() = _$_PassengerTripEndingTrip;
+}
+
+/// @nodoc
+abstract class _$PassengerTripPendingTransactionCopyWith<$Res> {
+  factory _$PassengerTripPendingTransactionCopyWith(
+          _PassengerTripPendingTransaction value,
+          $Res Function(_PassengerTripPendingTransaction) then) =
+      __$PassengerTripPendingTransactionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$PassengerTripPendingTransactionCopyWithImpl<$Res>
+    extends _$PassengerTripStateCopyWithImpl<$Res>
+    implements _$PassengerTripPendingTransactionCopyWith<$Res> {
+  __$PassengerTripPendingTransactionCopyWithImpl(
+      _PassengerTripPendingTransaction _value,
+      $Res Function(_PassengerTripPendingTransaction) _then)
+      : super(_value, (v) => _then(v as _PassengerTripPendingTransaction));
+
+  @override
+  _PassengerTripPendingTransaction get _value =>
+      super._value as _PassengerTripPendingTransaction;
+}
+
+/// @nodoc
+
+class _$_PassengerTripPendingTransaction
+    implements _PassengerTripPendingTransaction {
+  const _$_PassengerTripPendingTransaction();
+
+  @override
+  String toString() {
+    return 'PassengerTripState.pendingTransaction()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PassengerTripPendingTransaction);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(String? message) error,
+    required TResult Function() driverAddressNotMatched,
+    required TResult Function() startingTrip,
+    required TResult Function(String tixId) onTheWay,
+    required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
+    required TResult Function() ended,
+  }) {
+    return pendingTransaction();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(String? message)? error,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function()? startingTrip,
+    TResult Function(String tixId)? onTheWay,
+    TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
+    TResult Function()? ended,
+  }) {
+    return pendingTransaction?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(String? message)? error,
+    TResult Function()? driverAddressNotMatched,
+    TResult Function()? startingTrip,
+    TResult Function(String tixId)? onTheWay,
+    TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
+    TResult Function()? ended,
+    required TResult orElse(),
+  }) {
+    if (pendingTransaction != null) {
+      return pendingTransaction();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_PassengerTripInit value) init,
+    required TResult Function(_PassengerTripError value) error,
+    required TResult Function(_PassengerTripDriverAddressNotMatched value)
+        driverAddressNotMatched,
+    required TResult Function(_PassengerTripStartingTrip value) startingTrip,
+    required TResult Function(_PassengerTripOnTheWay value) onTheWay,
+    required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
+    required TResult Function(_PassengerTripEnded value) ended,
+  }) {
+    return pendingTransaction(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_PassengerTripInit value)? init,
+    TResult Function(_PassengerTripError value)? error,
+    TResult Function(_PassengerTripDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerTripStartingTrip value)? startingTrip,
+    TResult Function(_PassengerTripOnTheWay value)? onTheWay,
+    TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
+    TResult Function(_PassengerTripEnded value)? ended,
+  }) {
+    return pendingTransaction?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_PassengerTripInit value)? init,
+    TResult Function(_PassengerTripError value)? error,
+    TResult Function(_PassengerTripDriverAddressNotMatched value)?
+        driverAddressNotMatched,
+    TResult Function(_PassengerTripStartingTrip value)? startingTrip,
+    TResult Function(_PassengerTripOnTheWay value)? onTheWay,
+    TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
+    TResult Function(_PassengerTripEnded value)? ended,
+    required TResult orElse(),
+  }) {
+    if (pendingTransaction != null) {
+      return pendingTransaction(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PassengerTripPendingTransaction implements PassengerTripState {
+  const factory _PassengerTripPendingTransaction() =
+      _$_PassengerTripPendingTransaction;
 }
 
 /// @nodoc
@@ -1090,6 +1310,7 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     required TResult Function() startingTrip,
     required TResult Function(String tixId) onTheWay,
     required TResult Function() endingTrip,
+    required TResult Function() pendingTransaction,
     required TResult Function() ended,
   }) {
     return ended();
@@ -1104,6 +1325,7 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
   }) {
     return ended?.call();
@@ -1118,6 +1340,7 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     TResult Function()? startingTrip,
     TResult Function(String tixId)? onTheWay,
     TResult Function()? endingTrip,
+    TResult Function()? pendingTransaction,
     TResult Function()? ended,
     required TResult orElse(),
   }) {
@@ -1137,6 +1360,8 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     required TResult Function(_PassengerTripStartingTrip value) startingTrip,
     required TResult Function(_PassengerTripOnTheWay value) onTheWay,
     required TResult Function(_PassengerTripEndingTrip value) endingTrip,
+    required TResult Function(_PassengerTripPendingTransaction value)
+        pendingTransaction,
     required TResult Function(_PassengerTripEnded value) ended,
   }) {
     return ended(this);
@@ -1152,6 +1377,8 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
   }) {
     return ended?.call(this);
@@ -1167,6 +1394,8 @@ class _$_PassengerTripEnded implements _PassengerTripEnded {
     TResult Function(_PassengerTripStartingTrip value)? startingTrip,
     TResult Function(_PassengerTripOnTheWay value)? onTheWay,
     TResult Function(_PassengerTripEndingTrip value)? endingTrip,
+    TResult Function(_PassengerTripPendingTransaction value)?
+        pendingTransaction,
     TResult Function(_PassengerTripEnded value)? ended,
     required TResult orElse(),
   }) {
