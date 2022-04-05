@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ride/abi/RideDriver.g.dart';
 import 'package:ride/app/driver/home/driver.ride.vm.dart';
+import 'package:ride/widgets/common_sheet.dart';
+import 'package:ride/widgets/pending_transaction.dart';
 import 'package:ride/models/ride_request.dart';
 import 'package:ride/services/crypto.dart';
 
@@ -28,20 +30,17 @@ class RidePendingCard extends HookConsumerWidget {
       });
     });
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: Theme.of(context).bottomAppBarColor,
-      child: Container(
-        margin: const EdgeInsets.all(4),
-        height: 200,
-        child: Column(
-          children: const [
-            Text('Pending Transaction...'),
-            SizedBox(height: 15),
-            Text('Please don\'t leave the app...'),
-          ],
+    return CommonSheet(
+      sheetHeight: 200,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: Theme.of(context).bottomAppBarColor,
+        child: Container(
+          margin: const EdgeInsets.all(4),
+          height: 200,
+          child: const PendingTransaction(),
         ),
       ),
     );
