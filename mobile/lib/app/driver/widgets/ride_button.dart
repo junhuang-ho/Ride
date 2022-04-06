@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class TaxiButton extends StatelessWidget {
+class RideButton extends StatelessWidget {
   final String title;
   final Color color;
   final Function()? onPressed;
 
-  const TaxiButton({
+  const RideButton({
     Key? key,
     required this.title,
     required this.color,
@@ -31,8 +31,8 @@ class TaxiButton extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(
-              fontSize: 18,
-              fontFamily: 'Brand-Bold',
+              fontSize: 18.0,
+              fontWeight: FontWeight.w900,
             ),
           ),
         ),
