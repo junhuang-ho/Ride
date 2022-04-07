@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ride/app/driver/widgets/taxi_button.dart';
+import 'package:ride/app/driver/widgets/ride_button.dart';
 import 'package:ride/app/driver/widgets/taxi_outlined_button.dart';
 import 'package:ride/utils/ride_colors.dart';
 
@@ -19,7 +19,7 @@ class ConfirmSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: RideColors.cardColor,
         boxShadow: [
           BoxShadow(
               color: Colors.black26,
@@ -40,23 +40,19 @@ class ConfirmSheet extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 22,
                 fontFamily: 'Brand-Bold',
-                color: Color(0xFF383635),
               ),
             ),
             const SizedBox(height: 24),
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF918D8D),
-              ),
             ),
             const SizedBox(height: 24),
             Row(
               children: <Widget>[
                 Expanded(
                   child: TaxiOutlinedButton(
-                    title: 'BACK',
+                    title: 'Back',
                     color: const Color(0xFFe2e2e2),
                     onPressed: () {
                       Navigator.pop(context);
@@ -65,12 +61,12 @@ class ConfirmSheet extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: TaxiButton(
+                  child: RideButton(
                     onPressed: onPressed,
-                    color: (title == 'GO ONLINE')
+                    color: (title == 'Go Online')
                         ? RideColors.colorGreen
                         : Colors.red,
-                    title: 'CONFIRM',
+                    title: 'Confirm',
                   ),
                 )
               ],
