@@ -1,5 +1,13 @@
 # Some notes for developer reference
 
+# read emitted event history?
+https://github.com/simolus3/web3dart/blob/a97de62fbe8ccc04c29d3c726484cccd5a9522fe/lib/src/core/filters.dart#L67
+web3dart event calling, there is from & to block that can get event history
+
+https://github.com/simolus3/web3dart/blob/10151b108fde49dfa7f4f1a5452e38837639df5f/example/contracts.dart#L70
+example of how to use if not already implemented 
+
+
 # Encrypt data before send to blockchain
 
 1. Good tutorial explaining the steps to encrypt data (in JS): https://github.com/pubkey/eth-crypto/blob/master/tutorials/encrypted-message.md
