@@ -19,10 +19,14 @@ example of how to use if not already implemented
 # fuse.io wallet_core
 fuse.io's wallet core. Its based on web3dart but they made it simple to use? I think mainly to interact with fuse.io stuff not sure if we need that. But they also have The Graph integration which is good for us so maybe can get some ideas from here.
 
+https://pub.dev/packages/wallet_core
+
 # deep-linking for Mobile wallet (dont rmb why not using)
 https://pub.dev/packages/walletconnect_dart
 
-https://pub.dev/packages/wallet_core
+
+# need running ipfs node to view ipfs content? No.
+https://stackoverflow.com/a/60936496
 
 # Interesting Chains
 
