@@ -28,6 +28,8 @@ https://pub.dev/packages/walletconnect_dart
 # need running ipfs node to view ipfs content? No.
 https://stackoverflow.com/a/60936496
 
+.. so means mobile can also read as long can access gateway?
+
 # Interesting Chains
 
 0. Bitcoin (no smart contracts)
