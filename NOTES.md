@@ -8,6 +8,10 @@
     - encryption of data using receiver's public key (note some are hashing algo which is not the same as encryption): https://pub.dev/packages/webcrypto   OR    https://pub.dev/packages/encrypt
     - decryption of data on receiver's side and signature verification using same libraries.
 
+# fuse.io wallet_core
+fuse.io's wallet core. Its based on web3dart but they made it simple to use? I think mainly to interact with fuse.io stuff not sure if we need that. But they also have The Graph integration which is good for us so maybe can get some ideas from here.
+
+https://pub.dev/packages/wallet_core
 
 # Interesting Chains
 
