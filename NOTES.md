@@ -9,7 +9,7 @@ example of how to use if not already implemented
 
 or use The Graph:
 
-good blog post explaining: https://ethereum.org/en/developers/tutorials/the-graph-fixing-web3-data-querying/#the-graph-server
+good blog post explaining how to setup: https://ethereum.org/en/developers/tutorials/the-graph-fixing-web3-data-querying/#the-graph-server
 
 long-term is using The Graph Network (instead of a Hosted Service), which would reduce costs as no need to maintain server & only pay as users query (pay-per-usage).
 
