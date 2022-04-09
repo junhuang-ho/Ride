@@ -8,7 +8,8 @@ https://github.com/simolus3/web3dart/blob/10151b108fde49dfa7f4f1a5452e38837639df
 example of how to use if not already implemented 
 
 or use The Graph:
-good blog post explaining (but still need a server component - for now...): https://ethereum.org/en/developers/tutorials/the-graph-fixing-web3-data-querying/#the-graph-server
+
+good blog post explaining: https://ethereum.org/en/developers/tutorials/the-graph-fixing-web3-data-querying/#the-graph-server
 
 # Encrypt data before send to blockchain
 
