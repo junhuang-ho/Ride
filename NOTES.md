@@ -11,6 +11,8 @@ or use The Graph:
 
 good blog post explaining: https://ethereum.org/en/developers/tutorials/the-graph-fixing-web3-data-querying/#the-graph-server
 
+long-term is using The Graph Network (instead of a Hosted Service), which would reduce costs as no need to maintain server & only pay as users query (pay-per-usage).
+
 # Encrypt data before send to blockchain
 
 1. Good tutorial explaining the steps to encrypt data (in JS): https://github.com/pubkey/eth-crypto/blob/master/tutorials/encrypted-message.md
