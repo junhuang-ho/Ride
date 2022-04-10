@@ -35,6 +35,18 @@ https://stackoverflow.com/a/60936496
 
 .. so means mobile can also read as long can access gateway?
 
+# IPFS Mobile
+
+ipfs docs: https://docs.ipfs.io/
+good ipfs learning resource: https://research.protocol.ai/tutorials/resnetlab-on-tour/
+ipfs mobile docs: https://github.com/ipfs-shipyard/gomobile-ipfs
+ipfs mobile design guidelines: https://jkosem.gitbook.io/ipfs-mobile-guidelines/design/design-strategy
+
+
+go-mobile: https://medium.com/stack-me-up/meet-the-coolest-tech-marriage-flutter-go-369cf11367c9
+https://github.com/golang/go/wiki/Mobile
+interesting: https://github.com/ipfs/devgrants/blob/8233f7df4a219122bcf31eaea289d654406e4443/targeted-grants/open-street-map-ipfs.md
+
 # Interesting Chains
 
 0. Bitcoin (no smart contracts)
