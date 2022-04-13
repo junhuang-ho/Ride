@@ -81,6 +81,8 @@ https://ceramic.network/
 
 from: https://docs.ipfs.io/concepts/usage-ideas-examples/#proof-of-ownership
 
+non DID based: https://polygon.technology/polygon-id/
+
 # Interesting Chains
 
 0. Bitcoin (no smart contracts)
