@@ -64,7 +64,7 @@ go-mobile: https://medium.com/stack-me-up/meet-the-coolest-tech-marriage-flutter
 https://github.com/golang/go/wiki/Mobile
 interesting: https://github.com/ipfs/devgrants/blob/8233f7df4a219122bcf31eaea289d654406e4443/targeted-grants/open-street-map-ipfs.md
 
-# Decentralized Identity (DID)
+# Decentralized Identifier (DID)
 https://en.wikipedia.org/wiki/Decentralized_identifier
 
 https://github.com/mustafarefaey/private-stamp
