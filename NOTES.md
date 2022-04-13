@@ -64,9 +64,22 @@ go-mobile: https://medium.com/stack-me-up/meet-the-coolest-tech-marriage-flutter
 https://github.com/golang/go/wiki/Mobile
 interesting: https://github.com/ipfs/devgrants/blob/8233f7df4a219122bcf31eaea289d654406e4443/targeted-grants/open-street-map-ipfs.md
 
-# Decentralized Identity
+# Decentralized Identity (DID)
+https://en.wikipedia.org/wiki/Decentralized_identifier
+
 https://github.com/mustafarefaey/private-stamp
+
 https://www.idena.io/
+
+https://nomios.io/
+
+https://docs.google.com/presentation/d/1HbydOI0w-T_FY23zCACAyHmzDq1ZvyG2tklpPSm6OQQ/edit#slide=id.g5c86d26719_1_22
+
+https://github.com/ipfs/camp
+
+https://ceramic.network/
+
+from: https://docs.ipfs.io/concepts/usage-ideas-examples/#proof-of-ownership
 
 # Interesting Chains
 
