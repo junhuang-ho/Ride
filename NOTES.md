@@ -1,5 +1,20 @@
 # Some notes for developer reference
 
+# Wallet Standards
+### BIP-39
+Official: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
+Blog Guide of how MetaMask does things: https://levelup.gitconnected.com/blockchain-series-how-metamask-creates-accounts-a8971b21a74b
+- Few things to note about this blog explanation
+- 1. Other accounts (private-public keys) derived by hashing original private key
+- 2. Password used to encrypt private key and stored locally. Then user can reveal private key by typing password. I assume same encrpytion for seed phrase
+- 3. Does not explain how password is used as "login" to wallet.
+
+### BIP-32 & BIP-44
+Used to make wallet more user friendly?: https://vault12.com/securemycrypto/crypto-security-basics/bip39/bip32-and-bip44
+BIP-32: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+BIP-44: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+
+
 # read emitted event history?
 https://github.com/simolus3/web3dart/blob/a97de62fbe8ccc04c29d3c726484cccd5a9522fe/lib/src/core/filters.dart#L67
 web3dart event calling, there is from & to block that can get event history
