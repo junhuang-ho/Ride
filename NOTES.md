@@ -11,7 +11,9 @@ Blog Guide of how MetaMask does things: https://levelup.gitconnected.com/blockch
 
 ### BIP-32 & BIP-44
 Used to make wallet more user friendly?: https://vault12.com/securemycrypto/crypto-security-basics/bip39/bip32-and-bip44
+
 BIP-32: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+
 BIP-44: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 
 
