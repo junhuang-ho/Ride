@@ -6,8 +6,16 @@ import scripts.utils as utils
 import scripts.post_deployment_setup as pds
 import scripts.execution_patterns as ep
 import scripts.hive_utils as hu
+import test_hive_setup as ths
+
 
 chain = brownie.network.state.Chain()
+
+#######################################################
+##### ------------------------------------------- #####
+##### ----- set location details in bytes32 ----- #####
+##### ------------------------------------------- #####
+#######################################################
 
 location_package = Web3.toHex(
     Web3.solidityKeccak(
@@ -21,137 +29,26 @@ location_destination = Web3.toHex(
         ["0x" + eth_abi.encode_abi(["string"], ["destination location"]).hex()],
     )
 )
-#####################################
-##### ------------------------- #####
-##### ----- hive creation ----- #####
-##### ------------------------- #####
-#####################################
+
+############################################
+##### -------------------------------- #####
+##### ----- requesters & runners ----- #####
+##### -------------------------------- #####
+############################################
 
 
-def test_hive_creation(
-    sample_hive,
-    ride_token,
-    ride_runner_detail,
-    ride_runner_registry,
-    ride_multi_sigs,
-    person2,
-    person3,
-):
-    # 1 # hive creation
-    hive_governance_token, _, _ = sample_hive
-
-    # 2 # give initial hive representatives voting power
-    hu.get_voting_power(
-        ride_token, hive_governance_token, ride_multi_sigs, [person2, person3]
-    )
-
-    # 3 # one representative registering self as runner
-    assert ride_runner_detail.getRunnerToRunnerDetail(person2)[0] == 0
-    assert ride_runner_detail.getRunnerToRunnerDetail(person2)[3] == 0
-
-    max_metres_per_trip = 555
-    tx = ride_runner_registry.registerAsRunner(max_metres_per_trip, {"from": person2})
-    tx.wait(1)
-
-    assert ride_runner_detail.getRunnerToRunnerDetail(person2)[0] != 0
-    assert ride_runner_detail.getRunnerToRunnerDetail(person2)[3] == max_metres_per_trip
+@pytest.fixture(scope="module", autouse=True)
+def requester1(person5):
+    yield person5
 
 
-#########################################################
-##### --------------------------------------------- #####
-##### ---------- hive setting their fees ---------- #####
-##### --------------------------------------------- #####
-#########################################################
+@pytest.fixture(scope="module", autouse=True)
+def requester2(person6):
+    yield person6
 
 
-def test_hive_fees(
-    sample_hive,
-    ride_token,
-    ride_hub,
-    ride_runner_detail,
-    ride_runner_registry,
-    ride_fee,
-    ride_currency_registry,
-    ride_access_control,
-    ride_multi_sigs,
-    deployer,
-    person2,
-    person3,
-):
-    # 0 # setup
-    _, hive_timelock, hive_governor = sample_hive
-
-    test_hive_creation(
-        sample_hive,
-        ride_token,
-        ride_runner_detail,
-        ride_runner_registry,
-        ride_multi_sigs,
-        person2,
-        person3,
-    )
-
-    key_USD = ride_currency_registry.getKeyFiat("USD")
-
-    assert ride_fee.getCancellationFee(hive_timelock.address, key_USD) == 0
-    assert ride_fee.getBaseFee(hive_timelock.address, key_USD) == 0
-    assert ride_fee.getCostPerMinute(hive_timelock.address, key_USD) == 0
-    assert ride_fee.getCostPerMetre(hive_timelock.address, key_USD) == 0
-
-    args = (
-        key_USD,
-        "5 ether",
-    )
-    encoded_function1 = ride_fee.setCancellationFee.encode_input(*args)
-
-    args = (
-        key_USD,
-        "3 ether",
-    )
-    encoded_function2 = ride_fee.setBaseFee.encode_input(*args)
-
-    args = (
-        key_USD,
-        "0.0008 ether",
-    )
-    encoded_function3 = ride_fee.setCostPerMinute.encode_input(*args)
-
-    args = (
-        key_USD,
-        "0.0005 ether",
-    )
-    encoded_function4 = ride_fee.setCostPerMetre.encode_input(*args)
-
-    ep.governance_process(
-        [encoded_function1, encoded_function2, encoded_function3, encoded_function4],
-        [
-            ride_hub[0].address,
-            ride_hub[0].address,
-            ride_hub[0].address,
-            ride_hub[0].address,
-        ],
-        hive_governor,
-        ride_access_control,
-        deployer,
-        deployer,
-        {person2: 1, person3: 1},
-        deployer,
-    )
-
-    assert ride_fee.getCancellationFee(hive_timelock.address, key_USD) == "5 ether"
-    assert ride_fee.getBaseFee(hive_timelock.address, key_USD) == "3 ether"
-    assert ride_fee.getCostPerMinute(hive_timelock.address, key_USD) == "0.0008 ether"
-    assert ride_fee.getCostPerMetre(hive_timelock.address, key_USD) == "0.0005 ether"
-
-
-#########################################################
-##### --------------------------------------------- #####
-##### ----- joining a hive to become a runner ----- #####
-##### --------------------------------------------- #####
-#########################################################
-
-
-def test_new_runner_joins(
+@pytest.fixture(scope="module", autouse=True)
+def runners(
     sample_hive,
     ride_token,
     ride_hub,
@@ -165,11 +62,9 @@ def test_new_runner_joins(
     person2,
     person3,
     person4,
+    person7,
 ):
-    # 0 # setup
-    _, hive_timelock, hive_governor = sample_hive
-
-    test_hive_fees(
+    ths.new_runner_joins(
         sample_hive,
         ride_token,
         ride_hub,
@@ -182,68 +77,9 @@ def test_new_runner_joins(
         deployer,
         person2,
         person3,
+        [person4, person7],
     )
-
-    # 1 # vote if new user should join as runner (success)
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[1] == ""
-    assert (
-        ride_runner_detail.getRunnerToRunnerDetail(person4)[2] != hive_timelock.address
-    )
-
-    uri = "new runner docs"
-    args = (
-        person4,
-        uri,
-    )
-    encoded_function = ride_runner_registry.approveApplicant.encode_input(*args)
-    ep.governance_process(
-        [encoded_function],
-        [ride_hub[0].address],
-        hive_governor,
-        ride_access_control,
-        deployer,
-        deployer,
-        {person2: 1, person3: 1},
-        deployer,
-    )
-
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[1] != ""
-    assert (
-        ride_runner_detail.getRunnerToRunnerDetail(person4)[2] == hive_timelock.address
-    )
-
-    # 2 # complete runner registration
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[0] == 0
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[3] == 0
-
-    max_metres_per_trip = 565
-    tx = ride_runner_registry.registerAsRunner(max_metres_per_trip, {"from": person4})
-    tx.wait(1)
-
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[0] != 0
-    assert ride_runner_detail.getRunnerToRunnerDetail(person4)[3] == max_metres_per_trip
-
-
-############################################
-##### -------------------------------- #####
-##### ----- requestors & runners ----- #####
-##### -------------------------------- #####
-############################################
-
-
-@pytest.fixture(scope="module", autouse=True)
-def requestor1(person5):
-    yield person5
-
-
-@pytest.fixture(scope="module", autouse=True)
-def requestor2(person6):
-    yield person6
-
-
-@pytest.fixture(scope="module", autouse=True)
-def runner1(person4):
-    yield person4
+    yield [person4, person7]
 
 
 ###########################################
@@ -285,18 +121,19 @@ def deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, person):
     assert ride_holding.getHolding(person, key_wETH) == amount
 
 
+# @pytest.mark.skip(reason="tmp")
 def test_deposit(
     ride_WETH9,
     ride_hub,
     ride_currency_registry,
     ride_holding,
-    requestor1,
-    requestor2,
-    runner1,
+    requester1,
+    requester2,
+    runners,
 ):
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requestor1)
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requestor2)
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, runner1)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requester1)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requester2)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, runners[0])
 
 
 @pytest.fixture(autouse=True)
@@ -313,8 +150,8 @@ def isolation(fn_isolation):
 """ general notes/concepts
 1.
     The "package" param passed into requestRunner represents 
-the address of package that the runner should pick up, this 
-package address would be set by the requestor. In ride-sharing, 
+the address of package that the runners[0] should pick up, this 
+package address would be set by the requester. In ride-sharing, 
 this would be the passenger's address. However, it could be a 
 "friend" address where someone "calls a cab" for him/her.
 It also allows the smart contract to be applied to food delivery
@@ -326,107 +163,63 @@ address of the supplier where the item needs to be picked up from.
 
 
 def _setup(
-    sample_hive,
-    ride_token,
     ride_hub,
     ride_currency_registry,
-    ride_runner_detail,
-    ride_runner_registry,
     ride_holding,
-    ride_fee,
-    ride_access_control,
-    ride_multi_sigs,
     ride_WETH9,
-    deployer,
-    person2,
-    person3,
-    person4,
-    requestor1,
-    requestor2,
-    runner1,
+    requester1,
+    requester2,
+    runners,
 ):
-    test_new_runner_joins(
-        sample_hive,
-        ride_token,
-        ride_hub,
-        ride_runner_detail,
-        ride_runner_registry,
-        ride_fee,
-        ride_currency_registry,
-        ride_access_control,
-        ride_multi_sigs,
-        deployer,
-        person2,
-        person3,
-        person4,
-    )
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requestor1)
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requestor2)
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, runner1)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requester1)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requester2)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, runners[0])
 
 
+# @pytest.mark.skip(reason="tmp")
 def test_base_case(
     sample_hive,
     ride_hub,
     ride_WETH9,
     ride_currency_registry,
-    ride_token,
-    ride_runner_detail,
-    ride_runner_registry,
     ride_holding,
-    ride_fee,
-    ride_access_control,
-    ride_multi_sigs,
-    deployer,
-    person2,
-    person3,
-    person4,
-    requestor1,
-    requestor2,
-    runner1,
+    requester1,
+    requester2,
+    runners,
 ):
     """
     # # # no verification
     # # # no dispute
     # # # no cancel
     # # # one to one
+        # # # one runners[0] has one active job
+        # # # one requester has one active job
     """
     _, hive_timelock, _ = sample_hive
     _setup(
-        sample_hive,
-        ride_token,
         ride_hub,
         ride_currency_registry,
-        ride_runner_detail,
-        ride_runner_registry,
         ride_holding,
-        ride_fee,
-        ride_access_control,
-        ride_multi_sigs,
         ride_WETH9,
-        deployer,
-        person2,
-        person3,
-        person4,
-        requestor1,
-        requestor2,
-        runner1,
+        requester1,
+        requester2,
+        runners,
     )
 
-    package = requestor1
+    package = requester1
     key_USD = ride_currency_registry.getKeyFiat("USD")
     key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
     estimated_minutes = 2
     estimated_metres = 100
 
-    holding_requestor1 = utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runner1, key_wETH)
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
 
-    assert holding_requestor1 != 0
+    assert holding_requester1 != 0
     assert holding_runner1 != 0
 
-    # 1 # request runner
-    tx = utils.hub_requestor(ride_hub).requestRunner(
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
         hive_timelock.address,
         package,
         location_package,
@@ -435,61 +228,61 @@ def test_base_case(
         key_wETH,
         estimated_minutes,
         estimated_metres,
-        {"from": requestor1},
+        {"from": requester1},
     )
     tx.wait(1)
 
     job_ID = tx.events["RequestRunner"]["jobId"]
 
-    # check # certain portion of requestor's holdings locked up in vault
+    # check # certain portion of requester's holdings locked up in vault
     value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
     cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
         10
     ]  # (cancellation fee)
     assert utils.hub_holding(ride_hub).getHolding(
-        requestor1, key_wETH
-    ) == holding_requestor1 - (value + cancellation_fee)
-    assert utils.hub_holding(ride_hub).getVault(requestor1, key_wETH) == (
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
         value + cancellation_fee
     )
 
-    # 2 # runner accepts job request
+    # 2 # runners[0] accepts job request
     tx = utils.hub_runner(ride_hub).acceptRequest(
-        key_USD, key_wETH, job_ID, {"from": runner1},
+        key_USD, key_wETH, job_ID, {"from": runners[0]},
     )
     tx.wait(1)
 
-    # check # certain portion of runner's holdings locked up in vault
+    # check # certain portion of runners[0]'s holdings locked up in vault
     assert utils.hub_holding(ride_hub).getHolding(
-        runner1, key_wETH
+        runners[0], key_wETH
     ) == holding_runner1 - (value + cancellation_fee)
-    assert utils.hub_holding(ride_hub).getVault(runner1, key_wETH) == (
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
         value + cancellation_fee
     )
 
-    # 3 # runner reaches package location, collect
+    # 3 # runners[0] reaches package location, collect
     package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
     tx = utils.hub_runner(ride_hub).collectPackage(
-        job_ID, package_zero, {"from": runner1},
+        job_ID, package_zero, {"from": runners[0]},
     )
     tx.wait(1)
 
-    # since not verified, countStart detail of requestor & runner does not increase
+    # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requestor_detail(ride_hub).getRequestorToRequestorDetail(requestor1)[
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
             0
         ]
         == 0
     )
-    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runner1)[5] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
 
     # >> fast forward time >> to pass dispute duration
     chain.sleep(
         utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
     )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
 
-    # 4 # runner reaches destination, delivers package
-    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runner1},)
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
     tx.wait(1)
 
     # >> fast forward time >> to pass dispute duration
@@ -497,93 +290,73 @@ def test_base_case(
         utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
     )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
 
-    # 5 # runner completes job, accepts outcome (whatever it may be)
-    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runner1},)
+    # 5 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
     tx.wait(1)
 
-    # since not verified, countEnd + metresTravelled detail of requestor & runner does not increase
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requestor_detail(ride_hub).getRequestorToRequestorDetail(requestor1)[
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
             1
         ]
         == 0
     )
-    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runner1)[4] == 0
-    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runner1)[6] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
 
-    # check # since no dispute/cancel, value (fare) is unlocked from vault to runner, other funds are refunded
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
     assert (
-        utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-        == holding_requestor1 - value
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
     )
     assert (
-        utils.hub_holding(ride_hub).getHolding(runner1, key_wETH)
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
         == holding_runner1 + value
     )
 
 
-def test_req_cancel_pending(
+# @pytest.mark.skip(reason="tmp")
+def test_req_cancel_at_pending(
     sample_hive,
     ride_hub,
     ride_WETH9,
     ride_currency_registry,
-    ride_token,
-    ride_runner_detail,
-    ride_runner_registry,
     ride_holding,
-    ride_fee,
-    ride_access_control,
-    ride_multi_sigs,
-    deployer,
-    person2,
-    person3,
-    person4,
-    requestor1,
-    requestor2,
-    runner1,
+    requester1,
+    requester2,
+    runners,
 ):
     """
     # # # no verification
     # # # no dispute
-    # # # requestor cancel at state == Pending
+    # # # requester cancel at state == Pending
     # # # one to one
     """
     _, hive_timelock, _ = sample_hive
     _setup(
-        sample_hive,
-        ride_token,
         ride_hub,
         ride_currency_registry,
-        ride_runner_detail,
-        ride_runner_registry,
         ride_holding,
-        ride_fee,
-        ride_access_control,
-        ride_multi_sigs,
         ride_WETH9,
-        deployer,
-        person2,
-        person3,
-        person4,
-        requestor1,
-        requestor2,
-        runner1,
+        requester1,
+        requester2,
+        runners,
     )
 
-    package = requestor1
+    package = requester1
     key_USD = ride_currency_registry.getKeyFiat("USD")
     key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
     estimated_minutes = 2
     estimated_metres = 100
 
-    holding_requestor1 = utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runner1, key_wETH)
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
 
-    assert holding_requestor1 != 0
+    assert holding_requester1 != 0
     assert holding_runner1 != 0
 
-    # 1 # request runner
-    tx = utils.hub_requestor(ride_hub).requestRunner(
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
         hive_timelock.address,
         package,
         location_package,
@@ -592,25 +365,25 @@ def test_req_cancel_pending(
         key_wETH,
         estimated_minutes,
         estimated_metres,
-        {"from": requestor1},
+        {"from": requester1},
     )
     tx.wait(1)
 
     job_ID = tx.events["RequestRunner"]["jobId"]
 
-    # check # certain portion of requestor's holdings locked up in vault
+    # check # certain portion of requester's holdings locked up in vault
     value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
     cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
         10
     ]  # (cancellation fee)
     assert utils.hub_holding(ride_hub).getHolding(
-        requestor1, key_wETH
-    ) == holding_requestor1 - (value + cancellation_fee)
-    assert utils.hub_holding(ride_hub).getVault(requestor1, key_wETH) == (
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
         value + cancellation_fee
     )
 
-    # 2 # requestor cancel
+    # 2 # requester cancel
     assert (
         utils.PROPOSAL_STATE[
             utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
@@ -618,12 +391,11 @@ def test_req_cancel_pending(
         == "Pending"
     )
 
-    tx = utils.hub_requestor(ride_hub).cancelFromRequestor(
-        job_ID, {"from": requestor1},
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
     )
     tx.wait(1)
 
-    # check # requestor funds fully refunded
     assert (
         utils.PROPOSAL_STATE[
             utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
@@ -631,75 +403,56 @@ def test_req_cancel_pending(
         == "Cancelled"
     )
 
+    # check # requester funds fully refunded
     assert (
-        utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-        == holding_requestor1
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1
     )
-    assert utils.hub_holding(ride_hub).getVault(requestor1, key_wETH) == 0
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
 
 
-def test_req_cancel_accepted(
+# @pytest.mark.skip(reason="tmp")
+def test_req_cancel_at_accepted(
     sample_hive,
     ride_hub,
     ride_WETH9,
     ride_currency_registry,
-    ride_token,
-    ride_runner_detail,
-    ride_runner_registry,
     ride_holding,
-    ride_fee,
-    ride_access_control,
-    ride_multi_sigs,
-    deployer,
-    person2,
-    person3,
-    person4,
-    requestor1,
-    requestor2,
-    runner1,
+    requester1,
+    requester2,
+    runners,
 ):
     """
     # # # no verification
     # # # no dispute
-    # # # requestor cancel at state == Accepted
+    # # # requester cancel at state == Accepted
     # # # one to one
     """
     _, hive_timelock, _ = sample_hive
     _setup(
-        sample_hive,
-        ride_token,
         ride_hub,
         ride_currency_registry,
-        ride_runner_detail,
-        ride_runner_registry,
         ride_holding,
-        ride_fee,
-        ride_access_control,
-        ride_multi_sigs,
         ride_WETH9,
-        deployer,
-        person2,
-        person3,
-        person4,
-        requestor1,
-        requestor2,
-        runner1,
+        requester1,
+        requester2,
+        runners,
     )
 
-    package = requestor1
+    package = requester1
     key_USD = ride_currency_registry.getKeyFiat("USD")
     key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
     estimated_minutes = 2
     estimated_metres = 100
 
-    holding_requestor1 = utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runner1, key_wETH)
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
 
-    assert holding_requestor1 != 0
+    assert holding_requester1 != 0
     assert holding_runner1 != 0
 
-    # 1 # request runner
-    tx = utils.hub_requestor(ride_hub).requestRunner(
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
         hive_timelock.address,
         package,
         location_package,
@@ -708,45 +461,44 @@ def test_req_cancel_accepted(
         key_wETH,
         estimated_minutes,
         estimated_metres,
-        {"from": requestor1},
+        {"from": requester1},
     )
     tx.wait(1)
 
     job_ID = tx.events["RequestRunner"]["jobId"]
 
-    # check # certain portion of requestor's holdings locked up in vault
+    # check # certain portion of requester's holdings locked up in vault
     value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
     cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
         10
     ]  # (cancellation fee)
     assert utils.hub_holding(ride_hub).getHolding(
-        requestor1, key_wETH
-    ) == holding_requestor1 - (value + cancellation_fee)
-    assert utils.hub_holding(ride_hub).getVault(requestor1, key_wETH) == (
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
         value + cancellation_fee
     )
 
-    # 2 # runner accepts job request
+    # 2 # runners[0] accepts job request
     tx = utils.hub_runner(ride_hub).acceptRequest(
-        key_USD, key_wETH, job_ID, {"from": runner1},
+        key_USD, key_wETH, job_ID, {"from": runners[0]},
     )
     tx.wait(1)
 
-    # check # certain portion of runner's holdings locked up in vault
+    # check # certain portion of runners[0]'s holdings locked up in vault
     assert utils.hub_holding(ride_hub).getHolding(
-        runner1, key_wETH
+        runners[0], key_wETH
     ) == holding_runner1 - (value + cancellation_fee)
-    assert utils.hub_holding(ride_hub).getVault(runner1, key_wETH) == (
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
         value + cancellation_fee
     )
 
-    # 3 # requestor cancel
-    tx = utils.hub_requestor(ride_hub).cancelFromRequestor(
-        job_ID, {"from": requestor1},
+    # 3 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
     )
     tx.wait(1)
 
-    # check # requestor transfers cancellation fee to runner, other fund refunded
     assert (
         utils.PROPOSAL_STATE[
             utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
@@ -754,35 +506,2430 @@ def test_req_cancel_accepted(
         == "Cancelled"
     )
 
+    # check # requester transfers cancellation fee to runners[0], other funds refunded
     assert (
-        utils.hub_holding(ride_hub).getHolding(requestor1, key_wETH)
-        == holding_requestor1 - cancellation_fee
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - cancellation_fee
     )
-    assert utils.hub_holding(ride_hub).getVault(requestor1, key_wETH) == 0
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
 
     assert (
-        utils.hub_holding(ride_hub).getHolding(runner1, key_wETH)
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
         == holding_runner1 + cancellation_fee
     )
-    assert utils.hub_holding(ride_hub).getVault(runner1, key_wETH) == 0
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
 
 
-# # # TODO: runner cancel at Accepted
-# # # TODO: requestor cancel at Collected
-# # # TODO: runner cancel at Collected
-# # # TODO: requestor cancel at Delivered
-# # # TODO: requestor dispute at state == Collected + dispute decision reverted
-# # # TODO: requestor dispute at state == Collected + requestor cancelled
-# # # TODO: requestor dispute at state == Collected + runner cancelled
-# # # TODO: requestor dispute at state == Delivered + dispute decision reverted
-# # # TODO: requestor dispute at state == Delivered + requestor cancelled
-# # # TODO: requestor dispute at state == Delivered + runner accepts and completes job
-# # # TODO: package verified (at collectPackage) + base case [requestor & runner details updated]
-# # # TODO: package verified (at collectPackage) + cancel at state == Collected [requestor lose value]
-# # # TODO: package verified (at collectPackage) + requestor dispute at state == Collected + dispute decision reverted
-# # # TODO: package verified (at collectPackage) + requestor dispute at state == Collected + requestor cancelled
-# # # TODO: package verified (at collectPackage) + requestor dispute at state == Collected + runner cancelled
-# # # TODO: package verified (outside collectPackage), test all many many cases related to this . . .
+# @pytest.mark.skip(reason="tmp")
+def test_run_cancel_at_accepted(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # no dispute
+    # # # runners[0] cancel at state == Accepted
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
+        hive_timelock.address,
+        package,
+        location_package,
+        location_destination,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        {"from": requester1},
+    )
+    tx.wait(1)
+
+    job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # check # certain portion of requester's holdings locked up in vault
+    value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+        10
+    ]  # (cancellation fee)
+    assert utils.hub_holding(ride_hub).getHolding(
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+        value + cancellation_fee
+    )
+
+    # 2 # runners[0] accepts job request
+    tx = utils.hub_runner(ride_hub).acceptRequest(
+        key_USD, key_wETH, job_ID, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # check # certain portion of runners[0]'s holdings locked up in vault
+    assert utils.hub_holding(ride_hub).getHolding(
+        runners[0], key_wETH
+    ) == holding_runner1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+        value + cancellation_fee
+    )
+
+    # 3 # runners[0] cancel
+    tx = utils.hub_runner(ride_hub).cancelFromRunner(job_ID, {"from": runners[0]})
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # runners[0] transfer cancellation fee to requester, other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 + cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 - cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+def request_and_accept(
+    ride_hub,
+    package,
+    key_USD,
+    key_wETH,
+    estimated_minutes,
+    estimated_metres,
+    hive_timelock,
+    holding_requester1,
+    holding_runner1,
+    requester1,
+    runners,
+):
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
+        hive_timelock.address,
+        package,
+        location_package,
+        location_destination,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        {"from": requester1},
+    )
+    tx.wait(1)
+
+    job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # check # certain portion of requester's holdings locked up in vault
+    value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+        10
+    ]  # (cancellation fee)
+    assert utils.hub_holding(ride_hub).getHolding(
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+        value + cancellation_fee
+    )
+
+    # 2 # runners[0] accepts job request
+    tx = utils.hub_runner(ride_hub).acceptRequest(
+        key_USD, key_wETH, job_ID, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # check # certain portion of runners[0]'s holdings locked up in vault
+    assert utils.hub_holding(ride_hub).getHolding(
+        runners[0], key_wETH
+    ) == holding_runner1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+        value + cancellation_fee
+    )
+
+    return job_ID, value, cancellation_fee
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_req_cancel_at_collected(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # no dispute
+    # # # requester cancel at state == Collected
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # 4 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
+    )
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # requester transfers cancellation fee to runners[0], other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_run_cancel_at_collected(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # no dispute
+    # # # requester cancel at state == Collected
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # 4 # runners[0] cancel
+    tx = utils.hub_runner(ride_hub).cancelFromRunner(job_ID, {"from": runners[0]})
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # runners[0] transfer VALUE to requester, other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 + value
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 - value
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_req_cancel_at_delivered(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # no dispute
+    # # # requester cancel at state == Delivered
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # 5 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
+    )
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # requester transfers VALUE to runners[0], other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_collected_then_decision_reverted(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # 4 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 5 # runners[0] cannot "click" deliverPackage
+    with brownie.reverts("Runner: requestor dispute"):
+        tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+        tx.wait(1)
+
+    # 6 # requester decides to revert dispute decision
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, False, {"from": requester1},)
+    tx.wait(1)
+
+    # proceed as base case #
+
+    # 7 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 8 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_collected_then_req_cancel(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # requester cancel at state == Collected
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # 5 # runners[0] cannot "click" deliverPackage
+    with brownie.reverts("Runner: requestor dispute"):
+        tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+        tx.wait(1)
+
+    # 6 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
+    )
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # requester transfers cancellation fee to runners[0], other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_collected_then_run_cancel(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # runners[0] cancel at state == Collected
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # 5 # runners[0] cannot "click" deliverPackage
+    with brownie.reverts("Runner: requestor dispute"):
+        tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+        tx.wait(1)
+
+    # 6 # runners[0] cancel
+    tx = utils.hub_runner(ride_hub).cancelFromRunner(job_ID, {"from": runners[0]})
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # runners[0] transfer VALUE to requester, other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 + value
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 - value
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_delivered_runner_no_accept_then_decision_reverted(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # 5 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 6 # runners[0] cannot "click" completeJob IF not accept requester decision
+    with brownie.reverts("Runner: not accept"):
+        tx = utils.hub_runner(ride_hub).completeJob(
+            job_ID, False, {"from": runners[0]},
+        )
+        tx.wait(1)
+
+    # 7 # requester decides to revert dispute decision
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, False, {"from": requester1},)
+    tx.wait(1)
+
+    # proceed as base case #
+
+    # 8 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_delivered_runner_accept(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # 5 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 6 # runners[0] "click" completeJob as runners[0] accept requester decision
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
+
+    # check # since dispute and runners[0] accept, requester transfers cancellation fee, other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - cancellation_fee
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + cancellation_fee
+    )
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_dispute_at_delivered_runner_then_req_cancel(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # dispute
+    # # # cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # 5 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 6 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
+    )
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # requester transfers cancellation fee to runners[0], other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + cancellation_fee
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# verified
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_verified_base_case(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # verification
+    # # # no dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = requester1.address  # verify package address
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since verified, countStart detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 1
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 1
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 5 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 1
+    )
+    assert (
+        utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4]
+        == estimated_metres
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 1
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_verified_req_cancel_at_collected(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # verification
+    # # # no dispute
+    # # # requester cancel at state == Collected
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = requester1.address  # verify package address
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # 4 # requester cancel
+    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+        job_ID, {"from": requester1},
+    )
+    tx.wait(1)
+
+    assert (
+        utils.PROPOSAL_STATE[
+            utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[0]
+        ]
+        == "Cancelled"
+    )
+
+    # check # requester transfers VALUE to runners[0], other funds refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == 0
+
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == 0
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_init_not_verified_then_dispute_then_verify_then_revert_dispute(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # late verification after dispute
+    # # # dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # 4 # requester dispute
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, True, {"from": requester1},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 5 # runners[0] cannot "click" deliverPackage due to dispute
+    with brownie.reverts("Runner: requestor dispute"):
+        tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+        tx.wait(1)
+
+    # 6 # runners[0] verifies package, click verify
+    tx = utils.hub_runner(ride_hub).verify(
+        job_ID, requester1.address, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 7 # requester decides to revert dispute decision
+    tx = utils.hub_requester(ride_hub).dispute(job_ID, False, {"from": requester1},)
+    tx.wait(1)
+
+    # 8 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 9 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since verified, countStart detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 1
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 1
+
+    # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 1
+    )
+    assert (
+        utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4]
+        == estimated_metres
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 1
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_no_dispute_verify_after_deliver_before_complete(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # late verification
+    # # # no dispute
+    # # # no cancel
+    # # # one to one
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    job_ID, value, cancellation_fee = request_and_accept(
+        ride_hub,
+        package,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        hive_timelock,
+        holding_requester1,
+        holding_runner1,
+        requester1,
+        runners,
+    )
+
+    # # 1 # request runners[0]
+    # tx = utils.hub_requester(ride_hub).requestRunner(
+    #     hive_timelock.address,
+    #     package,
+    #     location_package,
+    #     location_destination,
+    #     key_USD,
+    #     key_wETH,
+    #     estimated_minutes,
+    #     estimated_metres,
+    #     {"from": requester1},
+    # )
+    # tx.wait(1)
+
+    # job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # # check # certain portion of requester's holdings locked up in vault
+    # value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    # cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+    #     10
+    # ]  # (cancellation fee)
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     requester1, key_wETH
+    # ) == holding_requester1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # # 2 # runners[0] accepts job request
+    # tx = utils.hub_runner(ride_hub).acceptRequest(
+    #     key_USD, key_wETH, job_ID, {"from": runners[0]},
+    # )
+    # tx.wait(1)
+
+    # # check # certain portion of runners[0]'s holdings locked up in vault
+    # assert utils.hub_holding(ride_hub).getHolding(
+    #     runners[0], key_wETH
+    # ) == holding_runner1 - (value + cancellation_fee)
+    # assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+    #     value + cancellation_fee
+    # )
+
+    # 3 # runners[0] reaches package location (or not), collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] verifies package, click verify
+    tx = utils.hub_runner(ride_hub).verify(
+        job_ID, requester1.address, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # 5 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 6 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since verified, countStart detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 1
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 1
+
+    # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 1
+    )
+    assert (
+        utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4]
+        == estimated_metres
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 1
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value
+    )
+
+
+# many requester to one runner
+
+
+# @pytest.mark.skip(reason="tmp")
+def test_base_case_many_req_one_run(
+    sample_hive,
+    ride_hub,
+    ride_WETH9,
+    ride_currency_registry,
+    ride_holding,
+    requester1,
+    requester2,
+    runners,
+):
+    """
+    # # # no verification
+    # # # no dispute
+    # # # no cancel
+    # # # many requester to one runner
+    """
+    _, hive_timelock, _ = sample_hive
+    _setup(
+        ride_hub,
+        ride_currency_registry,
+        ride_holding,
+        ride_WETH9,
+        requester1,
+        requester2,
+        runners,
+    )
+
+    package = requester1
+    key_USD = ride_currency_registry.getKeyFiat("USD")
+    key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
+    estimated_minutes = 2
+    estimated_metres = 100
+
+    holding_requester1 = utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+    holding_runner1 = utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+
+    assert holding_requester1 != 0
+    assert holding_runner1 != 0
+
+    # 1 # request runners[0]
+    tx = utils.hub_requester(ride_hub).requestRunner(
+        hive_timelock.address,
+        package,
+        location_package,
+        location_destination,
+        key_USD,
+        key_wETH,
+        estimated_minutes,
+        estimated_metres,
+        {"from": requester1},
+    )
+    tx.wait(1)
+
+    job_ID = tx.events["RequestRunner"]["jobId"]
+
+    # check # certain portion of requester's holdings locked up in vault
+    value = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[9]  # (fare)
+    cancellation_fee = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID)[
+        10
+    ]  # (cancellation fee)
+    assert utils.hub_holding(ride_hub).getHolding(
+        requester1, key_wETH
+    ) == holding_requester1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(requester1, key_wETH) == (
+        value + cancellation_fee
+    )
+
+    # 2 # runners[0] accepts job request
+    tx = utils.hub_runner(ride_hub).acceptRequest(
+        key_USD, key_wETH, job_ID, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # check # certain portion of runners[0]'s holdings locked up in vault
+    assert utils.hub_holding(ride_hub).getHolding(
+        runners[0], key_wETH
+    ) == holding_runner1 - (value + cancellation_fee)
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+        value + cancellation_fee
+    )
+
+    # # another job request
+    package1 = requester2
+    estimated_minutes1 = 3
+    estimated_metres1 = 50
+
+    holding_requester2 = utils.hub_holding(ride_hub).getHolding(requester2, key_wETH)
+    tx1 = utils.hub_requester(ride_hub).requestRunner(
+        hive_timelock.address,
+        package1,
+        location_package,
+        location_destination,
+        key_USD,
+        key_wETH,
+        estimated_minutes1,
+        estimated_metres1,
+        {"from": requester2},
+    )
+    tx1.wait(1)
+
+    job_ID_1 = tx1.events["RequestRunner"]["jobId"]
+
+    # check # certain portion of requester's holdings locked up in vault
+    value1 = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID_1)[9]  # (fare)
+    cancellation_fee1 = utils.hub_job_board(ride_hub).getJobIdToJobDetail(job_ID_1)[
+        10
+    ]  # (cancellation fee)
+    assert utils.hub_holding(ride_hub).getHolding(
+        requester2, key_wETH
+    ) == holding_requester2 - (value1 + cancellation_fee1)
+    assert utils.hub_holding(ride_hub).getVault(requester2, key_wETH) == (
+        value1 + cancellation_fee1
+    )
+
+    # # runners[0] accepts the new job request
+    tx = utils.hub_runner(ride_hub).acceptRequest(
+        key_USD, key_wETH, job_ID_1, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # check # certain portion of runners[0]'s holdings locked up in vault
+    assert utils.hub_holding(ride_hub).getHolding(
+        runners[0], key_wETH
+    ) == holding_runner1 - (value + cancellation_fee) - (value1 + cancellation_fee1)
+    assert utils.hub_holding(ride_hub).getVault(runners[0], key_wETH) == (
+        value + cancellation_fee + (value1 + cancellation_fee1)
+    )
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 5 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+            1
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester1, key_wETH)
+        == holding_requester1 - value
+    )
+    assert utils.hub_holding(ride_hub).getHolding(
+        runners[0], key_wETH
+    ) == holding_runner1 + value - (value1 + cancellation_fee1)
+
+    # # continue with second request
+
+    # 3 # runners[0] reaches package location, collect
+    package_zero = utils.ZERO_ADDRESS  # pass zero address == no verify
+    tx = utils.hub_runner(ride_hub).collectPackage(
+        job_ID_1, package_zero, {"from": runners[0]},
+    )
+    tx.wait(1)
+
+    # since not verified, countStart detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester2)[
+            0
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[5] == 0
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 4 # runners[0] reaches destination, delivers package
+    tx = utils.hub_runner(ride_hub).deliverPackage(job_ID_1, {"from": runners[0]},)
+    tx.wait(1)
+
+    # >> fast forward time >> to pass dispute duration
+    chain.sleep(
+        utils.hub_job_board(ride_hub).getMinDisputeDuration() + 1
+    )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
+
+    # 5 # runners[0] completes job, accepts outcome (whatever it may be)
+    tx = utils.hub_runner(ride_hub).completeJob(job_ID_1, True, {"from": runners[0]},)
+    tx.wait(1)
+
+    # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
+    assert (
+        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester2)[
+            1
+        ]
+        == 0
+    )
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[4] == 0
+    assert utils.hub_runner_detail(ride_hub).getRunnerToRunnerDetail(runners[0])[6] == 0
+
+    # check # since no dispute/cancel, value (fare) is unlocked from vault to runners[0], other funds are refunded
+    assert (
+        utils.hub_holding(ride_hub).getHolding(requester2, key_wETH)
+        == holding_requester2 - value1
+    )
+    assert (
+        utils.hub_holding(ride_hub).getHolding(runners[0], key_wETH)
+        == holding_runner1 + value + value1
+    )
+
+
+# # # TODO: many requester to one runner (all the many cases besides base)
+# # # TODO: one requester to many runner (all the many cases + base)
+# # # TODO: many requester to many runner (all the many cases + base)
+
 
 ##### ------                   ------ #####
 ##### ------        end        ------ #####
@@ -797,24 +2944,25 @@ def test_req_cancel_accepted(
 ###########################################
 
 
+# @pytest.mark.skip(reason="tmp")
 def test_withdraw(
-    ride_hub, ride_currency_registry, ride_holding, ride_WETH9, requestor1
+    ride_hub, ride_currency_registry, ride_holding, ride_WETH9, requester1
 ):
     # 1 # --> setup
-    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requestor1)
+    deposit(ride_WETH9, ride_hub, ride_currency_registry, ride_holding, requester1)
 
     # 2 # --> withdraw from RideHub to wallet
     key_wETH = ride_currency_registry.getKeyCrypto(ride_WETH9.address)
 
-    assert ride_WETH9.balanceOf(requestor1) == 0
+    assert ride_WETH9.balanceOf(requester1) == 0
 
-    amount = ride_holding.getHolding(requestor1, key_wETH)
+    amount = ride_holding.getHolding(requester1, key_wETH)
 
-    tx = ride_holding.withdrawTokens(key_wETH, amount, {"from": requestor1})
+    tx = ride_holding.withdrawTokens(key_wETH, amount, {"from": requester1})
     tx.wait(1)
 
-    assert ride_holding.getHolding(requestor1, key_wETH) == 0
+    assert ride_holding.getHolding(requester1, key_wETH) == 0
 
     # 3 # --> check wallet
 
-    assert ride_WETH9.balanceOf(requestor1) == amount
+    assert ride_WETH9.balanceOf(requester1) == amount

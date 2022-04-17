@@ -130,13 +130,13 @@ def hub_rater(ride_hub):
     )
 
 
-def hub_requestor(ride_hub):
+def hub_requester(ride_hub):
     return brownie.Contract.from_abi(
         "Requestor", ride_hub[0].address, brownie.Requestor.abi, get_account(index=0),
     )
 
 
-def hub_requestor_detail(ride_hub):
+def hub_requester_detail(ride_hub):
     return brownie.Contract.from_abi(
         "RequestorDetail",
         ride_hub[0].address,

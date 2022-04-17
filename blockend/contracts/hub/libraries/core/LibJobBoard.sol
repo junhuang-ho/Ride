@@ -21,7 +21,7 @@ library LibJobBoard {
         JobState state;
         address requestor;
         address runner;
-        address package;
+        address package; // set by requester
         bytes32 locationPackage;
         bytes32 locationDestination;
         bytes32 keyLocal;
@@ -33,6 +33,7 @@ library LibJobBoard {
         bool packageVerified;
         bool dispute;
         bool rated;
+        bool collectStatsRecorded;
     }
 
     struct StorageJobBoard {

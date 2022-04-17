@@ -146,7 +146,7 @@ def governance_process(
             False
         ), f"something wrong with governance process, {utils.PROPOSAL_STATE[governor.state(proposal_id)]}"
 
-    return proposal_id
+    return proposal_id, tx
 
 
 def governance_process_with_fallback(

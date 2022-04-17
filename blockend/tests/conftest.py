@@ -44,6 +44,11 @@ def person6():
     yield utils.get_account(index=6)
 
 
+@pytest.fixture(scope="module")
+def person7():
+    yield utils.get_account(index=7)
+
+
 @pytest.fixture(scope="module", autouse=True)
 def ride_multi_sigs(deployer, person1):
     members = [deployer, person1]
@@ -88,6 +93,9 @@ def ride_governance(ride_token, ride_multi_sigs, deployer):
 
 @pytest.fixture(scope="module", autouse=True)
 def ride_hub(ride_multi_sigs, ride_token, AccessControl, Contract, deployer):
+    # for hive_creation_count value, refer HiveFactory.sol contract,
+    # if LibHiveFactory._requireCorrectOrder(int) set correctly in activateHive function,
+    # then value == int
     hive_creation_count = 4
     job_lifespan = 86400
     min_dispute_duration = 60
@@ -253,7 +261,7 @@ def sample_hive(
     min_delay = 1
     voting_delay = 1
     voting_period = 5
-    proposal_threshold = 0
+    proposal_threshold = 50  # number of tokens
     quorum_percentage = 4
 
     yield hu.build_hive(

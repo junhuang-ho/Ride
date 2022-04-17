@@ -173,6 +173,7 @@ contract Requestor is IHubLibraryEvents {
         if (
             s1.jobIdToJobDetail[_jobId].state == LibJobBoard.JobState.Collected
         ) {
+            // only allow set dispute=true if not verified
             if (!s1.jobIdToJobDetail[_jobId].packageVerified) {
                 s1.jobIdToJobDetail[_jobId].dispute = _dispute;
             } else if (
@@ -180,6 +181,8 @@ contract Requestor is IHubLibraryEvents {
                 s1.jobIdToJobDetail[_jobId].dispute
             ) {
                 s1.jobIdToJobDetail[_jobId].dispute = _dispute; // opportunity to set dispute=false
+            } else {
+                revert("Requestor: already verified");
             }
         } else if (
             s1.jobIdToJobDetail[_jobId].state == LibJobBoard.JobState.Delivered

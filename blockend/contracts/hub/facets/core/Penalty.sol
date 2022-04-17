@@ -6,12 +6,15 @@ import "../../libraries/core/LibPenalty.sol";
 import "../../interfaces/IHubLibraryEvents.sol";
 
 contract Penalty is IHubLibraryEvents {
-    function _getUserToHiveToBanEndTimestamp(address _user, address _hive)
+    function getUserToHiveToBanEndTimestamp(address _user, address _hive)
         external
         view
         returns (uint256)
     {
-        LibPenalty._storagePenalty().userToHiveToBanEndTimestamp[_user][_hive];
+        return
+            LibPenalty._storagePenalty().userToHiveToBanEndTimestamp[_user][
+                _hive
+            ];
     }
 
     function banUsers(address[] memory _user, uint256[] memory _duration)

@@ -98,17 +98,18 @@ contract Runner is IHubLibraryEvents {
         if (s1.jobIdToJobDetail[_jobId].packageVerified) {
             // runner & requestor incentivised to get verified to get stats
             // TODO: re-study this logic where if verified only can gain stats
-            LibRunnerDetail
-                ._storageRunnerDetail()
-                .runnerToRunnerDetail[msg.sender]
-                .countStart += 1;
-
-            LibRequestorDetail
-                ._storageRequestorDetail()
-                .requestorToRequestorDetail[
-                    s1.jobIdToJobDetail[_jobId].requestor
-                ]
-                .countStart += 1;
+            LibRunner._recordCollectStats(_jobId);
+            // LibRunnerDetail
+            //     ._storageRunnerDetail()
+            //     .runnerToRunnerDetail[msg.sender]
+            //     .countStart += 1;
+            // LibRequestorDetail
+            //     ._storageRequestorDetail()
+            //     .requestorToRequestorDetail[
+            //         s1.jobIdToJobDetail[_jobId].requestor
+            //     ]
+            //     .countStart += 1;
+            // s1.jobIdToJobDetail[_jobId].collectStatsRecorded = true;
         }
 
         s1.jobIdToJobDetail[_jobId].state = LibJobBoard.JobState.Collected;
@@ -166,6 +167,10 @@ contract Runner is IHubLibraryEvents {
             LibHolding._sortFundsUnlocking(_jobId, true, true);
 
             if (s1.jobIdToJobDetail[_jobId].packageVerified) {
+                if (!s1.jobIdToJobDetail[_jobId].collectStatsRecorded) {
+                    LibRunner._recordCollectStats(_jobId);
+                }
+
                 // TODO: re-study this logic where if verified only can gain stats
                 s2.runnerToRunnerDetail[msg.sender].metresTravelled += s1
                     .jobIdToJobDetail[_jobId]

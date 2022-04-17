@@ -190,14 +190,20 @@ contract HiveFactory is IHubLibraryEvents {
         bytes32 hiveKey
     );
 
-    function activateHive(address[] memory _runners, string[] memory _uris)
-        external
-    {
+    /** NOTE
+     * requires some initial runners for voting otherwise nothing can be approved,
+     * see templates/HiveGovernor.sol, can just put the administrative addresses
+     * and these addresses should have sufficient voting power to make proposals
+     */
+    function activateHive(
+        address[] memory _administrators,
+        string[] memory _uris
+    ) external {
         LibAccessControl._requireOnlyRole(LibAccessControl.STRATEGIST_ROLE);
 
         LibHiveFactory._requireCorrectOrder(4);
 
-        uint256 applicantCount = _runners.length;
+        uint256 applicantCount = _administrators.length;
         require(
             applicantCount == _uris.length,
             "HiveFactory: runners array does not match URIs array"
@@ -237,7 +243,7 @@ contract HiveFactory is IHubLibraryEvents {
 
         for (uint256 i = 0; i < applicantCount; i++) {
             LibRunnerRegistry._approveApplicant(
-                _runners[i],
+                _administrators[i],
                 _uris[i],
                 hiveTimelockAddress
             );
