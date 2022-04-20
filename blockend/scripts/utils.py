@@ -32,7 +32,7 @@ def get_account(index=None, id=None):
         or network.show_active() in ENV_LOCAL_FORKS
     ):
         return accounts[0]
-    return accounts.add(config["wallets"]["from_key"])  # from_key
+    return accounts.add(config["wallets"]["from_key_0"])  # from_key
 
 
 def get_function_selectors(contract):
@@ -132,15 +132,15 @@ def hub_rater(ride_hub):
 
 def hub_requester(ride_hub):
     return brownie.Contract.from_abi(
-        "Requestor", ride_hub[0].address, brownie.Requestor.abi, get_account(index=0),
+        "Requester", ride_hub[0].address, brownie.Requester.abi, get_account(index=0),
     )
 
 
 def hub_requester_detail(ride_hub):
     return brownie.Contract.from_abi(
-        "RequestorDetail",
+        "RequesterDetail",
         ride_hub[0].address,
-        brownie.RequestorDetail.abi,
+        brownie.RequesterDetail.abi,
         get_account(index=0),
     )
 

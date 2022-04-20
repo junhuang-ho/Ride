@@ -269,7 +269,7 @@ def test_base_case(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -296,7 +296,7 @@ def test_base_case(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 0
@@ -391,7 +391,7 @@ def test_req_cancel_at_pending(
         == "Pending"
     )
 
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -494,7 +494,7 @@ def test_req_cancel_at_accepted(
     )
 
     # 3 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -789,7 +789,7 @@ def test_req_cancel_at_collected(
     tx.wait(1)
 
     # 4 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -1048,7 +1048,7 @@ def test_req_cancel_at_delivered(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1065,7 +1065,7 @@ def test_req_cancel_at_delivered(
     tx.wait(1)
 
     # 5 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -1196,7 +1196,7 @@ def test_dispute_at_collected_then_decision_reverted(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1213,7 +1213,7 @@ def test_dispute_at_collected_then_decision_reverted(
     )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
 
     # 5 # runners[0] cannot "click" deliverPackage
-    with brownie.reverts("Runner: requestor dispute"):
+    with brownie.reverts("Runner: requester dispute"):
         tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
         tx.wait(1)
 
@@ -1238,7 +1238,7 @@ def test_dispute_at_collected_then_decision_reverted(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 0
@@ -1362,7 +1362,7 @@ def test_dispute_at_collected_then_req_cancel(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1379,12 +1379,12 @@ def test_dispute_at_collected_then_req_cancel(
     tx.wait(1)
 
     # 5 # runners[0] cannot "click" deliverPackage
-    with brownie.reverts("Runner: requestor dispute"):
+    with brownie.reverts("Runner: requester dispute"):
         tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
         tx.wait(1)
 
     # 6 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -1515,7 +1515,7 @@ def test_dispute_at_collected_then_run_cancel(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1532,7 +1532,7 @@ def test_dispute_at_collected_then_run_cancel(
     tx.wait(1)
 
     # 5 # runners[0] cannot "click" deliverPackage
-    with brownie.reverts("Runner: requestor dispute"):
+    with brownie.reverts("Runner: requester dispute"):
         tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
         tx.wait(1)
 
@@ -1666,7 +1666,7 @@ def test_dispute_at_delivered_runner_no_accept_then_decision_reverted(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1710,7 +1710,7 @@ def test_dispute_at_delivered_runner_no_accept_then_decision_reverted(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 0
@@ -1834,7 +1834,7 @@ def test_dispute_at_delivered_runner_accept(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -1865,7 +1865,7 @@ def test_dispute_at_delivered_runner_accept(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 0
@@ -1989,7 +1989,7 @@ def test_dispute_at_delivered_runner_then_req_cancel(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -2015,7 +2015,7 @@ def test_dispute_at_delivered_runner_then_req_cancel(
     )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
 
     # 6 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -2149,7 +2149,7 @@ def test_verified_base_case(
 
     # since verified, countStart detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 1
@@ -2176,7 +2176,7 @@ def test_verified_base_case(
 
     # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 1
@@ -2302,7 +2302,7 @@ def test_verified_req_cancel_at_collected(
     tx.wait(1)
 
     # 4 # requester cancel
-    tx = utils.hub_requester(ride_hub).cancelFromRequestor(
+    tx = utils.hub_requester(ride_hub).cancelFromRequester(
         job_ID, {"from": requester1},
     )
     tx.wait(1)
@@ -2433,7 +2433,7 @@ def test_init_not_verified_then_dispute_then_verify_then_revert_dispute(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -2450,7 +2450,7 @@ def test_init_not_verified_then_dispute_then_verify_then_revert_dispute(
     )  # TODO: change getMinDisputeDuration to getHiveToDisputeDuration (if have set)
 
     # 5 # runners[0] cannot "click" deliverPackage due to dispute
-    with brownie.reverts("Runner: requestor dispute"):
+    with brownie.reverts("Runner: requester dispute"):
         tx = utils.hub_runner(ride_hub).deliverPackage(job_ID, {"from": runners[0]},)
         tx.wait(1)
 
@@ -2484,7 +2484,7 @@ def test_init_not_verified_then_dispute_then_verify_then_revert_dispute(
 
     # since verified, countStart detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 1
@@ -2493,7 +2493,7 @@ def test_init_not_verified_then_dispute_then_verify_then_revert_dispute(
 
     # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 1
@@ -2620,7 +2620,7 @@ def test_no_dispute_verify_after_deliver_before_complete(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -2653,7 +2653,7 @@ def test_no_dispute_verify_after_deliver_before_complete(
 
     # since verified, countStart detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 1
@@ -2662,7 +2662,7 @@ def test_no_dispute_verify_after_deliver_before_complete(
 
     # since verified, countEnd + metresTravelled detail of requester & runners[0] does increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 1
@@ -2825,7 +2825,7 @@ def test_base_case_many_req_one_run(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             0
         ]
         == 0
@@ -2852,7 +2852,7 @@ def test_base_case_many_req_one_run(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester1)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester1)[
             1
         ]
         == 0
@@ -2880,7 +2880,7 @@ def test_base_case_many_req_one_run(
 
     # since not verified, countStart detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester2)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester2)[
             0
         ]
         == 0
@@ -2907,7 +2907,7 @@ def test_base_case_many_req_one_run(
 
     # since not verified, countEnd + metresTravelled detail of requester & runners[0] does not increase
     assert (
-        utils.hub_requester_detail(ride_hub).getRequestorToRequestorDetail(requester2)[
+        utils.hub_requester_detail(ride_hub).getRequesterToRequesterDetail(requester2)[
             1
         ]
         == 0

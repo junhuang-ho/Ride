@@ -171,16 +171,16 @@ def ride_runner_registry(ride_hub, RunnerRegistry, Contract, deployer):
 
 
 @pytest.fixture(scope="module", autouse=True)
-def ride_requestor(ride_hub, Requestor, Contract, deployer):
+def ride_requester(ride_hub, Requester, Contract, deployer):
     yield Contract.from_abi(
-        "Requestor", ride_hub[0].address, Requestor.abi, deployer,
+        "Requester", ride_hub[0].address, Requester.abi, deployer,
     )
 
 
 @pytest.fixture(scope="module", autouse=True)
-def ride_requestor_detail(ride_hub, RequestorDetail, Contract, deployer):
+def ride_requester_detail(ride_hub, RequesterDetail, Contract, deployer):
     yield Contract.from_abi(
-        "RequestorDetail", ride_hub[0].address, RequestorDetail.abi, deployer,
+        "RequesterDetail", ride_hub[0].address, RequesterDetail.abi, deployer,
     )
 
 

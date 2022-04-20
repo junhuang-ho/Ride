@@ -80,22 +80,22 @@ library LibHolding {
     {
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
-        address requestor = s1.jobIdToJobDetail[_jobId].requestor;
+        address requester = s1.jobIdToJobDetail[_jobId].requester;
         address runner = s1.jobIdToJobDetail[_jobId].runner;
         bytes32 keyTransact = s1.jobIdToJobDetail[_jobId].keyTransact;
         uint256 value = s1.jobIdToJobDetail[_jobId].value;
         uint256 cancellationFee = s1.jobIdToJobDetail[_jobId].cancellationFee;
 
-        return (requestor, runner, keyTransact, value, cancellationFee);
+        return (requester, runner, keyTransact, value, cancellationFee);
     }
 
     function _sortFundsUnlocking(
         bytes32 _jobId,
         bool _valueIsTransferred,
-        bool _payerIsRequestor
+        bool _payerIsRequester
     ) internal {
         (
-            address requestor,
+            address requester,
             address runner,
             bytes32 keyTransact,
             uint256 value,
@@ -117,12 +117,12 @@ library LibHolding {
         }
         payeeRefundAmount = value + cancellationFee;
 
-        if (_payerIsRequestor) {
-            payer = requestor;
+        if (_payerIsRequester) {
+            payer = requester;
             payee = runner;
         } else {
             payer = runner;
-            payee = requestor;
+            payee = requester;
         }
 
         _unlockFunds(keyTransact, transferredAmount, payer, payee);

@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "../../libraries/core/LibJobBoard.sol";
 import "../../libraries/core/LibRunnerDetail.sol";
-import "../../libraries/core/LibRequestor.sol";
+import "../../libraries/core/LibRequester.sol";
 import "../../libraries/utils/LibAccessControl.sol";
 
 library LibRater {
@@ -46,7 +46,7 @@ library LibRater {
     event RatingGiven(address indexed sender, uint256 rating);
 
     function _giveRating(bytes32 _jobId, uint256 _rating) internal {
-        LibRequestor._requireMatchJobIdRequestor(msg.sender, _jobId);
+        LibRequester._requireMatchJobIdRequester(msg.sender, _jobId);
 
         LibJobBoard.StorageJobBoard storage s3 = LibJobBoard._storageJobBoard();
 

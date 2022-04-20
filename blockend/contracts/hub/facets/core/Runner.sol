@@ -5,8 +5,8 @@ import "../../libraries/core/LibJobBoard.sol";
 import "../../libraries/core/LibRunnerRegistry.sol";
 import "../../libraries/core/LibRunnerDetail.sol";
 import "../../libraries/core/LibRunner.sol";
-import "../../libraries/core/LibRequestor.sol";
-import "../../libraries/core/LibRequestorDetail.sol";
+import "../../libraries/core/LibRequester.sol";
+import "../../libraries/core/LibRequesterDetail.sol";
 import "../../libraries/core/LibHolding.sol";
 import "../../libraries/core/LibExchange.sol";
 
@@ -36,7 +36,7 @@ contract Runner is IHubLibraryEvents {
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
         require(
-            s1.jobIdToJobDetail[_jobId].requestor != address(0),
+            s1.jobIdToJobDetail[_jobId].requester != address(0),
             "Runner: job not exists"
         );
 
@@ -96,17 +96,17 @@ contract Runner is IHubLibraryEvents {
         verify(_jobId, _package);
 
         if (s1.jobIdToJobDetail[_jobId].packageVerified) {
-            // runner & requestor incentivised to get verified to get stats
+            // runner & requester incentivised to get verified to get stats
             // TODO: re-study this logic where if verified only can gain stats
             LibRunner._recordCollectStats(_jobId);
             // LibRunnerDetail
             //     ._storageRunnerDetail()
             //     .runnerToRunnerDetail[msg.sender]
             //     .countStart += 1;
-            // LibRequestorDetail
-            //     ._storageRequestorDetail()
-            //     .requestorToRequestorDetail[
-            //         s1.jobIdToJobDetail[_jobId].requestor
+            // LibRequesterDetail
+            //     ._storageRequesterDetail()
+            //     .requesterToRequesterDetail[
+            //         s1.jobIdToJobDetail[_jobId].requester
             //     ]
             //     .countStart += 1;
             // s1.jobIdToJobDetail[_jobId].collectStatsRecorded = true;
@@ -132,7 +132,7 @@ contract Runner is IHubLibraryEvents {
         LibJobBoard._requireDisputePeriodExpired(_jobId);
         require(
             !s1.jobIdToJobDetail[_jobId].dispute,
-            "Runner: requestor dispute"
+            "Runner: requester dispute"
         );
 
         LibJobBoard._setJobDisputeExpiry(_jobId);
@@ -177,10 +177,10 @@ contract Runner is IHubLibraryEvents {
                     .metres;
                 s2.runnerToRunnerDetail[msg.sender].countEnd += 1;
 
-                LibRequestorDetail
-                    ._storageRequestorDetail()
-                    .requestorToRequestorDetail[
-                        s1.jobIdToJobDetail[_jobId].requestor
+                LibRequesterDetail
+                    ._storageRequesterDetail()
+                    .requesterToRequesterDetail[
+                        s1.jobIdToJobDetail[_jobId].requester
                     ]
                     .countEnd += 1;
             }

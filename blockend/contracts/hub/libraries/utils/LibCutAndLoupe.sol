@@ -44,8 +44,8 @@ library LibCutAndLoupe {
         bytes32(uint256(0xffffffffffffffffffffffff));
     bytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));
 
-    // Internal function version of rideCut
-    // This code is almost the same as the external rideCut,
+    // Internal function version of cut
+    // This code is almost the same as the external cut,
     // except it is using 'Facet[] memory _cut' instead of
     // 'Facet[] calldata _cut'.
     // The code is duplicated to prevent copying calldata to memory which

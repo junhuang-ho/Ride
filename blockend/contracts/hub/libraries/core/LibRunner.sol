@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "./LibJobBoard.sol";
 
-import "./LibRequestorDetail.sol";
+import "./LibRequesterDetail.sol";
 import "./LibRunnerDetail.sol";
 
 library LibRunner {
@@ -23,9 +23,9 @@ library LibRunner {
             .runnerToRunnerDetail[msg.sender]
             .countStart += 1;
 
-        LibRequestorDetail
-            ._storageRequestorDetail()
-            .requestorToRequestorDetail[s1.jobIdToJobDetail[_jobId].requestor]
+        LibRequesterDetail
+            ._storageRequesterDetail()
+            .requesterToRequesterDetail[s1.jobIdToJobDetail[_jobId].requester]
             .countStart += 1;
 
         s1.jobIdToJobDetail[_jobId].collectStatsRecorded = true;

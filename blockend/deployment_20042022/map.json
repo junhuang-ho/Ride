@@ -1,0 +1,70 @@
+{
+  "80001": {
+    "AccessControl": [
+      "0xF0fcd0384539425E631Db8B89B46D3B0E8007F46"
+    ],
+    "CurrencyRegistry": [
+      "0x0C73B97df0b1ea2Ee76Ba56bB1310984efCb91cA"
+    ],
+    "Cut": [
+      "0x6a3e3dd1D9765E47A54303A7799f0A354B9ACD70"
+    ],
+    "Exchange": [
+      "0x2186Cfadcb0A91954d63F960551ab1D40279ABb0"
+    ],
+    "Fee": [
+      "0x23a539B7fcb5db9c7F6C2cE5095811f86b158f73"
+    ],
+    "HiveFactory": [
+      "0x9A71a0471e75738fC809B28F5133851f00049c02"
+    ],
+    "HiveGovernanceTokenMachine": [
+      "0x669756743043666F9758E94C59B2EBB74C4a4970"
+    ],
+    "HiveGovernorMachine": [
+      "0x2EF35971bd4c78009fdfeC2664C637F0145C54D9"
+    ],
+    "HiveTimelockMachine": [
+      "0x6ADEDf634C974Ec4493271880c930e067DD44f9D"
+    ],
+    "Holding": [
+      "0x4ba81aEe992D9016DeA5A1e034022E0F1Aa6FE1A"
+    ],
+    "Hub": [
+      "0x17f4AA03Ce8Ee96fFcd86DC810D845E29c131F97"
+    ],
+    "HubInitializer0": [
+      "0xE877D79acEe2691acB843EcfC7A05773f4bb4A7F"
+    ],
+    "JobBoard": [
+      "0x6026614ed02592Fd20884ee650637F6B7d43f88c"
+    ],
+    "Loupe": [
+      "0xA33cE7743cE9b7C9e5765cCCB4622C751b2F762d"
+    ],
+    "Penalty": [
+      "0xdF6Bf53512C4349dC4A57E4f52d546889aF63e8b"
+    ],
+    "Rater": [
+      "0x1D29B3F80253922a1B7cdBFCb5E66a668F185EAe"
+    ],
+    "Requester": [
+      "0xf21FbFfA1865E1566696B4ff280130F4B2D3EEaA"
+    ],
+    "RequesterDetail": [
+      "0x50ab0f81b375041Da6f381620a26DEBC3a6b3ad1"
+    ],
+    "Ride": [
+      "0x4f8DcD5081F80a3F2E2621117f630766f6a96A8e"
+    ],
+    "Runner": [
+      "0x8FCF7C9c228b5DEd6C10F1EF9f56393E2BbBBEdb"
+    ],
+    "RunnerDetail": [
+      "0x204dDC0f1203b5056f87fa5B17705894B2ac3Cd4"
+    ],
+    "RunnerRegistry": [
+      "0x866382773188bcdaFf4414dCb5443Ea72ADF8b90"
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import brownie
+from brownie import network
 from web3 import Web3
 import scripts.utils as utils
 
@@ -54,13 +55,17 @@ def governance_process(
     )
 
     # 3 # --> wait for voting delay to pass
-    for _ in range(governor.votingDelay()):  # move blocks
-        with brownie.reverts():
-            access_control.grantRole(
-                access_control.getDefaultAdminRole(),
-                revert_account,
-                {"from": revert_account},
-            )
+    if (
+        network.show_active() in utils.ENV_LOCAL_BLOCKS
+        or network.show_active() in utils.ENV_LOCAL_FORKS
+    ):
+        for _ in range(governor.votingDelay()):  # move blocks
+            with brownie.reverts():
+                access_control.grantRole(
+                    access_control.getDefaultAdminRole(),
+                    revert_account,
+                    {"from": revert_account},
+                )
 
     tx.wait(1 + governor.votingDelay())
 
@@ -77,7 +82,13 @@ def governance_process(
 
     assert governor.proposalSnapshot(proposal_id) == tx.block_number + 1
     assert governor.proposalEta(proposal_id) == 0
-    assert utils.PROPOSAL_STATE[governor.state(proposal_id)] == "Pending"
+    # assert utils.PROPOSAL_STATE[governor.state(proposal_id)] == "Pending"
+
+    if not (
+        network.show_active() in utils.ENV_LOCAL_BLOCKS
+        or network.show_active() in utils.ENV_LOCAL_FORKS
+    ):
+        tx.wait(5)
 
     # 5 # --> voting period
     # - `support=bravo` refers to the vote options 0 = Against, 1 = For, 2 = Abstain, as in `GovernorBravo`.
@@ -99,13 +110,19 @@ def governance_process(
     assert utils.PROPOSAL_STATE[governor.state(proposal_id)] == "Active"
 
     # 6 # --> wait for voting period to pass
-    for _ in range(governor.votingPeriod()):  # move blocks
-        with brownie.reverts():
-            access_control.grantRole(
-                access_control.getDefaultAdminRole(),
-                revert_account,
-                {"from": revert_account},
-            )
+    if (
+        network.show_active() in utils.ENV_LOCAL_BLOCKS
+        or network.show_active() in utils.ENV_LOCAL_FORKS
+    ):
+        for _ in range(governor.votingPeriod()):  # move blocks
+            with brownie.reverts():
+                access_control.grantRole(
+                    access_control.getDefaultAdminRole(),
+                    revert_account,
+                    {"from": revert_account},
+                )
+
+    tx.wait(1 + governor.votingPeriod())
 
     # # 7 # --> once deadline reached, no more votes can be cast
     # assert governor.proposalDeadline(proposal_id) == brownie.web3.eth.block_number - 1
@@ -126,7 +143,13 @@ def governance_process(
 
         assert governor.proposalEta(proposal_id) == tx.timestamp + 1
 
-        chain.sleep(10)  # fast-forward time so that proposal is ready for execution
+        if (
+            network.show_active() in utils.ENV_LOCAL_BLOCKS
+            or network.show_active() in utils.ENV_LOCAL_FORKS
+        ):
+            chain.sleep(10)  # fast-forward time so that proposal is ready for execution
+        else:
+            tx.wait(10)
 
         # 9 # --> execute proposal
         tx = governor.execute(
@@ -188,3 +211,38 @@ def governance_process_with_fallback(
     else:
         print("something wrong with governance process with fallback")
 
+
+def governance_execute_only(
+    encoded_functions,
+    target_contracts,
+    governor,
+    access_control,
+    anyone,
+    anyone_with_minimum_votes,
+    voters,
+    revert_account,
+):
+    assert isinstance(encoded_functions, list)
+    assert isinstance(target_contracts, list)
+    assert isinstance(voters, dict)
+
+    # 2 # --> propose, pass encoded function
+    targets = target_contracts
+    values = [0] * len(encoded_functions)
+    calldatas = encoded_functions
+    description = "test 123"
+    description_hash = Web3.keccak(text=description).hex()
+    # tx = governor.propose(
+    #     targets, values, calldatas, description, {"from": anyone_with_minimum_votes}
+    # )
+
+    proposal_id = governor.hashProposal(targets, values, calldatas, description_hash)
+
+    assert utils.PROPOSAL_STATE[governor.state(proposal_id)] == "Queued"
+
+    tx = governor.execute(
+        targets, values, calldatas, description_hash, {"from": anyone}
+    )
+    tx.wait(1)
+
+    assert utils.PROPOSAL_STATE[governor.state(proposal_id)] == "Executed"

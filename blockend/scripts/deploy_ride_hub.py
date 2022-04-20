@@ -45,8 +45,8 @@ def main(
             "TestRunnerRegistry",
             "TestRunnerDetail",
             "TestRunner",
-            "TestRequestor",
-            "TestRequestorDetail",
+            "TestRequester",
+            "TestRequesterDetail",
         ]
     else:
         facets = [
@@ -66,8 +66,8 @@ def main(
             "RunnerRegistry",
             "RunnerDetail",
             "Runner",
-            "Requestor",
-            "RequestorDetail",
+            "Requester",
+            "RequesterDetail",
         ]
 
     facets_to_cut = utils.diamond_bulk_deploy(facets, deployer)

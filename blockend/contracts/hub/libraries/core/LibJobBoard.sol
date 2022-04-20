@@ -19,7 +19,7 @@ library LibJobBoard {
 
     struct JobDetail {
         JobState state;
-        address requestor;
+        address requester;
         address runner;
         address package; // set by requester
         bytes32 locationPackage;

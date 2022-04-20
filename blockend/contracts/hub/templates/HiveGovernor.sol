@@ -89,7 +89,7 @@ contract HiveGovernor is
         ProposalState status = state(proposalId);
         require(
             status == ProposalState.Expired,
-            "RideGovernor: proposal not expired"
+            "HiveGovernor: proposal not expired"
         );
         // _proposals[proposalId].executed = true; // private state variable not visible
         expiredProposalIdToExecuted[proposalId] = true;

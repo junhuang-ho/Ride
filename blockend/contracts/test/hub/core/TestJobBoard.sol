@@ -36,7 +36,7 @@ contract TestJobBoard is JobBoard {
     function ssJobIdToJobDetail_1(
         bytes32 _jobId,
         uint256 _state,
-        address _requestor,
+        address _requester,
         address _runner,
         address _package,
         bytes32 _locationPackage,
@@ -47,7 +47,7 @@ contract TestJobBoard is JobBoard {
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
         s1.jobIdToJobDetail[_jobId].state = LibJobBoard.JobState(_state);
-        s1.jobIdToJobDetail[_jobId].requestor = _requestor;
+        s1.jobIdToJobDetail[_jobId].requester = _requester;
         s1.jobIdToJobDetail[_jobId].runner = _runner;
         s1.jobIdToJobDetail[_jobId].package = _package;
         s1.jobIdToJobDetail[_jobId].locationPackage = _locationPackage;

@@ -14,7 +14,9 @@ dotenv: .env
 # autofetch_sources: true
 # dev_deployment_artifacts: true
 wallets:
-  from_key: ${PRIVATE_KEY_0}
+  from_key_0: ${PRIVATE_KEY_0}
+  from_key_1: ${PRIVATE_KEY_1}
+  from_key_2: ${PRIVATE_KEY_2}
   # from_mnemonic: ${MNEMONIC_0}
 networks:
   default: development

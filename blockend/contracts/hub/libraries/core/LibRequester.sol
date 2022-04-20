@@ -3,18 +3,18 @@ pragma solidity ^0.8.2;
 
 import "./LibJobBoard.sol";
 
-library LibRequestor {
-    function _requireMatchJobIdRequestor(address _requestor, bytes32 _jobId)
+library LibRequester {
+    function _requireMatchJobIdRequester(address _requester, bytes32 _jobId)
         internal
         view
     {
         require(
-            _requestor ==
+            _requester ==
                 LibJobBoard
                     ._storageJobBoard()
                     .jobIdToJobDetail[_jobId]
-                    .requestor,
-            "LibRequestor: caller not match job requestor"
+                    .requester,
+            "LibRequester: caller not match job requester"
         );
     }
 }

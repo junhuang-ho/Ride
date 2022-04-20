@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "../../libraries/core/LibJobBoard.sol";
 import "../../libraries/core/LibHolding.sol";
-import "../../libraries/core/LibRequestor.sol";
+import "../../libraries/core/LibRequester.sol";
 import "../../libraries/core/LibRunnerRegistry.sol";
 import "../../libraries/core/LibExchange.sol";
 import "../../libraries/core/LibFee.sol";
@@ -11,7 +11,7 @@ import "../../libraries/core/LibPenalty.sol";
 
 import "../../interfaces/IHubLibraryEvents.sol";
 
-contract Requestor is IHubLibraryEvents {
+contract Requester is IHubLibraryEvents {
     event RequestRunner(address indexed sender, bytes32 indexed jobId);
 
     function requestRunner(
@@ -26,10 +26,10 @@ contract Requestor is IHubLibraryEvents {
     ) external {
         LibRunnerRegistry._requireNotRunner();
         LibPenalty._requireNotBanned(_hive);
-        // RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyTransact); // note: double check on currency supported (check is already done indirectly by _getCancellationFee & _getFare, directly by currency conversion)
+        // LibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyTransact); // note: double check on currency supported (check is already done indirectly by _getCancellationFee & _getFare, directly by currency conversion)
         // /**
         //  * Note: if frontend implement correctly, removing this line
-        //  *       RideLibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay);
+        //  *       LibExchange._requireXPerYPriceFeedSupported(_keyLocal, _keyPay);
         //  *       would NOT be a problem
         //  */
 
@@ -75,10 +75,11 @@ contract Requestor is IHubLibraryEvents {
         );
 
         bytes32 jobId = keccak256(abi.encode(msg.sender, block.timestamp)); // TODO: make more unique? // encode gas seems less? but diff very small
+        // bytes32 jobId = 0x3c8a75d718cbd81494ea3e6b521a7260af9987ad25d04b35d0c81830bfad210e; // TODO: REMOVE, THIS FOR TESTING PURPOSES
 
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
-        s1.jobIdToJobDetail[jobId].requestor = msg.sender;
+        s1.jobIdToJobDetail[jobId].requester = msg.sender;
         s1.jobIdToJobDetail[jobId].package = _package;
         s1.jobIdToJobDetail[jobId].locationPackage = _locationPackage;
         s1.jobIdToJobDetail[jobId].locationDestination = _locationDestination;
@@ -94,10 +95,10 @@ contract Requestor is IHubLibraryEvents {
         emit RequestRunner(msg.sender, jobId);
     }
 
-    event RequestorCancelled(address indexed sender, bytes32 indexed jobId);
+    event RequesterCancelled(address indexed sender, bytes32 indexed jobId);
 
-    function cancelFromRequestor(bytes32 _jobId) external {
-        LibRequestor._requireMatchJobIdRequestor(msg.sender, _jobId);
+    function cancelFromRequester(bytes32 _jobId) external {
+        LibRequester._requireMatchJobIdRequester(msg.sender, _jobId);
 
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
@@ -160,13 +161,13 @@ contract Requestor is IHubLibraryEvents {
 
         s1.jobIdToJobDetail[_jobId].state = LibJobBoard.JobState.Cancelled; // note: not used as job cleared before this point
 
-        emit RequestorCancelled(msg.sender, _jobId);
+        emit RequesterCancelled(msg.sender, _jobId);
     }
 
     event Dispute(address indexed sender, bytes32 indexed jobId);
 
     function dispute(bytes32 _jobId, bool _dispute) external {
-        LibRequestor._requireMatchJobIdRequestor(msg.sender, _jobId);
+        LibRequester._requireMatchJobIdRequester(msg.sender, _jobId);
 
         LibJobBoard.StorageJobBoard storage s1 = LibJobBoard._storageJobBoard();
 
@@ -182,7 +183,7 @@ contract Requestor is IHubLibraryEvents {
             ) {
                 s1.jobIdToJobDetail[_jobId].dispute = _dispute; // opportunity to set dispute=false
             } else {
-                revert("Requestor: already verified");
+                revert("Requester: already verified");
             }
         } else if (
             s1.jobIdToJobDetail[_jobId].state == LibJobBoard.JobState.Delivered
@@ -191,7 +192,7 @@ contract Requestor is IHubLibraryEvents {
                 require(
                     block.timestamp <
                         s1.jobIdToJobDetail[_jobId].disputeExpiryTimestamp,
-                    "Requestor: dispute period expired"
+                    "Requester: dispute period expired"
                 );
             } // note: to allow set false
 
