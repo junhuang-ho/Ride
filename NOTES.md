@@ -1,5 +1,10 @@
 # Some notes for developer reference
 
+# Gasless Transaction
+https://blog.openzeppelin.com/gasless-metatransactions-with-openzeppelin-defender/
+
+https://docs.polygon.technology/docs/develop/metatransactions/getting-started
+
 # Wallet Standards
 ### BIP-39
 Official: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
